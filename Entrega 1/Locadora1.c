@@ -1,10 +1,12 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <locale.h>
+#include <stdio.h>
 
-//Main---------------------------------------------------------------------------------------
+//Main-----------------------------------------------------------------------------------------------------------
 void main(){
-    setlocale(LC_ALL,"portuguese");
+//PAINEL INICIAL------------------------------------------------------------------------------------------------
+    ArqLoc();
     printf("Bem vindo a locadora de carros da Unipampa.\n");
     printf("Selecione uma das opções abaixo para prosseguir.\n");
     printf("Opção 1: Realizar uma locação de veículo. \n");
@@ -13,6 +15,7 @@ void main(){
     
     int op;
     scanf("%d", &op);
+    
     switch (op){
     case 1 : 
         printf("Locação selecionado.");
@@ -28,13 +31,15 @@ void main(){
         break;
     }
     system("pause");
+    
+    
 }
 //DADOS LOCAÇÃO-------------------------------------------------------------------------------------------------------
     typedef struct locacao{
     char nome;
     int cnh;
     int placa;
-    int kmRodada;
+    double kmCat;
     int numerodias;
     };
 //DIARIA
@@ -57,10 +62,43 @@ void main(){
         int ano[4];
         int kmCarro;
         char categoria;
-        double valorT;
+        double valorCat;
     };
 //ENCERRAR LOCAÇÃO----------------------------------------------------------------------------------------------------
+        typedef struct fLocacao{
+            double valorT;
+            int kmEx;
+            int fidelidade;
+        };
+//ARQUIVO LOCACAO------------------------------------------------------------------------------------------------
+void ArqLoc(){
+FILE *arq;
+int result;
+char Str[100];
+
+arq = fopen("Locacao.txt", "rt");
+char nome[30];
+int nrCNH;
+char placa[7];
+int km;
+int dias;
+
+fscanf(arq, "%s, %d, %c, %d, %d", &nome, &nrCNH, &placa, &km, &dias);
+
+
+printf("%s, %d, %c, %d, %d\n", nome, nrCNH, placa, km, dias);
+
+if (arq == NULL)
+{
+    printf("Problemas na Criação do arquivo\n");
+    return;
+}
+    setlocale(LC_ALL,"portuguese");
     
+    printf(arq);
+
+    fclose(arq);
+}
     
 
     
