@@ -11,7 +11,7 @@
     char nome[30];
     int cnh;
     char placa[7];
-    int kmCat;
+    int kmAtual;
     int dias;
     }locacao;
 
@@ -23,19 +23,20 @@
         int ano[4];
         int kmCarro;
         int categoria;
+        int disponibilidade;
     }carro;
 //ENCERRAR LOCAÇÃO----------------------------------------------------------------------------------------------------
-        typedef struct {
-            int kmEx;
-            int fidelidade;
-        }fLocacao;
+        
 //ENTREGA VEICULO
 void EncerraLoc(locacao*frota, int cnh, carro*carros, carro*placaCli){
     int buscaCli = buscaCliente(frota , cnh);
     char buscaCar = buscaCarro(carros, placaCli);
     int posicaoCar;
     int valorCat = 0;
-    fLocacao fim;
+    double valorT;
+    double precokmCat;
+    int kmEx;
+
     
     
     for (int i = 0; i < 4; i++)
@@ -48,20 +49,24 @@ void EncerraLoc(locacao*frota, int cnh, carro*carros, carro*placaCli){
     if (carros[posicaoCar].categoria == 1)
     {
         valorCat = luxo*frota[buscaCli].dias;
+        precokmCat = 5.00;
     }
     else if (carros[posicaoCar].categoria == 2){
         valorCat = intermedi*frota[buscaCli].dias;
+        precokmCat = 2.50;
     }
     else if(carros[posicaoCar].categoria == 3){
         valorCat = basico*frota[buscaCli].dias;
+        precokmCat = 1.00;
     }
-    fim.kmEx =carros[posicaoCar].kmCarro - frota[buscaCli].kmCat;
-    valorCat += fim.kmEx;
-    printf("O valor a ser pago é de: %d",valorCat);
+    kmEx =frota[buscaCli].kmAtual - carros[posicaoCar].kmCarro;
+    valorT = valorCat + (kmEx*precokmCat);
+    printf("O valor a ser pago e de: %f",valorT);
 
 }
 //BUSCA CARRO---------------------------------------------------------------------------------------------------
 int buscaCarro(carro*carros, char*placaCli){
+    
     int tamanho = 4;
     int retorna;
     for (int i = 0; i < tamanho; i++){
@@ -107,7 +112,7 @@ printf("Problemas na Criação do arquivo\n");
 }
 fscanf(arq, "%d", &numerodeLinha);
 do{
- r= fscanf(arq, "%29[^,],%d,%29[^,],%d,%d,\n",frota[i].nome, &frota[i].cnh, frota[i].placa, &frota[i].kmCat, &frota[i].dias); 
+ r= fscanf(arq, "%29[^,],%d,%29[^,],%d,%d,\n",frota[i].nome, &frota[i].cnh, frota[i].placa, &frota[i].kmAtual, &frota[i].dias); 
 
 
 if (r!=5 && !feof(arq)){
@@ -125,7 +130,7 @@ i++;
 } while (!feof(arq));
 for (i = 0; i <= numerodeLinha; i++)
 {
-printf("%s,%d,%s,%d,%d,\n", frota[i].nome, frota[i].cnh, frota[i].placa, frota[i].kmCat, frota[i].dias);
+printf("%s,%d,%s,%d,%d,\n", frota[i].nome, frota[i].cnh, frota[i].placa, frota[i].kmAtual, frota[i].dias);
 }
 
     fclose(arq);
@@ -133,6 +138,8 @@ printf("%s,%d,%s,%d,%d,\n", frota[i].nome, frota[i].cnh, frota[i].placa, frota[i
 //Main-----------------------------------------------------------------------------------------------------------
 int main(){
     locacao*frota;
+    carro*carros;
+    carros=malloc(sizeof(carro)*100);
     frota=malloc(sizeof(locacao)*100);
 //PAINEL INICIAL------------------------------------------------------------------------------------------------
     
@@ -197,6 +204,13 @@ int main(){
         printf("Informe o numero da CNH: \n");
         int nrCNH;
         scanf("%d", &nrCNH);
+        fflush(stdin);
+        char fPlaca[7];
+        printf("Informe a placa:\n");
+        scanf(fPlaca);
+        fflush(stdin);
+        EncerraLoc(frota,nrCNH,carros,fPlaca);
+
         break;
     
     case 3 : 

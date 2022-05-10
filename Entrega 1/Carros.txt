@@ -1,0 +1,7 @@
+4
+sedan,2018,abc1009,9504,150,fiat,3,
+hatch,2021,ijj1129,1025,250,hynday,2,
+suv,2021,ifc9865,600,250,honda,2,
+picape,2020,ikj2409,157,500,fiat,1,
+minivan,2017,ikl0109,1205,150,fiat,3,
+hatch,2012,jjj3244,7233,150,cintroen,3,
