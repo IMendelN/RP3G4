@@ -11,28 +11,28 @@ typedef struct {
     int cnh;
     char nome[30];
     int fidelidade;
-    char placa;
+    char placa[30];
 }Cliente;
 
 typedef struct{
-    char placa[7];
+    char placa[30];
     int categoria;
-    char modelo;
-    char marca;
+    char modelo[30];
+    char marca[30];
     int ano;
     int kmCarro;
     int disponibilidade;
 }Carro;
 
 int PainelInicial(){
-    int op;
+
     printf("Bem vindo a locadora de carros da Unipampa.\n");
     printf("Selecione uma das opcoes abaixo para prosseguir.\n");
     printf("Opcao 1: Realizar uma locacao de veiculo. \n");
     printf("Opcao 2: Finalizar uma locacao de veiculo. \n");
-    printf("Opcao 3: Finalizar o programa.\n");
-    scanf("%d", &op);
-    return op;
+    printf("Opcao 3: Consultar todos veiculos.\n");
+    printf("Opcao 4: Fechar o programa.");
+    return 1;
 }
 
 int FazerLoc(Cliente*clientes, Carro*carros){
@@ -60,8 +60,23 @@ int FazerLoc(Cliente*clientes, Carro*carros){
     printf("Veiculo locado.");
 }
 
-int EncerraLoc(){
-
+int EncerraLoc(Cliente*clientes, Carro*carros){
+    int cnh;
+    printf("Informe a sua CNH: \n");
+    scanf("%d", &cnh);
+    int posCliente = buscaCliente(clientes, cnh);
+    int posicaoCarro = buscaCarro(carros, clientes[posCliente].placa);
+    if (posicaoCarro == -1)
+    {
+        printf("O cliente nao possui veiculos locados");
+    }
+    int dias;
+    printf("Quantos dias o cliente ficou com o veículo?");
+    scanf("%d", &dias);
+    int kmAtual;
+    printf("Qual a quilometragem atual do veiculo?");
+    scanf("%d", &kmAtual);
+    
 }
 
 int buscaCliente(Cliente*clientes, int cnh){
@@ -92,7 +107,7 @@ int buscaCarro(Carro*carros, char*placaCarro){
 
 int buscaVeiculoDisponivel(Carro*frota, int quantidadeCarro){
     int i=0;
-
+    printf("Veiculos disponiveis.\n");
     for(int i =0; i< quantidadeCarro; i++){
         if(frota[i].disponibilidade == 1){
             printf("%s ", frota[i].placa);
@@ -104,6 +119,21 @@ int buscaVeiculoDisponivel(Carro*frota, int quantidadeCarro){
             printf("%d\n", frota[i].disponibilidade);
             puts(" ");
         }
+        
+    }
+    printf("Veiculos indisponiveis.\n");
+    for(int i =0; i< quantidadeCarro; i++){
+        if(frota[i].disponibilidade == 0){
+            printf("%s ", frota[i].placa);
+            printf("%d ", frota[i].categoria);
+            printf("%s ", frota[i].modelo);
+            printf("%s ", frota[i].marca);
+            printf("%d ", frota[i].ano);
+            printf("%d ", frota[i].kmCarro);
+            printf("%d\n", frota[i].disponibilidade);
+            puts(" ");
+        }
+        
     }
 
     return i;
@@ -114,7 +144,7 @@ int i = 0;
 
 arq = fopen("FrotaCarros.txt", "r");
 
-int numerodeLinha;
+int numerodeLinha =0;
 int r;
 
 if (arq == NULL){
@@ -122,9 +152,10 @@ printf("Problemas na Criação do arquivo\n");
     return 1;
 }
 fscanf(arq, "%d", &numerodeLinha);
+//printf("%d", numerodeLinha);
 do{
- r= fscanf(arq, "%6[^,],%d,%29[^,],%29[^,],%d,%d,%d\n",frota[i].placa, &frota[i].categoria, frota[i].modelo, frota[i].marca, &frota[i].ano, &frota[i].kmCarro, &frota[i].disponibilidade); 
-
+ r= fscanf(arq, "%29[^,],%d,%29[^,],%29[^,],%d,%d,%d,",frota[i].placa, &frota[i].categoria, frota[i].modelo, frota[i].marca, &frota[i].ano, &frota[i].kmCarro, &frota[i].disponibilidade); 
+//printf("%s,%d,%s,%s,%d,%d,%d\n", frota[i].placa, frota[i].categoria, frota[i].modelo, frota[i].marca, frota[i].ano, frota[i].kmCarro, frota[i].disponibilidade);
 
 if (r!=7 && !feof(arq)){
     printf("Formato invalido");
@@ -139,12 +170,6 @@ if (ferror(arq)){
 i++;
 
 } while (!feof(arq));
-int exibe;
-exibe = i;
-for (i = 0; i <= numerodeLinha; i++)
-{
-printf("%s,%d,%s,%s,%d,%d,%d\n", frota[exibe].placa, frota[exibe].categoria, frota[exibe].modelo, frota[exibe].marca, frota[exibe].ano, frota[exibe].kmCarro, frota[exibe].disponibilidade);
-}
 
     fclose(arq);
 }
@@ -163,8 +188,10 @@ printf("Problemas na Criação do arquivo\n");
     return 1;
 }
 fscanf(arq, "%d", &numerodeLinha);
+//printf("%d", numerodeLinha);
 do{
- r= fscanf(arq, "%d,%29[^,],%d,%6[^,]\n",&clientes[i].cnh, clientes[i].nome, &clientes[i].fidelidade, clientes[i].placa); 
+ r= fscanf(arq, "%d,%29[^,],%d,%29[^,],",&clientes[i].cnh, clientes[i].nome, &clientes[i].fidelidade, clientes[i].placa);
+ //printf("%d,%s,%d,%s\n",clientes[i].cnh, clientes[i].nome, clientes[i].fidelidade, clientes[i].placa);
 
 
 if (r!=4 && !feof(arq)){
@@ -181,13 +208,10 @@ i++;
 
 } while (!feof(arq));
 
-for (i = 0; i <= numerodeLinha; i++)
-{
-printf("%d,%s,%d,%s\n",clientes[i].cnh, clientes[i].nome, clientes[i].fidelidade, clientes[i].placa);
-}
-
     fclose(arq);
 }
+
+
 
 int main(){
     Cliente*clientes;
@@ -196,17 +220,21 @@ int main(){
     clientes=malloc(sizeof(Cliente)*100);
     ArqCarros(carros);
     ArqClientes(clientes);
-    
+    printf("\n");
     int op;
+    PainelInicial();
+    scanf("%d", &op);
     do{
-        op = PainelInicial();
+        
         switch (op)
         {
         case 1:
             FazerLoc(clientes, carros);
             break;
         case 2:
-            EncerraLoc();
+            EncerraLoc(clientes, carros);
+        case 3:
+    
         default:
             printf("Escolha uma das opcoes");
             break;
