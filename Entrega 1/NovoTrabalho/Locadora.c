@@ -28,22 +28,89 @@ typedef struct
 
 int PainelInicial()
 {
-
+    Cliente *clientes;
+    Carro *carros;
+    carros = malloc(sizeof(Carro) * 100);
+    clientes = malloc(sizeof(Cliente) * 100);
+    ArqCarros(carros);
+    ArqClientes(clientes);
+    printf("\n");
+    int op;
+    do
+    {
     printf("Bem vindo a locadora de carros da Unipampa.\n");
     printf("Selecione uma das opcoes abaixo para prosseguir.\n");
     printf("Opcao 1: Realizar uma locacao de veiculo. \n");
     printf("Opcao 2: Finalizar uma locacao de veiculo. \n");
-    printf("Opcao 3: Consultar todos veiculos.\n");
+    printf("Opcao 3: Relatorio\n");
     printf("Opcao 4: Fechar o programa.");
-    return 1;
+    printf("\n");
+    scanf("%d", &op);
+    
+
+        switch (op)
+        {
+        case 1:
+            FazerLoc(clientes, carros);
+
+            break;
+        case 2:
+            EncerraLoc(clientes, carros);
+            break;
+        case 3:
+            relatorio(carros, 5);
+            break;
+        case 4:
+            printf("Programa encerrado");
+            break;
+        default:
+            printf("Escolha uma das opcoes");
+            break;
+        }
+    } while (op != 4);
+    return 0;
 }
 
+int relatorio(Carro *frota, int quantidadeCarro){
+    int i;
+    fflush(stdin);
+    printf ("\nO Relatorio de carros eh\n");
+        printf("\nOs carros diponiveis sao:\n");
+        for(int i =0; i< quantidadeCarro; i++){
+        if(frota[i].disponibilidade == 1 ){
+            printf("%s,", frota[i].placa);
+            printf("%d,", frota[i].categoria);
+            printf("%s, ", frota[i].modelo);
+            printf("%s, ", frota[i].marca);
+            printf("%d, ", frota[i].ano);
+            printf("%d, ", frota[i].kmCarro);
+            printf("%d.\n", frota[i].disponibilidade);
+            puts(" ");
+            }
+        }
+    printf("Veiculos indisponiveis.\n");
+    for(int i =0; i< quantidadeCarro; i++){
+        if(frota[i].disponibilidade == 0){
+            printf("%s, ", frota[i].placa);
+            printf("%d, ", frota[i].categoria);
+            printf("%s, ", frota[i].modelo);
+            printf("%s, ", frota[i].marca);
+            printf("%d, ", frota[i].ano);
+            printf("%d, ", frota[i].kmCarro);
+            printf("%d.\n", frota[i].disponibilidade);
+            puts(" ");
+        }
+    }
+   return 1;   
+}
 int FazerLoc(Cliente *clientes, Carro *carros)
 {
     int cnh;
     char placa[7];
+    int categoria;
     printf("Informe a CNH do cliente:\n");
     scanf("%d", &cnh);
+
     int vetorCliente = buscaCliente(clientes, cnh);
     if (vetorCliente == -1)
     {
@@ -51,8 +118,23 @@ int FazerLoc(Cliente *clientes, Carro *carros)
     }
     printf("Dados registrados.\n");
 
+    printf("Pontos disponivels: %d \n", clientes[vetorCliente].fidelidade);
+    //printf("Dados registrados.\n");
+    if (clientes[vetorCliente].fidelidade <= 300)
+    {
+        categoria = 1;
+    }
+    if (clientes[vetorCliente].fidelidade >= 300 && clientes[vetorCliente].fidelidade <= 700)
+    {
+        categoria = 2;
+    }
+    if (clientes[vetorCliente].fidelidade > 700)
+    {
+        categoria = 3;
+    }
+
     printf("Veiculos disponiveis:\n");
-    buscaVeiculoDisponivel(carros, 5);
+    buscaVeiculoDisponivel(carros, 5, categoria);
     int vetorCarros;
     do
     {
@@ -67,7 +149,6 @@ int FazerLoc(Cliente *clientes, Carro *carros)
         if (carros[vetorCarros].disponibilidade == 0)
         {
             printf("Veiculo indisponivel.\n");
-            
         }
         else
             break;
@@ -79,36 +160,109 @@ int FazerLoc(Cliente *clientes, Carro *carros)
     printf("Veiculo locado.");
     GravaCarros(carros, 5);
     GravaClientes(clientes, 5);
-    
+    return PainelInicial();
 }
 
 int EncerraLoc(Cliente *clientes, Carro *carros)
 {
+    double valorCat;
     int cnh;
+    double precokmCat;
+    int categoria;
     do
     {
-    
-    printf("Informe a sua CNH: \n");
-    scanf("%d", &cnh);
-    int posCliente = buscaCliente(clientes, cnh);
-    int posicaoCarro = buscaCarro(carros, clientes[posCliente].placa);
-    if (posicaoCarro == -1)
-    {
-        printf("O cliente nao possui veiculos locados");
-    }
-    int dias;
-    printf("Quantos dias o cliente ficou com o veículo?");
-    scanf("%d", &dias);
-    int kmAtual;
-    printf("Qual a quilometragem atual do veiculo?");
-    scanf("%d", &kmAtual);
 
-    GravaCarros(carros, 5);
-    GravaClientes(clientes, 5);
-    printf("Locacao encerrada.\n");
+        printf("Informe a sua CNH: \n");
+        scanf("%d", &cnh);
+        int posCliente = buscaCliente(clientes, cnh);
+        int posicaoCarro = buscaCarro(carros, clientes[posCliente].placa);
+        clientes[posCliente].cnh = 2;
+        if (posicaoCarro == -1)
+        {
+            printf("O cliente nao possui veiculos locados");
+        }
+        int dias;
+        printf("Quantos dias o cliente ficou com o veículo?");
+        scanf("%d", &dias);
+        int kmAtual;
+        printf("Qual o total de kilometros pelo cliente?\n");
+        scanf("%d", &kmAtual);
+        if (posCliente == -1)
+        {
+            return -1;
+        }
+        if (clientes[posCliente].fidelidade <= 300)
+        {
+            categoria = 1;
+        }
+        if (clientes[posCliente].fidelidade >= 300 && clientes[posCliente].fidelidade <= 700)
+        {
+            categoria = 2;
+        }
+        if (clientes[posCliente].fidelidade > 700)
+        {
+            categoria = 3;
+        }
+        diaria(dias, categoria, kmAtual);
+        carros[posicaoCarro].disponibilidade = 1;
+        strcpy(clientes[posCliente].placa, "NULL");
+        GravaCarros(carros, 5);
+        GravaClientes(clientes, 5);
+        printf("Locacao encerrada.\n");
     } while (cnh != 0);
 }
+int diaria(int dias, int categoria, int km)
+{
+    int valordiaria;
+    switch (categoria)
+    {
+    case 1: // categoria basica valor do km excedido é 5 reais
+        printf("categoria do cliente eh basica\n");
+        valordiaria = precoBas;
+        if (km > 500)
+        {
+            // printf("%d\n",km);
+            valordiaria = (((km - 500) * 5) + valordiaria);
+            printf("O valor a se pago eh: %d reais\n", valordiaria);
+        }
+        else
+        {
+            valordiaria = precoBas * dias;
+            printf("O valor a se pago eh: %d reais\n", valordiaria);
+        }
+        break;
 
+    case 2: // categoria intermediar valor do km excedido é 2 reais
+        printf("categoria do cliente eh intermediaria\n");
+        valordiaria = precoInt;
+        if (km > 700)
+        {
+            // printf("%d\n",km);
+            valordiaria = (((km - 700) * 2) + valordiaria);
+            printf("O valor a se pago eh: %d reais\n", valordiaria);
+        }
+        else
+        {
+            valordiaria = precoInt * dias;
+            printf("O valor a se pago eh: %d reais\n", valordiaria);
+        }
+        break;
+    case 3: // categoria lux valor do km excedido é 1 reais
+        printf("categoria do cliente eh Luxo\n");
+        valordiaria = precoLux;
+        if (km > 900)
+        {
+            valordiaria = (km - 900) * 1 + valordiaria;
+            printf("O valor a se pago eh: %d reais\n", valordiaria);
+        }
+        else
+        {
+            valordiaria = precoLux * dias;
+            printf("O valor a se pago eh: %d reais\n", valordiaria);
+        }
+        break;
+    }
+}
 int buscaCliente(Cliente *clientes, int cnh)
 {
     int tamanho = 5;
@@ -141,42 +295,93 @@ int buscaCarro(Carro *carros, char *placaCarro)
     return -1;
 }
 
-int buscaVeiculoDisponivel(Carro *frota, int quantidadeCarro)
+int buscaVeiculoDisponivel(Carro *frota, int quantidadeCarro, int categoria)
 {
     int i = 0;
-    printf("Veiculos disponiveis.\n");
-    for (int i = 0; i < quantidadeCarro; i++)
+    int preco;
+    switch (categoria)
     {
-        if (frota[i].disponibilidade == 1)
+    case 1:
+        preco = precoBas;
+        printf("A categoria do cliente eh a basica.\n");
+        printf("O valor da diaria eh %d reais.\n", preco);
+        printf("Os carros diponiveis para essa categoria sao:\n");
+        for (int i = 0; i < quantidadeCarro; i++)
         {
-            printf("%s ", frota[i].placa);
-            printf("%d ", frota[i].categoria);
-            printf("%s ", frota[i].modelo);
-            printf("%s ", frota[i].marca);
-            printf("%d ", frota[i].ano);
-            printf("%d ", frota[i].kmCarro);
-            printf("%d\n", frota[i].disponibilidade);
-            puts(" ");
+            if (frota[i].disponibilidade == 1 && frota[i].categoria != 1)
+            {
+                printf("%s,", frota[i].placa);
+                printf("%d,", frota[i].categoria);
+                printf("%s, ", frota[i].modelo);
+                printf("%s, ", frota[i].marca);
+                printf("%d, ", frota[i].ano);
+                printf("%d, ", frota[i].kmCarro);
+                printf("%d.\n", frota[i].disponibilidade);
+                puts(" ");
+            }
         }
+
+        break;
+    case 2:
+        preco = precoInt;
+        printf("A categoria do cliente eh a intermediaria.\n");
+        printf("O valor da diaria eh %d reais.\n", preco);
+        printf("Os carros diponiveis para essa categoria sao:\n");
+
+        for (int i = 0; i < quantidadeCarro; i++)
+        {
+            if (frota[i].disponibilidade == 1 && frota[i].categoria == 2)
+            {
+                printf("%s,", frota[i].placa);
+                printf("%d,", frota[i].categoria);
+                printf("%s, ", frota[i].modelo);
+                printf("%s, ", frota[i].marca);
+                printf("%d, ", frota[i].ano);
+                printf("%d, ", frota[i].kmCarro);
+                printf("%d.\n", frota[i].disponibilidade);
+                puts(" ");
+            }
+        }
+        break;
+    case 3:
+        preco = precoLux;
+        printf("A categoria do cliente eh Luxo.\n");
+        printf("O valor da diaria eh %d reais.\n", preco);
+        printf("Os carros diponiveis para essa categoria sao:\n");
+        for (int i = 0; i < quantidadeCarro; i++)
+        {
+            if (frota[i].disponibilidade == 1 && frota[i].categoria == 3)
+            {
+                printf("%s,", frota[i].placa);
+                printf("%d,", frota[i].categoria);
+                printf("%s, ", frota[i].modelo);
+                printf("%s, ", frota[i].marca);
+                printf("%d, ", frota[i].ano);
+                printf("%d, ", frota[i].kmCarro);
+                printf("%d.\n", frota[i].disponibilidade);
+                puts(" ");
+            }
+        }
+        break;
     }
     printf("Veiculos indisponiveis.\n");
     for (int i = 0; i < quantidadeCarro; i++)
     {
         if (frota[i].disponibilidade == 0)
         {
-            printf("%s ", frota[i].placa);
-            printf("%d ", frota[i].categoria);
-            printf("%s ", frota[i].modelo);
-            printf("%s ", frota[i].marca);
-            printf("%d ", frota[i].ano);
-            printf("%d ", frota[i].kmCarro);
-            printf("%d\n", frota[i].disponibilidade);
+            printf("%s, ", frota[i].placa);
+            printf("%d, ", frota[i].categoria);
+            printf("%s, ", frota[i].modelo);
+            printf("%s, ", frota[i].marca);
+            printf("%d, ", frota[i].ano);
+            printf("%d, ", frota[i].kmCarro);
+            printf("%d.\n", frota[i].disponibilidade);
             puts(" ");
         }
     }
-
     return i;
 }
+
 int ArqCarros(Carro *frota)
 {
     FILE *arq;
@@ -202,7 +407,7 @@ int ArqCarros(Carro *frota)
         {
             i++;
         }
-        
+
         if (r != 7 && !feof(arq))
         {
             printf("Formato invalido");
@@ -261,11 +466,11 @@ int ArqClientes(Cliente *clientes)
     fclose(arq);
 }
 void GravaCarros(Carro *frota, int quantidadeCarro)
-{   
+{
     fflush(stdin);
     FILE *gravCar;
-    int i= 0;
-    
+    int i = 0;
+
     int quantidade = 5;
     gravCar = fopen("FrotaCarros.txt", "w");
 
@@ -278,7 +483,7 @@ void GravaCarros(Carro *frota, int quantidadeCarro)
     fprintf(gravCar, "%d\n", quantidadeCarro);
     for (int i = 0; i < 5; i++)
     {
-        //printf("%s,%d,%s,%s,%d,%d,%d", frota[i].placa, frota[i].categoria, frota[i].modelo, frota[i].marca, frota[i].ano, frota[i].kmCarro, frota[i].disponibilidade);
+        // printf("%s,%d,%s,%s,%d,%d,%d", frota[i].placa, frota[i].categoria, frota[i].modelo, frota[i].marca, frota[i].ano, frota[i].kmCarro, frota[i].disponibilidade);
     }
     do
     {
@@ -312,11 +517,11 @@ int verifyString(char str[30], char str2[30])
 }
 
 void GravaClientes(Cliente *clientes, int quantidadedeClientes)
-{   
+{
     fflush(stdin);
     FILE *gravCli;
-    int i= 0;
-    
+    int i = 0;
+
     int quantidade = 5;
     gravCli = fopen("Clientes.txt", "w");
 
@@ -329,7 +534,7 @@ void GravaClientes(Cliente *clientes, int quantidadedeClientes)
     fprintf(gravCli, "%d\n", quantidadedeClientes);
     for (int i = 0; i < 5; i++)
     {
-        //printf("%d,%s,%d,%s", clientes[i].cnh, clientes[i].nome, clientes[i].fidelidade, clientes[i].placa);
+        // printf("%d,%s,%d,%s", clientes[i].cnh, clientes[i].nome, clientes[i].fidelidade, clientes[i].placa);
     }
     do
     {
@@ -343,38 +548,8 @@ void GravaClientes(Cliente *clientes, int quantidadedeClientes)
 
 int main()
 {
-    Cliente *clientes;
-    Carro *carros;
-    
-    carros = malloc(sizeof(Carro) * 100);
-    clientes = malloc(sizeof(Cliente) * 100);
-    ArqCarros(carros);
-    ArqClientes(clientes);
+    PainelInicial();
     printf("\n");
-    int op;
-    /*for (int i = 0; i < 5; i++)
-    {
-        printf("%s,%d,%s,%s,%d,%d,%d", carros[i].placa, carros[i].categoria, carros[i].modelo, carros[i].marca, carros[i].ano, carros[i].kmCarro, carros[i].disponibilidade);
-    }
-    */
-    do
-    {
-        PainelInicial();
-        printf("\n");
-        scanf("%d", &op);
-        switch (op)
-        {
-        case 1:
-            FazerLoc(clientes, carros);
-        case 2:
-            EncerraLoc(clientes, carros);
-        case 3:
-            buscaVeiculoDisponivel(carros, 5);
-        case 4:
-            break;
-        default:
-            printf("Escolha uma das opcoes");
-        }
-    } while (op != 4);
+        
     return 0;
 }
