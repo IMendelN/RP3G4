@@ -3,19 +3,19 @@
 #include <locale.h>
 #include <stdio.h>
 
-//Main---------------------------------------------------------------------------------------
+//Main-----------------------------------------------------------------------------------------------------------
 void main(){
-    setlocale(LC_ALL,"portuguese");
+//PAINEL INICIAL------------------------------------------------------------------------------------------------
+    ArqLoc();
     printf("Bem vindo a locadora de carros da Unipampa.\n");
     printf("Selecione uma das opções abaixo para prosseguir.\n");
     printf("Opção 1: Realizar uma locação de veículo. \n");
     printf("Opção 2: Finalizar uma locação de veículo. \n");
-    printf("opção 3: Gerar Relatório. \n");
-    printf("opção 4: Cadastrar veículo. \n");
-    printf("Opção 5: Finalizar o programa.\n");
+    printf("Opção 3: Finalizar o programa.\n");
     
     int op;
     scanf("%d", &op);
+    
     switch (op){
     case 1 : 
         printf("Locação selecionado.");
@@ -24,14 +24,6 @@ void main(){
         printf("Finalizar locação selecionado");
         break;
     case 3 :
-        printf("Gerando relatório. ");
-        relatorio();
-        break;
-    case 4 :
-        printf("Cadastrar Veiculos");
-        consultar_arquivo();
-        break;
-    case 5 :
         printf("Programa finalizado. ");
         break;
     default:
@@ -39,14 +31,15 @@ void main(){
         break;
     }
     system("pause");
+    
+    
 }
-
 //DADOS LOCAÇÃO-------------------------------------------------------------------------------------------------------
     typedef struct locacao{
     char nome;
     int cnh;
     int placa;
-    int kmRodada;
+    double kmCat;
     int numerodias;
     };
 //DIARIA
@@ -69,53 +62,49 @@ void main(){
         int ano[4];
         int kmCarro;
         char categoria;
-        double valorT;
+        double valorCat;
     };
 //ENCERRAR LOCAÇÃO----------------------------------------------------------------------------------------------------
- 
- //LEITURA DE ARQUIVO-------------------------------------------------------------------------------------------------
+        typedef struct fLocacao{
+            double valorT;
+            int kmEx;
+            int fidelidade;
+        };
+//ARQUIVO LOCACAO------------------------------------------------------------------------------------------------
+void ArqLoc(){
+FILE *arq;
+int result;
+char Str[100];
 
-int consultar_arquivo(void) {
-    FILE *arq_carros;
-    char palavra[50];
-  //abrindo o arquivo
-  arq_carros = fopen("arquivo.txt", "a");
-     if (arq_carros==NULL)
-    {
-        printf("Erro ao abrir o arquivo");
-  return 1;
-    }else
-  //pedir pro usuário digitar cadastrar 
-  
-    printf("escreva quantos carro voce quer cadastrar?\n");
-    scanf("%s", palavra );
-    printf("Qual a placa do carro?\n");
-    scanf("%s", palavra);
-    printf("Qual a marca do carro?\n");
-    scanf("%s", palavra);
-    printf("Qual o modelo do carro?\n");
-    scanf("%s", palavra);
-    printf("Qual o ano do carro?\n");
-    scanf("%s", palavra);
-    printf("Qual a quilometragem do carro?\n");
-    scanf("%s", palavra);
-    printf("Qual a categoria do carro?\n");
-    scanf("%s", palavra);
+arq = fopen("Locacao.txt", "rt");
+char nome[30];
+int nrCNH;
+char placa[7];
+int km;
+int dias;
 
-    fprintf(arq_carros,"%s", palavra);
+fscanf(arq, "%s, %d, %c, %d, %d", &nome, &nrCNH, &placa, &km, &dias);
 
-  // fechando arquivo
-    fclose(arq_carros);
-  
-  //mensagem para o usuário
-     printf("O arquivo foi salvo com sucesso!");
-    return 0; 
- };
-//ENCERRAR LEITURA DE ARQUIVO------------------------------------------------------------------------------------------------- 
 
-//RELATÓRIO-------------------------------------------------------------------------------------------------------------------
-void relatorio(){
-    printf("\n O total de veiculos disponivel eh :\n");
-    printf("O total de veiculos alugados eh: \n");
+printf("%s, %d, %c, %d, %d\n", nome, nrCNH, placa, km, dias);
 
+if (arq == NULL)
+{
+    printf("Problemas na Criação do arquivo\n");
+    return;
 }
+    setlocale(LC_ALL,"portuguese");
+    
+    printf(arq);
+
+    fclose(arq);
+}
+    
+
+    
+
+    
+    
+    
+
+
