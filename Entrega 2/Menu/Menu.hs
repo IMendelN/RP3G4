@@ -1,19 +1,32 @@
+---
+--- Módulo responsável em apresentar o menu de opções para o usuário.
+--- 
 module Menu.Menu where
 
+import System.Console.ANSI
 import System.IO ()
 
-import qualified App.Utils
+import App.Utils
+
+test :: String
+test = "ola mundo"
 
 menu :: IO ()
 menu = do
-    putStrLn "------------------------- Bem vindo ao Campeonato UNIPAMPA ---------------------------\n"
-    putStrLn "\nDigite 1 visualizar todos os resultados"
-    putStrLn "\t1 - Visualizar os 3 primeiro colocados"
-    putStrLn "\t2 - Visualizar os 3 ultimos colocados"
-    putStrLn "\t3 - Visualizar a classificacao geral"
-    putStrLn "\t4 - Visualizar opções por time"
+    App.Utils.clearScreen
+    purple 
+    putStrLn "[Bem-vindo ao Campeonato UNIPAMPA]\n" 
+    reset
+    putStrLn "Menu de opções:\n"
+    putStrLn "\t1 - Visualizar todos os resultados"
+    putStrLn "\t2 - Visualizar os 3 primeiros colocados"
+    putStrLn "\t3 - Visualizar os 3 últimos colocados"
+    putStrLn "\t4 - Visualizar a classificação geral"
+    putStrLn "\t5 - Visualizar opções por time"
     putStrLn "\t0 - Sair"
-    putStr "Opção: "
+    yellow
+    putStr "\nDigite uma das opções acima: "
+    reset
     option <- getLine
     menuOptions option
 
@@ -33,8 +46,8 @@ menuOptions option = do
             -- TODO
             menu
         "0" -> do
-            App.Utils.clear
             putStrLn "\nPrograma encerrado."
         _ -> do
+            App.Utils.clearScreen
             menu
 
