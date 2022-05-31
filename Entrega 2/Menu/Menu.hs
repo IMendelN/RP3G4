@@ -3,18 +3,13 @@
 --- 
 module Menu.Menu where
 
-import System.Console.ANSI
 import System.IO ()
 
 import App.Utils
 
-test :: String
-test = "ola mundo"
-
 menu :: IO ()
 menu = do
-    App.Utils.clearScreen
-    purple 
+    purple
     putStrLn "[Bem-vindo ao Campeonato UNIPAMPA]\n" 
     reset
     putStrLn "Menu de opções:\n"
@@ -34,10 +29,8 @@ menuOptions :: String -> IO ()
 menuOptions option = do
     case option of
         "1" -> do
-            -- TODO
             menu
         "2" -> do
-            -- TODO
             menu
         "3" -> do
             -- TODO
@@ -48,6 +41,12 @@ menuOptions option = do
         "0" -> do
             putStrLn "\nPrograma encerrado."
         _ -> do
-            App.Utils.clearScreen
+            optionInvalid
             menu
 
+optionInvalid :: IO ()
+optionInvalid = do
+    App.Utils.clearScreen
+    red
+    putStrLn "* Por favor, digite uma opção válida.\n"
+    reset
