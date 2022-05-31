@@ -9,19 +9,14 @@ import App.Utils
 
 menu :: IO ()
 menu = do
-    purple
-    putStrLn "[Bem-vindo ao Campeonato UNIPAMPA]\n" 
-    reset
+    putStrLn (purple ++ "[Bem-vindo ao Campeonato UNIPAMPA]\n" ++ reset) 
     putStrLn "Menu de opções:\n"
-    putStrLn "\t1 - Visualizar todos os resultados"
-    putStrLn "\t2 - Visualizar os 3 primeiros colocados"
-    putStrLn "\t3 - Visualizar os 3 últimos colocados"
-    putStrLn "\t4 - Visualizar a classificação geral"
-    putStrLn "\t5 - Visualizar opções por time"
+    putStrLn "\t1 - Visualizar os 3 primeiros colocados"
+    putStrLn "\t2 - Visualizar os 3 últimos colocados"
+    putStrLn "\t3 - Visualizar a classificação geral"
+    putStrLn "\t4 - Visualizar opções por time"
     putStrLn "\t0 - Sair"
-    yellow
-    putStr "\nDigite uma das opções acima: "
-    reset
+    putStr (yellow ++ "\nDigite uma das opções acima: " ++ reset)
     option <- getLine
     menuOptions option
 
@@ -29,8 +24,10 @@ menuOptions :: String -> IO ()
 menuOptions option = do
     case option of
         "1" -> do
+            -- TODO
             menu
         "2" -> do
+            -- TODO
             menu
         "3" -> do
             -- TODO
@@ -39,7 +36,7 @@ menuOptions option = do
             -- TODO
             menu
         "0" -> do
-            putStrLn "\nPrograma encerrado."
+            putStrLn (blue ++ "\nPrograma encerrado." ++ reset)
         _ -> do
             optionInvalid
             menu
@@ -47,6 +44,4 @@ menuOptions option = do
 optionInvalid :: IO ()
 optionInvalid = do
     App.Utils.clearScreen
-    red
-    putStrLn "* Por favor, digite uma opção válida.\n"
-    reset
+    putStrLn (red ++ "* Por favor, digite uma opção válida.\n" ++ reset)

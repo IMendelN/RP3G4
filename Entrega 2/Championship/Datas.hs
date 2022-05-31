@@ -3,10 +3,16 @@ module Championship.Datas where
 ---
 --- Criação de um "dado" responsável em armazenar informações
 --- sobre uma determinada partida.
+--- 
+--- Nele, possui a mesma quantidade de dados do arquivo CSV e
+--- em sua devida ordem.
 ---
 data Match = Match {
-    round :: Integer
-    -- TODO
+    round :: Integer,
+    homeTeam :: String,
+    goalsHomeTeam :: Integer,
+    goalsAwayTeam :: Integer,
+    awayTeam :: String
 } deriving (Show)
 
 ---
@@ -14,5 +20,6 @@ data Match = Match {
 --- sobre o campeonato em geral.
 ---
 data Result = Result {
-    -- TODO
+    rank :: Integer,
+    goals :: Integer
 } deriving (Show)
