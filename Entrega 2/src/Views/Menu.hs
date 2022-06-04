@@ -1,11 +1,9 @@
----
---- Módulo responsável em apresentar o menu de opções para o usuário.
---- 
-module Menu.Menu where
+module Views.Menu ( menu ) where
 
-import System.IO ()
+import System.IO ( hFlush, stdout )
 
-import App.Utils
+import Utils.Utils as Utils
+import Championship.ReadFile as File
 
 menu :: IO ()
 menu = do
@@ -17,6 +15,7 @@ menu = do
     putStrLn "\t4 - Visualizar opções por time"
     putStrLn "\t0 - Sair"
     putStr (yellow ++ "\nDigite uma das opções acima: " ++ reset)
+    hFlush stdout
     option <- getLine
     menuOptions option
 
@@ -24,15 +23,18 @@ menuOptions :: String -> IO ()
 menuOptions option = do
     case option of
         "1" -> do
-            -- TODO
-            menu
+            Utils.clearScreen
+            
         "2" -> do
-            -- TODO
+            Utils.clearScreen
+            putStr "hahaha"
             menu
         "3" -> do
+            Utils.clearScreen
             -- TODO
             menu
         "4" -> do
+            Utils.clearScreen
             -- TODO
             menu
         "0" -> do
@@ -43,5 +45,5 @@ menuOptions option = do
 
 optionInvalid :: IO ()
 optionInvalid = do
-    App.Utils.clearScreen
+    Utils.clearScreen
     putStrLn (red ++ "* Por favor, digite uma opção válida.\n" ++ reset)

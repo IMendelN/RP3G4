@@ -1,7 +1,4 @@
----
---- Módulo responsável pelos utilitários que serão utilizados no projeto.
---- 
-module App.Utils where
+module Utils.Utils where
 
 --- 
 --- Limpa o console
