@@ -5,12 +5,15 @@ import System.IO ( hFlush, stdout )
 import Utils.Utils as Utils
 import Championship.ReadFile as File
 
+--
+-- Menu principal.
+--
 menu :: IO ()
 menu = do
-    putStrLn (purple ++ "[Bem-vindo ao Campeonato UNIPAMPA]\n" ++ reset) 
+    putStrLn (purple ++ "[BEM-VINDO AO CAMPEONATO UNIPAMPA]\n" ++ reset) 
     putStrLn "Menu de opções:\n"
-    putStrLn "\t1 - Visualizar os 3 primeiros colocados"
-    putStrLn "\t2 - Visualizar os 3 últimos colocados"
+    putStrLn "\t1 - Visualizar o pódio"
+    putStrLn "\t2 - Visualizar times rebaixados"
     putStrLn "\t3 - Visualizar a classificação geral"
     putStrLn "\t4 - Visualizar opções por time"
     putStrLn "\t0 - Sair"
@@ -19,6 +22,9 @@ menu = do
     option <- getLine
     menuOptions option
 
+--
+-- Menu de escolha para o menu principal.
+--
 menuOptions :: String -> IO ()
 menuOptions option = do
     case option of
@@ -40,6 +46,27 @@ menuOptions option = do
             optionInvalid
             menu
 
+--
+-- Menu para visualizar opções de times individualmente.
+--
+allTeams :: IO ()
+allTeams = do
+    Utils.clearScreen
+    putStrLn (purple ++ "[OPÇÕES POR TIME]\n" ++ reset) 
+    putStrLn "Menu de opções:\n"
+    putStrLn "\t1 - Visualizar vitórias, derrotas e empates"
+    putStrLn "\t2 - Classificação do time"
+    putStrLn "\t3 - Aproveitamento do time"
+    putStrLn "\t4 - Visualizar opções por time"
+    putStrLn "\t0 - Sair"
+    putStr (yellow ++ "\nDigite uma das opções acima: " ++ reset)
+    hFlush stdout
+    option <- getLine
+    menuOptions option
+
+--
+-- Mensagem de erro para opções inválidas de menu.
+--
 optionInvalid :: IO ()
 optionInvalid = do
     Utils.clearScreen
