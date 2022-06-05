@@ -21,5 +21,6 @@ data MatchResult = MatchResult {
     goals :: Integer,
     wins :: Integer,
     draws :: Integer,
-    losses :: Integer
+    losses :: Integer,
+    points :: Integer
 } deriving (Show)
