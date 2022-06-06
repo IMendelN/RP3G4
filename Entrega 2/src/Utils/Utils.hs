@@ -3,8 +3,8 @@ module Utils.Utils where
 --- 
 --- Limpa o console
 ---
-clearScreen :: IO ()
-clearScreen = putStr "\ESC[2J"
+cls :: IO ()
+cls = putStr "\ESC[2J"
 
 ---
 --- Cores do terminal
