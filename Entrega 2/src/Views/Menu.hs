@@ -4,6 +4,8 @@ import System.IO ( hFlush, stdout )
 
 import Utils.Utils as Utils
 import Championship.ReadFile as File
+import Championship.Structures
+import Championship.Manipulate ( getAllMatches, getWinnerByRound )
 
 --
 -- Menu principal.
@@ -16,6 +18,7 @@ menu = do
     putStrLn "\t2 - Visualizar times rebaixados"
     putStrLn "\t3 - Visualizar a classificação geral"
     putStrLn "\t4 - Visualizar opções por time"
+    putStrLn "\t5 - Visualizar por rodada"
     putStrLn "\t0 - Sair"
     putStr (yellow ++ "\nDigite uma das opções acima: " ++ reset)
     hFlush stdout
@@ -29,17 +32,26 @@ menuOptions :: String -> IO ()
 menuOptions option = do
     case option of
         "1" -> do
-            Utils.clearScreen
+            Utils.cls
             putStrLn "I'm not doing anything... yet."
         "2" -> do
-            Utils.clearScreen
+            Utils.cls
             menu
         "3" -> do
-            Utils.clearScreen
+            Utils.cls
             menu
         "4" -> do
-            Utils.clearScreen
+            Utils.cls
             menu
+        "5" -> do
+            -- Apenas para teste.
+            putStr (yellow ++ "Digite a rodada: " ++ reset)
+            hFlush stdout
+            round <- getLine
+            matches <- getAllMatches
+            let winner = getWinnerByRound (read round) matches
+            putStrLn ("O time desta jogada é: " ++ winner)
+            -- Fim do teste.
         "0" -> do
             putStrLn (blue ++ "\nPrograma encerrado." ++ reset)
         _ -> do
@@ -51,7 +63,7 @@ menuOptions option = do
 --
 allTeams :: IO ()
 allTeams = do
-    Utils.clearScreen
+    Utils.cls
     putStrLn (purple ++ "[OPÇÕES POR TIME]\n" ++ reset) 
     putStrLn "Menu de opções:\n"
     putStrLn "\t1 - Visualizar vitórias, derrotas e empates"
@@ -69,5 +81,5 @@ allTeams = do
 --
 optionInvalid :: IO ()
 optionInvalid = do
-    Utils.clearScreen
+    Utils.cls
     putStrLn (red ++ "* Por favor, digite uma opção válida.\n" ++ reset)
