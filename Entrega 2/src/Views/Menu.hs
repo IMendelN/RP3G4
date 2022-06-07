@@ -5,7 +5,7 @@ import System.IO ( hFlush, stdout )
 import Utils.Utils as Utils
 import Championship.ReadFile as File
 import Championship.Structures
-import Championship.Manipulate ( getAllMatches, getWinnerByRound )
+import Championship.Manipulate ( getMatches, getWinnerByRound )
 
 --
 -- Menu principal.
@@ -48,9 +48,11 @@ menuOptions option = do
             putStr (yellow ++ "Digite a rodada: " ++ reset)
             hFlush stdout
             round <- getLine
-            matches <- getAllMatches
+            matches <- getMatches
             let winner = getWinnerByRound (read round) matches
-            putStrLn ("O time desta jogada é: " ++ winner)
+            let show | winner == "Empate" = putStrLn "Esta rodada possui empate."
+                     | otherwise = putStrLn ("O time vencedor desta jogada é: " ++ winner)
+            show
             -- Fim do teste.
         "0" -> do
             putStrLn (blue ++ "\nPrograma encerrado." ++ reset)

@@ -5,7 +5,7 @@ module Championship.Structures where
 --- sobre uma determinada partida.
 ---
 data Match = Match {
-    round :: Integer,
+    _round :: Integer,
     homeTeam :: String,
     goalsHomeTeam :: Integer,
     goalsAwayTeam :: Integer,
