@@ -2,25 +2,25 @@ module Views.Menu where
 
 import System.IO ( hFlush, stdout )
 
-import Utils.Utils as Utils
-import Championship.ReadFile as File
-import Championship.Structures
-import Championship.Manipulate ( getMatches, getWinnerByRound )
+import Utils.Utils as U
+import Championship.ReadFile as F
+import Championship.Structures as S
+import Championship.Manipulate as M
 
 --
 -- Menu principal.
 --
 menu :: IO ()
 menu = do
-    putStrLn (purple ++ "[BEM-VINDO AO CAMPEONATO UNIPAMPA]\n" ++ reset) 
+    putStrLn $ U.purple ++ "[BEM-VINDO AO CAMPEONATO UNIPAMPA]\n" ++ U.reset
     putStrLn "Menu de opções:\n"
     putStrLn "\t1 - Visualizar o pódio"
     putStrLn "\t2 - Visualizar times rebaixados"
     putStrLn "\t3 - Visualizar a classificação geral"
     putStrLn "\t4 - Visualizar opções por time"
-    putStrLn "\t5 - Visualizar por rodada"
+    putStrLn "\t5 - Resultado de uma partida X"
     putStrLn "\t0 - Sair"
-    putStr (yellow ++ "\nDigite uma das opções acima: " ++ reset)
+    putStr $ U.yellow ++ "\nDigite uma das opções acima: " ++ U.reset
     hFlush stdout
     option <- getLine
     menuOptions option
@@ -30,32 +30,31 @@ menu = do
 --
 menuOptions :: String -> IO ()
 menuOptions option = do
+    matches <- getMatches
     case option of
         "1" -> do
-            Utils.cls
-            putStrLn "I'm not doing anything... yet."
+            U.cls
+            menu
         "2" -> do
-            Utils.cls
+            U.cls
             menu
         "3" -> do
-            Utils.cls
+            U.cls
             menu
         "4" -> do
-            Utils.cls
+            U.cls
             menu
         "5" -> do
-            -- Apenas para teste.
-            putStr (yellow ++ "Digite a rodada: " ++ reset)
+            putStr $ U.yellow ++ "Digite a rodada: " ++ U.reset
             hFlush stdout
             round <- getLine
-            matches <- getMatches
-            let winner = getWinnerByRound (read round) matches
-            let show | winner == "Empate" = putStrLn "Esta rodada possui empate."
-                     | otherwise = putStrLn ("O time vencedor desta jogada é: " ++ winner)
-            show
-            -- Fim do teste.
+            putStr $ U.yellow ++ "Digite o nome do time: " ++ U.reset
+            hFlush stdout
+            team <- getLine
+            let result = getResultByRoundAndTeam (read round) team matches
+            showResultByRoundAndTeam result
         "0" -> do
-            putStrLn (blue ++ "\nPrograma encerrado." ++ reset)
+            putStrLn (U.blue ++ "\nPrograma encerrado." ++ U.reset)
         _ -> do
             optionInvalid
             menu
@@ -65,15 +64,15 @@ menuOptions option = do
 --
 allTeams :: IO ()
 allTeams = do
-    Utils.cls
-    putStrLn (purple ++ "[OPÇÕES POR TIME]\n" ++ reset) 
+    U.cls
+    putStrLn $ U.purple ++ "[OPÇÕES POR TIME]\n" ++ U.reset
     putStrLn "Menu de opções:\n"
     putStrLn "\t1 - Visualizar vitórias, derrotas e empates"
     putStrLn "\t2 - Classificação do time"
     putStrLn "\t3 - Aproveitamento do time"
     putStrLn "\t4 - Visualizar opções por time"
     putStrLn "\t0 - Sair"
-    putStr (yellow ++ "\nDigite uma das opções acima: " ++ reset)
+    putStr $ U.yellow ++ "\nDigite uma das opções acima: " ++ U.reset
     hFlush stdout
     option <- getLine
     menuOptions option
@@ -83,5 +82,5 @@ allTeams = do
 --
 optionInvalid :: IO ()
 optionInvalid = do
-    Utils.cls
-    putStrLn (red ++ "* Por favor, digite uma opção válida.\n" ++ reset)
+    U.cls
+    putStrLn $ U.red ++ "* Por favor, digite uma opção válida.\n" ++ U.reset
