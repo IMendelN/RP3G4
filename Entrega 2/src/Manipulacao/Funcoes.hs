@@ -1,6 +1,7 @@
 module Funcoes where
 import Control.Monad
 import Control.Monad.Trans
+import Manipulacao.manipularArq
 
 --Qual o número de vitórias, empates e derrotas do time X no campeonato?
 dadosTime :: int -> int -> int 
