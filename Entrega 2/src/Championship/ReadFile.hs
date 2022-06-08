@@ -2,8 +2,10 @@ module Championship.ReadFile where
 
 import qualified System.IO as IO
 
-import Championship.Structures
-
+--
+-- Declaração de um sinônimo para facilitar a leitura
+-- da chamada da função splitBy.
+--
 type Delimiter = Char
 
 --
@@ -13,7 +15,7 @@ readDatabase :: IO [String]
 readDatabase = do
     fileContent <- IO.readFile "src/Championship/database/result.csv"
     let content = lines fileContent
-    return content
+    return (tail content)
 
 --
 -- Transforma um texto que contém um delimitador em uma lista 
@@ -26,14 +28,3 @@ splitBy delimiter (x : xs)
         | otherwise = (x : head rest) : tail rest
     where
         rest = splitBy delimiter xs
-
---
--- Transforma uma lista de String em uma "struct" de partida.
---
-parseToMatch :: [String] -> [Match]
-parseToMatch [] = []
-parseToMatch fileLine = map (parseLine . splitBy ';') fileLine
-    where
-        parseLine line = Match (read (head line)) (line !! 1) 
-                               (read (line !! 2)) (read (line !! 3)) 
-                               (line !! 4)
