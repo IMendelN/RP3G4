@@ -3,8 +3,6 @@ module Views.Menu where
 import System.IO ( hFlush, stdout )
 
 import Utils.Utils as U
-import Championship.ReadFile as F
-import Championship.Structures as S
 import Championship.Manipulate as M
 
 --

@@ -64,7 +64,8 @@ getResultByRoundAndTeam round team matches = do
     check
 
 --
--- Imprime o nome do time vencedor de uma partida específica.
+-- Imprime o nome do time vencedor de uma partida específica ou
+-- mostra se a mesma obteve um empate.
 --
 getWinnerByRoundAndTeam :: Match -> Winner
 getWinnerByRoundAndTeam match = do
