@@ -1,5 +1,8 @@
 module Championship.Manipulate where
 
+import Data.List ( sortOn )
+import Data.Ord ( Down (Down) )
+
 import qualified Championship.ReadFile as File ( readDatabase, splitBy )
 import Championship.Structures as Struct
 import Utils.Utils as U
@@ -12,6 +15,9 @@ type Round = Integer
 type Team = String
 type Goals = Integer
 type Winner = String
+type Wins = Integer
+type Draws = Integer
+type Losses = Integer
 
 --
 -- Transforma uma lista de String em uma "struct" de partida.
@@ -85,4 +91,49 @@ showResultByRoundAndTeam match = do
     putStr $ "  " ++ U.blue ++ homeTeam match ++ " | " ++ show (goalsHomeTeam match) ++ " x "
     putStrLn $ show (goalsAwayTeam match) ++ " | " ++ awayTeam match ++ U.reset
     putStrLn "+----------------------------------------+"
-    putStrLn $ getWinnerByRoundAndTeam match
+    putStrLn $ getWinnerByRoundAndTeam match ++ U.reset
+
+--
+-- Ordena o resultado das partidas em ordem decrescente.
+-- Assim, deixando transparente a classificação do campeonato.
+--
+sortMatches :: [MatchResult] -> [MatchResult]
+sortMatches = sortOn (Down . points)
+
+--
+-- Retorna a quantidade de vitórias, empates e derrotas de um determinado time.
+--
+getTeamPerformance :: Team -> [Match] -> (Wins, Draws, Losses)
+getTeamPerformance _ [] = (0, 0, 0)
+getTeamPerformance team allMatches = do
+    let (match : matches) = filterByTeam team allMatches
+    let ht = homeTeam match
+    let at = awayTeam match
+    let ght = goalsHomeTeam match
+    let gat = goalsAwayTeam match
+    let check | ht == team && ght > gat                  = updateWins   $ getTeamPerformance team matches
+              | ht == team && ght < gat                  = updateLosses $ getTeamPerformance team matches
+              | at == team && gat > ght                  = updateWins   $ getTeamPerformance team matches
+              | at == team && gat < ght                  = updateLosses $ getTeamPerformance team matches
+              | (ht == team || at == team) && gat == ght = updateDraws  $ getTeamPerformance team matches
+              | otherwise = getTeamPerformance team matches
+    check
+
+--
+-- Atualiza as vitórias de um time.
+--
+updateWins :: (Wins, Draws, Losses) -> (Wins, Draws, Losses)
+updateWins (wins, draws, losses) = (wins + 1, draws, losses)
+
+--
+-- Atualiza as derrotas de um time.
+--
+updateLosses :: (Wins, Draws, Losses) -> (Wins, Draws, Losses)
+updateLosses (wins, draws, losses) = (wins, draws, losses + 1)
+
+--
+-- Atualiza os empates de um time.
+--
+updateDraws :: (Wins, Draws, Losses) -> (Wins, Draws, Losses)
+updateDraws (wins, draws, losses) = (wins, draws + 1, losses)
+    
