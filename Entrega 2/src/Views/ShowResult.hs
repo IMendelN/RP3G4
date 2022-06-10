@@ -1,8 +1,10 @@
 module Views.ShowResult where
 
+import Text.Printf
+
 import Championship.Manipulate as M
 import qualified Utils.Utils as U
-import Championship.Structures
+import Championship.Structures ( Match(..) )
 
 --
 -- Imprime o resultado do desempenho de um time específico (RF1).
@@ -41,3 +43,18 @@ showPointsByTeam team matches = do
     putStrLn "+----------------------------------------+"
     putStrLn $ "  " ++ U.blue ++ team ++ " possui " ++ show points ++ " pontos." ++ U.reset
     putStrLn "+----------------------------------------+"
+
+--
+-- Imprime o aproveitamento de um time específicado (RF3).
+--
+showRecordsByTeam :: Team -> [Match] -> IO ()
+showRecordsByTeam _ [] = putStrLn $ U.red ++ "Não há pontuação." ++ U.reset
+showRecordsByTeam team matches = do
+    let filtered = M.filterByTeam team matches
+    let records = M.getRecordByTeam team filtered
+    putStrLn $ U.purple ++ "\n[APROVEITAMENTO DO TIME]\n" ++ U.reset
+    putStrLn "+----------------------------------------------+"
+    putStr $ "  " ++ U.blue ++ team ++ " teve "
+    printf "%.2g" records
+    putStrLn $ " % de aproveitamento." ++ U.reset
+    putStrLn "+----------------------------------------------+"

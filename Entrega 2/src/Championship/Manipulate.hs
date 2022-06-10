@@ -4,8 +4,8 @@ import Data.List ( sortOn )
 import Data.Ord ( Down (Down) )
 
 import qualified Championship.ReadFile as File ( readDatabase, splitBy )
-import Championship.Structures as Struct
-import Utils.Utils as U
+import Championship.Structures as Struct ( TeamResult(points), Match(..) )
+import Utils.Utils as U ( green, cyan, reset )
 
 --
 -- Declaração de sinônimos para facilitar a leitura
@@ -19,6 +19,7 @@ type Wins = Integer
 type Draws = Integer
 type Losses = Integer
 type Points = Integer
+type Record = Float
 
 --
 -- Transforma uma lista de String em uma "struct" de partida.
@@ -47,7 +48,7 @@ getMatches = do
 filterByRound :: Round -> Team -> [Match] -> [Match]
 filterByRound round team [] = []
 filterByRound round team matches = do
-    filter (\match -> _round match == round 
+    filter (\match -> _round match == round
         && (homeTeam match == team || awayTeam match == team)) matches
 
 --
@@ -86,7 +87,7 @@ getWinnerByRoundAndTeam match = do
 -- Ordena o resultado das partidas em ordem decrescente.
 -- Assim, deixando transparente a classificação do campeonato.
 --
-sortMatches :: [MatchResult] -> [MatchResult]
+sortMatches :: [TeamResult] -> [TeamResult]
 sortMatches = sortOn (Down . points)
 
 --
@@ -99,7 +100,7 @@ getTeamPerformance team matches = do
     let wins = getWinsByTeam team filtered
     let draws = getDrawsByTeam team filtered
     let losses = getLossesByTeam team filtered
-    (wins, draws, losses)  
+    (wins, draws, losses)
 
 --
 -- Retorna as vitórias de um time.
@@ -110,8 +111,8 @@ getWinsByTeam team (match : matches) = do
     let ght = goalsHomeTeam match
     let gat = goalsAwayTeam match
     let wins | homeTeam match == team && ght > gat = updateWins $ getWinsByTeam team matches
-              | awayTeam match == team && gat > ght = updateWins $ getWinsByTeam team matches
-              | otherwise = getWinsByTeam team matches
+             | awayTeam match == team && gat > ght = updateWins $ getWinsByTeam team matches
+             | otherwise = getWinsByTeam team matches
     wins
 
 --
@@ -136,8 +137,8 @@ getLossesByTeam team (match : matches) = do
     let ght = goalsHomeTeam match
     let gat = goalsAwayTeam match
     let losses | homeTeam match == team && ght < gat = updateLosses $ getLossesByTeam team matches
-              | awayTeam match == team && gat < ght = updateLosses $ getLossesByTeam team matches
-              | otherwise = getLossesByTeam team matches
+               | awayTeam match == team && gat < ght = updateLosses $ getLossesByTeam team matches
+               | otherwise = getLossesByTeam team matches
     losses
 
 --
@@ -168,3 +169,14 @@ getPointsByTeam team matches = do
     let winnerPoints = getWinsByTeam team filtered * 3
     let drawsPoints = getDrawsByTeam team filtered
     winnerPoints + drawsPoints
+
+--
+-- Calcula o aproveitamento de um time específico.
+--
+getRecordByTeam :: Team -> [Match] -> Record
+getRecordByTeam _ [] = 0
+getRecordByTeam team matches = do
+    let filtered = filterByTeam team matches
+    let record = fromIntegral (getPointsByTeam team filtered) * 100.0 / 54.0
+    record
+               
