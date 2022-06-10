@@ -19,8 +19,9 @@ data Match = Match {
 data MatchResult = MatchResult {
     rank :: Integer,
     goals :: Integer,
-    wins :: Integer,
-    draws :: Integer,
-    losses :: Integer,
-    points :: Integer
+    wins :: Float,
+    draws :: Float,
+    losses :: Float,
+    points :: Float,
+    record :: Float
 } deriving (Show)

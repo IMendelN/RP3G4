@@ -1,7 +1,8 @@
+
 module Views.ShowResult where
 
 import Championship.Manipulate as M
-import qualified Utils.Utils as U
+import  Utils.Utils as U
 import Championship.Structures
 
 --
@@ -41,3 +42,31 @@ showPointsByTeam team matches = do
     putStrLn "+----------------------------------------+"
     putStrLn $ "  " ++ U.blue ++ team ++ " possui " ++ show points ++ " pontos." ++ U.reset
     putStrLn "+----------------------------------------+"
+
+
+--
+--Imprime o aproveitamento de um time específicado (RF3).
+--
+showAproveitamentoByTeam :: Team -> [Match] -> IO ()
+showAproveitamentoByTeam _ [] = putStrLn $ U.red ++ "Não há pontuação." ++ U.reset
+showAproveitamentoByTeam team matches = do
+    let filtered = M.filterByTeam team matches
+    let aprov = M.getRecordByTeam team filtered
+    putStrLn $ U.purple ++ "\n[APROVEITAMENTO DO TIME]\n" ++ U.reset
+    putStrLn "+----------------------------------------+"
+    putStrLn $ "  " ++ U.blue ++ team ++ " possui " ++ show aprov++ " %. de aproveitamento" ++ U.reset
+    putStrLn "+----------------------------------------+"
+
+
+--
+-- Imprimi Saldo de goals mas esta pegando só da rodada 1 por enquanto. ( isso nao é um RF de mostrar na tela )
+{--
+showBalanceByTeam ::Team -> [Match] -> IO ()
+showBalanceByTeam _ [] = putStrLn $ U.red ++ "Não há resultados." ++ U.reset
+showBalanceByTeam team matches = do
+    let filtered = M.filterByTeam team matches
+    let saldo = M.getBalenceGoalsByTeam team filtered
+    putStrLn $ U.purple ++ "\n[SALDO DE GOLS DO TIME]\n" ++ U.reset
+    putStrLn "+----------------------------------------+"
+    putStrLn $ "  " ++ U.blue ++ team ++ " possui " ++ show saldo++ " de saldo de golas" ++ U.reset
+    putStrLn "+----------------------------------------+" -}

@@ -3,7 +3,7 @@ module Championship.Manipulate where
 import Data.List ( sortOn )
 import Data.Ord ( Down (Down) )
 
-import qualified Championship.ReadFile as File ( readDatabase, splitBy )
+import qualified Championship.ReadFile as File ( readDatabase, splitBy ) 
 import Championship.Structures as Struct
 import Utils.Utils as U
 
@@ -15,10 +15,11 @@ type Round = Integer
 type Team = String
 type Goals = Integer
 type Winner = String
-type Wins = Integer
-type Draws = Integer
-type Losses = Integer
-type Points = Integer
+type Wins = Float
+type Draws = Float
+type Losses = Float
+type Points = Float
+type Record = Float
 
 --
 -- Transforma uma lista de String em uma "struct" de partida.
@@ -167,4 +168,20 @@ getPointsByTeam team matches = do
     let filtered = filterByTeam team matches
     let winnerPoints = getWinsByTeam team filtered * 3
     let drawsPoints = getDrawsByTeam team filtered
-    winnerPoints + drawsPoints
+    winnerPoints + drawsPoints 
+
+
+--
+-- Calcula os pontos de um time específico.
+--
+
+getRecordByTeam :: Team -> [Match] -> Record
+getRecordByTeam _ [] = 0
+getRecordByTeam team matches = do
+    let filtered = filterByTeam team matches
+    let record = getPointsByTeam team filtered * 100/54
+    record
+
+
+    
+    
