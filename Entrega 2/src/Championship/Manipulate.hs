@@ -173,10 +173,56 @@ getPointsByTeam team matches = do
 --
 -- Calcula o aproveitamento de um time específico.
 --
-getRecordByTeam :: Team -> [Match] -> Record
-getRecordByTeam _ [] = 0
-getRecordByTeam team matches = do
+getRecordsByTeam :: Team -> [Match] -> Record
+getRecordsByTeam _ [] = 0
+getRecordsByTeam team matches = do
     let filtered = filterByTeam team matches
     let record = fromIntegral (getPointsByTeam team filtered) * 100.0 / 54.0
     record
+
+--
+-- Retorna a quantidade de gols pró de um time específico.
+--
+getGoalsForByTeam :: Team -> [Match] -> Goals
+getGoalsForByTeam _ [] = 0
+getGoalsForByTeam team allMatches = do
+    let (match : matches) = filterByTeam team allMatches
+    let ht = homeTeam match
+    let at = awayTeam match
+    let ght = goalsHomeTeam match
+    let gat = goalsAwayTeam match
+    let goals | ht == team = updateGoals ght $ getGoalsForByTeam team matches
+              | at == team = updateGoals gat $ getGoalsForByTeam team matches
+              | otherwise = getGoalsForByTeam team matches
+    goals
+
+--
+-- Retorna a quantidade de gols sofridos de um time específico.
+--
+getGoalsAgainstByTeam :: Team -> [Match] -> Goals
+getGoalsAgainstByTeam _ [] = 0
+getGoalsAgainstByTeam team allMatches = do
+    let (match : matches) = filterByTeam team allMatches
+    let ht = homeTeam match
+    let at = awayTeam match
+    let ght = goalsHomeTeam match
+    let gat = goalsAwayTeam match
+    let goals | ht == team = updateGoals gat $ getGoalsAgainstByTeam team matches
+              | at == team = updateGoals ght $ getGoalsAgainstByTeam team matches
+              | otherwise = getGoalsAgainstByTeam team matches
+    goals
+
+--
+-- Retorna o saldo de gols de um time.
+--
+getGoalsDifferenceByTeam :: Team -> [Match] -> Goals
+getGoalsDifferenceByTeam _ [] = 0
+getGoalsDifferenceByTeam team matches = do
+    getGoalsForByTeam team matches - getGoalsAgainstByTeam team matches
+
+--
+-- Atualiza os gols de um time.
+--
+updateGoals :: Goals -> Goals -> Goals
+updateGoals previous goals = previous + goals
                

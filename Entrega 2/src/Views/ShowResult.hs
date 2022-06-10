@@ -51,7 +51,7 @@ showRecordsByTeam :: Team -> [Match] -> IO ()
 showRecordsByTeam _ [] = putStrLn $ U.red ++ "Não há pontuação." ++ U.reset
 showRecordsByTeam team matches = do
     let filtered = M.filterByTeam team matches
-    let records = M.getRecordByTeam team filtered
+    let records = M.getRecordsByTeam team filtered
     putStrLn $ U.purple ++ "\n[APROVEITAMENTO DO TIME]\n" ++ U.reset
     putStrLn "+----------------------------------------------+"
     putStr $ "  " ++ U.blue ++ team ++ " teve "
