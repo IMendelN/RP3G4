@@ -51,6 +51,7 @@ menuOptions option = do
             team <- getLine
             let result = getResultByRoundAndTeam (read round) team matches
             showResultByRoundAndTeam result
+            returnToMenu
         "0" -> do
             putStrLn (U.blue ++ "\nPrograma encerrado." ++ U.reset)
         _ -> do
@@ -82,3 +83,16 @@ optionInvalid :: IO ()
 optionInvalid = do
     U.cls
     putStrLn $ U.red ++ "* Por favor, digite uma opção válida.\n" ++ U.reset
+
+--
+-- Opção para retornar ao menu principal
+--
+returnToMenu :: IO ()
+returnToMenu = do
+    putStr $ U.white ++ "\nDeseja retornar ao menu principal? (S/N): " ++ U.reset
+    hFlush stdout
+    option <- getLine
+    U.cls
+    let confirm | option == "S" || option == "s" = menu
+                | otherwise = putStrLn $ U.blue ++ "Programa encerrado." ++ U.reset
+    confirm
