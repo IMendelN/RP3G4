@@ -105,35 +105,67 @@ sortMatches = sortOn (Down . points)
 --
 getTeamPerformance :: Team -> [Match] -> (Wins, Draws, Losses)
 getTeamPerformance _ [] = (0, 0, 0)
-getTeamPerformance team allMatches = do
-    let (match : matches) = filterByTeam team allMatches
-    let ht = homeTeam match
-    let at = awayTeam match
+getTeamPerformance team matches = do
+    let filtered = filterByTeam team matches
+    let wins = getWinsByTeam team filtered
+    let draws = getDrawsByTeam team filtered
+    let losses = getLossesByTeam team filtered
+    (wins, draws, losses)    
+
+--
+-- Retorna as vitórias de um time.
+--
+getWinsByTeam :: Team -> [Match] -> Draws
+getWinsByTeam _ [] = 0
+getWinsByTeam team (match : matches) = do
     let ght = goalsHomeTeam match
     let gat = goalsAwayTeam match
-    let check | ht == team && ght > gat                  = updateWins   $ getTeamPerformance team matches
-              | ht == team && ght < gat                  = updateLosses $ getTeamPerformance team matches
-              | at == team && gat > ght                  = updateWins   $ getTeamPerformance team matches
-              | at == team && gat < ght                  = updateLosses $ getTeamPerformance team matches
-              | (ht == team || at == team) && gat == ght = updateDraws  $ getTeamPerformance team matches
-              | otherwise = getTeamPerformance team matches
-    check
+    let draws | homeTeam match == team && ght > gat = updateWins $ getDrawsByTeam team matches
+              | awayTeam match == team && gat > ght = updateWins $ getDrawsByTeam team matches
+              | otherwise = getDrawsByTeam team matches
+    draws
+
+--
+-- Retorna os empates de um time.
+--
+getDrawsByTeam :: Team -> [Match] -> Draws
+getDrawsByTeam _ [] = 0
+getDrawsByTeam team (match : matches) = do
+    let ght = goalsHomeTeam match
+    let gat = goalsAwayTeam match
+    let draws | homeTeam match == team && ght == gat = updateDraws $ getDrawsByTeam team matches
+              | awayTeam match == team && gat == ght = updateDraws $ getDrawsByTeam team matches
+              | otherwise = getDrawsByTeam team matches
+    draws
+
+--
+-- Retorna as derrotas de um time.
+--
+getLossesByTeam :: Team -> [Match] -> Draws
+getLossesByTeam _ [] = 0
+getLossesByTeam team (match : matches) = do
+    let ght = goalsHomeTeam match
+    let gat = goalsAwayTeam match
+    let draws | homeTeam match == team && ght < gat = updateLosses $ getDrawsByTeam team matches
+              | awayTeam match == team && gat < ght = updateLosses $ getDrawsByTeam team matches
+              | otherwise = getDrawsByTeam team matches
+    draws
 
 --
 -- Atualiza as vitórias de um time.
 --
-updateWins :: (Wins, Draws, Losses) -> (Wins, Draws, Losses)
-updateWins (wins, draws, losses) = (wins + 1, draws, losses)
+updateWins :: Wins -> Wins
+updateWins wins = wins + 1
 
 --
 -- Atualiza as derrotas de um time.
 --
-updateLosses :: (Wins, Draws, Losses) -> (Wins, Draws, Losses)
-updateLosses (wins, draws, losses) = (wins, draws, losses + 1)
+updateLosses :: Losses -> Losses
+updateLosses losses = losses + 1
 
 --
 -- Atualiza os empates de um time.
 --
-updateDraws :: (Wins, Draws, Losses) -> (Wins, Draws, Losses)
-updateDraws (wins, draws, losses) = (wins, draws + 1, losses)
+updateDraws :: Draws -> Draws
+updateDraws draws = draws + 1
     
