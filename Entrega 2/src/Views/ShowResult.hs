@@ -58,3 +58,17 @@ showRecordsByTeam team matches = do
     printf "%.2g" records
     putStrLn $ " % de aproveitamento." ++ U.reset
     putStrLn "+----------------------------------------------+"
+
+--
+-- Imprime o saldo de gols de um time específicado (RF4).
+--
+showGoalsDifferenceByTeam :: Team -> [Match] -> IO ()
+showGoalsDifferenceByTeam _ [] = putStrLn $ U.red ++ "Não há pontuação." ++ U.reset
+showGoalsDifferenceByTeam team matches = do
+    putStrLn $ U.purple ++ "\n[SALDO DE GOLS DO TIME]\n" ++ U.reset
+    putStrLn $ U.blue ++ "> Time: " ++ team ++ U.reset
+    putStrLn "+----------------------------------------+"
+    putStr U.cyan
+    putStrLn $ "  O saldo é de " ++ show (getGoalsDifferenceByTeam team matches) ++ " gols."
+    putStr U.reset
+    putStrLn "+----------------------------------------+"  
