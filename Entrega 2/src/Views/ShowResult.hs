@@ -1,8 +1,10 @@
 module Views.ShowResult where
 
+import Text.Printf
+
 import Championship.Manipulate as M
 import qualified Utils.Utils as U
-import Championship.Structures
+import Championship.Structures ( Match(..) )
 
 --
 -- Imprime o resultado do desempenho de um time específico (RF1).
@@ -41,3 +43,32 @@ showPointsByTeam team matches = do
     putStrLn "+----------------------------------------+"
     putStrLn $ "  " ++ U.blue ++ team ++ " possui " ++ show points ++ " pontos." ++ U.reset
     putStrLn "+----------------------------------------+"
+
+--
+-- Imprime o aproveitamento de um time específicado (RF3).
+--
+showRecordsByTeam :: Team -> [Match] -> IO ()
+showRecordsByTeam _ [] = putStrLn $ U.red ++ "Não há pontuação." ++ U.reset
+showRecordsByTeam team matches = do
+    let filtered = M.filterByTeam team matches
+    let records = M.getRecordsByTeam team filtered
+    putStrLn $ U.purple ++ "\n[APROVEITAMENTO DO TIME]\n" ++ U.reset
+    putStrLn "+----------------------------------------------+"
+    putStr $ "  " ++ U.blue ++ team ++ " teve "
+    printf "%.2g" records
+    putStrLn $ " % de aproveitamento." ++ U.reset
+    putStrLn "+----------------------------------------------+"
+
+--
+-- Imprime o saldo de gols de um time específicado (RF4).
+--
+showGoalsDifferenceByTeam :: Team -> [Match] -> IO ()
+showGoalsDifferenceByTeam _ [] = putStrLn $ U.red ++ "Não há pontuação." ++ U.reset
+showGoalsDifferenceByTeam team matches = do
+    putStrLn $ U.purple ++ "\n[SALDO DE GOLS DO TIME]\n" ++ U.reset
+    putStrLn $ U.blue ++ "> Time: " ++ team ++ U.reset
+    putStrLn "+----------------------------------------+"
+    putStr U.cyan
+    putStrLn $ "  O saldo é de " ++ show (getGoalsDifferenceByTeam team matches) ++ " gols."
+    putStr U.reset
+    putStrLn "+----------------------------------------+"  

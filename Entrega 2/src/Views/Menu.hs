@@ -56,7 +56,6 @@ menuOptions option = do
                 "8" -> show
                 "9" -> show
                 "10" -> show
-                "0" -> putStr ""
                 _ -> do
                     invalidOption
                     menuOptions "1"
@@ -65,11 +64,53 @@ menuOptions option = do
             U.cls
             menu
         "3" -> do
-            U.cls
-            menu
+            listAllTeams
+            putStr $ U.yellow ++ "\nDigite uma das opções acima: " ++ U.reset
+            hFlush stdout
+            team <- getLine
+            let teamName = getTeamByIndex team
+            let show = do
+                U.cls
+                S.showRecordsByTeam teamName matches
+            case team of
+                "1" -> show
+                "2" -> show
+                "3" -> show
+                "4" -> show
+                "5" -> show
+                "6" -> show
+                "7" -> show
+                "8" -> show
+                "9" -> show
+                "10" -> show
+                _ -> do
+                    invalidOption
+                    menuOptions "1"
+            returnToMenu
         "4" -> do
-            U.cls
-            menu
+            listAllTeams
+            putStr $ U.yellow ++ "\nDigite uma das opções acima: " ++ U.reset
+            hFlush stdout
+            team <- getLine
+            let teamName = getTeamByIndex team
+            let show = do
+                U.cls
+                S.showGoalsDifferenceByTeam teamName matches
+            case team of
+                "1" -> show
+                "2" -> show
+                "3" -> show
+                "4" -> show
+                "5" -> show
+                "6" -> show
+                "7" -> show
+                "8" -> show
+                "9" -> show
+                "10" -> show
+                _ -> do
+                    invalidOption
+                    menuOptions "1"
+            returnToMenu
         "5" -> do
             putStr $ U.yellow ++ "Digite a rodada: " ++ U.reset
             hFlush stdout
@@ -100,11 +141,19 @@ menuOptions option = do
                 "8" -> show
                 "9" -> show
                 "10" -> show
-                "0" -> putStr ""
                 _ -> do
                     invalidOption
                     menuOptions "1"
             returnToMenu
+        "7" -> do
+            U.cls
+            menu
+        "8" -> do
+            U.cls
+            menu
+        "9" -> do
+            U.cls
+            menu
         "0" -> do
             exit
         _ -> do
@@ -112,11 +161,11 @@ menuOptions option = do
             menu
 
 --
--- Retorna o nome time através do menu de listagem.
+-- Retorna o nome do time através da escolha no menu de listagem.
 --
 getTeamByIndex :: String -> String
 getTeamByIndex team
-    | team == "1" = "Botafogo - SP"
+    | team == "1" = "Botafogo"
     | team == "2" = "Figueirense"
     | team == "3" = "Guarani"
     | team == "4" = "Avai"
@@ -135,13 +184,12 @@ listAllTeams :: IO ()
 listAllTeams = do
     putStrLn $ U.purple ++ "[LISTA DE TIMES]\n" ++ U.reset
     putStrLn "+-------------------------------------------------------+"
-    putStrLn "\t1 - Botafogo - SP\t6  - Cruzeiro"
+    putStrLn "\t1 - Botafogo\t\t6  - Cruzeiro"
     putStrLn "\t2 - Figueirense\t\t7  - Confiança"
     putStrLn "\t3 - Guarani\t\t8  - Sampaio Correa"
     putStrLn "\t4 - Avai\t\t9  - Oeste"
     putStrLn "\t5 - Nautico\t\t10 - CSA"
     putStrLn "+-------------------------------------------------------+"
-    putStrLn "\t0 - Sair"
 
 --
 -- Mensagem de erro para opções inválidas de menu.
@@ -164,6 +212,9 @@ returnToMenu = do
                 | otherwise = putStrLn $ U.blue ++ "Programa encerrado." ++ U.reset
     confirm
 
+--
+-- Mostra uma mensagem de encerramento de 'programa'.
+--
 exit :: IO ()
 exit = do
     U.cls
