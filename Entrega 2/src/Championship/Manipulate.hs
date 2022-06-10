@@ -18,6 +18,7 @@ type Winner = String
 type Wins = Integer
 type Draws = Integer
 type Losses = Integer
+type Points = Integer
 
 --
 -- Transforma uma lista de String em uma "struct" de partida.
@@ -110,7 +111,20 @@ getTeamPerformance team matches = do
     let wins = getWinsByTeam team filtered
     let draws = getDrawsByTeam team filtered
     let losses = getLossesByTeam team filtered
-    (wins, draws, losses)    
+    (wins, draws, losses)  
+
+--
+-- Imprime o resultado do desempenho de um time específico (RF1).
+--
+showTeamPerformance :: Team -> (Wins, Draws, Losses) -> IO ()
+showTeamPerformance team (wins, draws, losses) = do
+    putStrLn $ U.purple ++ "\n[DESEMPENHO DO TIME]\n" ++ U.reset
+    putStrLn $ U.blue ++ "> Time: " ++ team ++ U.reset
+    putStrLn "+----------------------------------------+"
+    putStrLn $ U.green ++ "  Vitórias: " ++ show wins ++ U.reset
+    putStrLn $ "  Empates: " ++ show draws
+    putStrLn $ U.red ++ "  Derrotas: " ++ show losses ++ U.reset
+    putStrLn "+----------------------------------------+"  
 
 --
 -- Retorna as vitórias de um time.
@@ -120,10 +134,10 @@ getWinsByTeam _ [] = 0
 getWinsByTeam team (match : matches) = do
     let ght = goalsHomeTeam match
     let gat = goalsAwayTeam match
-    let draws | homeTeam match == team && ght > gat = updateWins $ getDrawsByTeam team matches
-              | awayTeam match == team && gat > ght = updateWins $ getDrawsByTeam team matches
-              | otherwise = getDrawsByTeam team matches
-    draws
+    let wins | homeTeam match == team && ght > gat = updateWins $ getWinsByTeam team matches
+              | awayTeam match == team && gat > ght = updateWins $ getWinsByTeam team matches
+              | otherwise = getWinsByTeam team matches
+    wins
 
 --
 -- Retorna os empates de um time.
@@ -146,10 +160,10 @@ getLossesByTeam _ [] = 0
 getLossesByTeam team (match : matches) = do
     let ght = goalsHomeTeam match
     let gat = goalsAwayTeam match
-    let draws | homeTeam match == team && ght < gat = updateLosses $ getDrawsByTeam team matches
-              | awayTeam match == team && gat < ght = updateLosses $ getDrawsByTeam team matches
-              | otherwise = getDrawsByTeam team matches
-    draws
+    let losses | homeTeam match == team && ght < gat = updateLosses $ getLossesByTeam team matches
+              | awayTeam match == team && gat < ght = updateLosses $ getLossesByTeam team matches
+              | otherwise = getLossesByTeam team matches
+    losses
 
 --
 -- Atualiza as vitórias de um time.
@@ -168,4 +182,14 @@ updateLosses losses = losses + 1
 --
 updateDraws :: Draws -> Draws
 updateDraws draws = draws + 1
-    
+
+--
+-- Calcula os pontos de um time específico.
+--
+getPointsByTeam :: Team -> [Match] -> Points
+getPointsByTeam _ [] = 0
+getPointsByTeam team matches = do
+    let filtered = filterByTeam team matches
+    let winnerPoints = getWinsByTeam team filtered * 3
+    let drawsPoints = getDrawsByTeam team filtered
+    winnerPoints + drawsPoints

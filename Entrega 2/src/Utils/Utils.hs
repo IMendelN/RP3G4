@@ -21,11 +21,11 @@ reset :: String
 ---
 --- Implementação das cores
 ---
-red = "\27[1;31m"
-green = "\27[1;32m"
-yellow = "\27[1;33m"
-blue = "\27[1;34m"
+red = "\27[0;31m"
+green = "\27[0;32m"
+yellow = "\27[0;33m"
+blue = "\27[0;34m"
 purple = "\27[1;35m"
-cyan = "\27[1;36m"
+cyan = "\27[0;36m"
 white = "\27[4;37m"
-reset = "\27[1;0m"
+reset = "\27[0;0m"
