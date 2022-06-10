@@ -23,4 +23,5 @@ executable haskell
                        , Championship.Structures
                        , Utils.Utils
                        , Views.Menu
+                       , Views.ShowResult
                        

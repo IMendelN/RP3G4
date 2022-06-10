@@ -4,7 +4,7 @@ import System.IO ( hFlush, stdout )
 
 import qualified Utils.Utils as U
 import qualified Championship.Manipulate as M
-import qualified GHC.IO.Exception as System
+import qualified Views.ShowResult as S
 
 --
 -- Menu principal.
@@ -44,7 +44,7 @@ menuOptions option = do
             let teamName = getTeamByIndex team
             let show = do
                 U.cls
-                M.showTeamPerformance teamName $ M.getTeamPerformance teamName matches
+                S.showTeamPerformance teamName $ M.getTeamPerformance teamName matches
             case team of
                 "1" -> show
                 "2" -> show
@@ -78,7 +78,32 @@ menuOptions option = do
             hFlush stdout
             team <- getLine
             let result = M.getResultByRoundAndTeam (read round) team matches
-            M.showResultByRoundAndTeam result
+            S.showResultByRoundAndTeam result
+            returnToMenu
+        "6" -> do
+            listAllTeams
+            putStr $ U.yellow ++ "\nDigite uma das opções acima: " ++ U.reset
+            hFlush stdout
+            team <- getLine
+            let teamName = getTeamByIndex team
+            let show = do
+                U.cls
+                S.showPointsByTeam teamName matches
+            case team of
+                "1" -> show
+                "2" -> show
+                "3" -> show
+                "4" -> show
+                "5" -> show
+                "6" -> show
+                "7" -> show
+                "8" -> show
+                "9" -> show
+                "10" -> show
+                "0" -> putStr ""
+                _ -> do
+                    invalidOption
+                    menuOptions "1"
             returnToMenu
         "0" -> do
             exit
