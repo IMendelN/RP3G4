@@ -87,13 +87,48 @@ showResultByRoundAndTeam match = do
     putStrLn $ getWinnerByRoundAndTeam match
 
 --
+-- Imprime o empate de uma partida
+--
+getDrawsByRoundAndTeam :: Match -> String
+getDrawsByRoundAndTeam match = do
+    let msg = U.green ++ "partida empatada dos time "
+    let check | goalsHomeTeam match == goalsAwayTeam match = msg ++ homeTeam match ++ awayTeam match ++ U.reset
+              | otherwise = U.cyan ++ "> Alguem venceu." ++ U.reset
+    check
+
+--
+-- Somador de pontos em vitórias na Tabela
+--
+contPontVit :: String -> Match -> Integer
+contPontVit team _round = do
+    let vitPt  = getWinnerByRoundAndTeam Match _round
+    return $ vitPt * 3
+
+--
+-- Somador de pontos em empates na tabela
+--
+contPontEmp :: String -> Match -> Integer
+contPontEmp time rodada pts = do
+    let empPt = getDrawsByRoundAndTeam Match time
+    return $ empPt
+
+--
+-- Somador total de pontos na tabela
+--
+contPtsT :: String -> Match -> Integer
+contPtsT time rodada pts = do
+    let ttPtVit = getWinnerByRoundAndTeam Match time
+    let ttPtEmp = getDrawsByRoundAndTeam  Match time
+    return $ ttPtVit + ttPtEmp
+
+--
 -- Imprime os 3 primeiros colocados
 --
 timeClassification :: MatchResult -> IO ()
 timeClassification matchresult = do
     putStrLn $ U.green ++ "\n[TIMES NO PÓDIO]\n" ++ U.reset
     putStrLn "+----------------------------------------+"
-    putStr $ " " ++ U.blue ++ take[3..] > points ++ " | " ++ show (rank points) ++ "  |  " ++ show (wins)
+    putStr $ " " ++ U.blue ++ take [1..3] > points ++ " | " ++ show (rank points) ++ "  |  " ++ show (wins)
     putStrLn "+----------------------------------------+"
     
 --
@@ -103,13 +138,13 @@ timeDesclasifield :: MatchResult -> IO ()
 timeDesclasifield matchresultU = do
     putStrLn $ U.yellow ++ "\n[TIMES NO PÓDIO DE BAIXO]\n" ++ U.reset
     putStrLn "+----------------------------------------+"
-    putStr $ "  " ++ U.red ++ take [3..] < points ++ " |  " ++ show (team points) ++ "  |  " ++ show (rank)
+    putStr $ "  " ++ U.red ++ take [8..10] < points ++ " |  " ++ show (team points) ++ "  |  " ++ show (rank)
     putStrLn "+----------------------------------------+"
 
 --
 -- Imprime a posicao do time
 --
-timePosicaoTabela :: MatchResult -> IO ()
+timePosicaoTabela :: String -> [Match ] -> Integer 
 timePosicaoTabela matchresultPT = do
     putStrLn $ U.blue ++ "\n[A POSICAO DO TIME E]\n" ++ U.reset
     putStrLn "+----------------------------------------+"
