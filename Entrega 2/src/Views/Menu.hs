@@ -35,9 +35,6 @@ menu = do
 menuOptions :: String -> IO ()
 menuOptions option = do
     matches <- M.getMatches
-    M.storeTeamResult
-    rank <- M.getTeamResult
-    let rankSorted = M.sortTeamResult rank
     case option of
         "1" -> do
             listAllTeams
@@ -150,14 +147,17 @@ menuOptions option = do
                     menuOptions "1"
             returnToMenu
         "7" -> do
+            M.storeTeamResult
             U.cls
             S.showPodium
             returnToMenu
         "8" -> do
+            M.storeTeamResult
             U.cls
             S.showLastPlaces
             returnToMenu
         "9" -> do
+            M.storeTeamResult
             U.cls
             S.showChampionshipResult
             returnToMenu
