@@ -35,6 +35,9 @@ menu = do
 menuOptions :: String -> IO ()
 menuOptions option = do
     matches <- M.getMatches
+    M.storeTeamResult
+    rank <- M.getTeamResult
+    let rankSorted = M.sortTeamResult rank
     case option of
         "1" -> do
             listAllTeams
@@ -42,9 +45,9 @@ menuOptions option = do
             hFlush stdout
             team <- getLine
             let teamName = getTeamByIndex team
-            let show = do
-                U.cls
-                S.showTeamPerformance teamName $ M.getTeamPerformance teamName matches
+            let show = do 
+                    U.cls
+                    S.showTeamPerformance teamName $ M.getTeamPerformance teamName matches
             case team of
                 "1" -> show
                 "2" -> show
@@ -70,8 +73,8 @@ menuOptions option = do
             team <- getLine
             let teamName = getTeamByIndex team
             let show = do
-                U.cls
-                S.showRecordsByTeam teamName matches
+                    U.cls
+                    S.showRecordsByTeam teamName matches
             case team of
                 "1" -> show
                 "2" -> show
@@ -94,8 +97,8 @@ menuOptions option = do
             team <- getLine
             let teamName = getTeamByIndex team
             let show = do
-                U.cls
-                S.showGoalsDifferenceByTeam teamName matches
+                    U.cls
+                    S.showGoalsDifferenceByTeam teamName matches
             case team of
                 "1" -> show
                 "2" -> show
@@ -128,8 +131,9 @@ menuOptions option = do
             team <- getLine
             let teamName = getTeamByIndex team
             let show = do
-                U.cls
-                S.showPointsByTeam teamName matches
+                    U.cls
+                    S.showPointsByTeam teamName matches
+                    returnToMenu
             case team of
                 "1" -> show
                 "2" -> show
@@ -147,13 +151,16 @@ menuOptions option = do
             returnToMenu
         "7" -> do
             U.cls
-            menu
+            S.showPodium
+            returnToMenu
         "8" -> do
             U.cls
-            menu
+            S.showLastPlaces
+            returnToMenu
         "9" -> do
             U.cls
-            menu
+            S.showChampionshipResult
+            returnToMenu
         "0" -> do
             exit
         _ -> do
@@ -176,6 +183,20 @@ getTeamByIndex team
     | team == "9" = "Oeste"
     | team == "10" = "CSA"
     | otherwise = "Sem time"
+
+--
+-- Imprime o número de rodadas.
+--
+listAllRounds :: IO ()
+listAllRounds = do
+    putStrLn $ U.purple ++ "[LISTA DE TIMES]\n" ++ U.reset
+    putStrLn "+-------------------------------------------------------+"
+    putStrLn "\t1 - Botafogo\t\t6  - Cruzeiro"
+    putStrLn "\t2 - Figueirense\t\t7  - Confiança"
+    putStrLn "\t3 - Guarani\t\t8  - Sampaio Correa"
+    putStrLn "\t4 - Avai\t\t9  - Oeste"
+    putStrLn "\t5 - Nautico\t\t10 - CSA"
+    putStrLn "+-------------------------------------------------------+"
 
 --
 -- Lista todos os times do campeonato.

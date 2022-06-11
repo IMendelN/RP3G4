@@ -4,7 +4,7 @@ import Text.Printf
 
 import Championship.Manipulate as M
 import qualified Utils.Utils as U
-import Championship.Structures ( Match(..) )
+import Championship.Structures ( Match(..), TeamResult (..) )
 
 --
 -- Imprime o resultado do desempenho de um time específico (RF1).
@@ -17,7 +17,7 @@ showTeamPerformance team (wins, draws, losses) = do
     putStrLn $ U.green ++ "  Vitórias: " ++ show wins ++ U.reset
     putStrLn $ "  Empates: " ++ show draws
     putStrLn $ U.red ++ "  Derrotas: " ++ show losses ++ U.reset
-    putStrLn "+----------------------------------------+"  
+    putStrLn "+----------------------------------------+"
 
 --
 -- Imprime o resultado de uma partida específica (RF5).
@@ -71,4 +71,71 @@ showGoalsDifferenceByTeam team matches = do
     putStr U.cyan
     putStrLn $ "  O saldo é de " ++ show (getGoalsDifferenceByTeam team matches) ++ " gols."
     putStr U.reset
-    putStrLn "+----------------------------------------+"  
+    putStrLn "+----------------------------------------+"
+
+--
+-- Imprime os três primeiros colocados (RF7).
+--
+showPodium :: IO ()
+showPodium = do
+    teams <- getTeamResult
+    let result = sortTeamResult teams
+    putStrLn $ U.purple ++ "\n[PÓDIO DO CAMPEONATO]\n" ++ U.reset
+    putStrLn "+----------------------------------------+"
+    putStrLn $ U.green ++ "  1º colocado: " ++ team (head result) ++ U.reset
+    putStrLn $ "  2º colocado: " ++ team (result !! 1)
+    putStrLn $ "  3º colocado: " ++ team (result !! 2) ++ U.reset
+    putStrLn "+----------------------------------------+"
+
+--
+-- Imprime os três últimos colocados (RF8)
+--
+showLastPlaces :: IO ()
+showLastPlaces = do
+    teams <- getTeamResult
+    let result = sortTeamResult teams
+    putStrLn $ U.purple ++ "\n[ÚLTIMOS COLOCADOS DO CAMPEONATO]\n" ++ U.reset
+    putStrLn "+----------------------------------------+"
+    putStrLn $ U.red ++ "   8º colocado: " ++ team (result !! 7)
+    putStrLn $ "   9º colocado: " ++ team (result !! 8)
+    putStrLn $ "  10º colocado: " ++ team (result !! 9) ++ U.reset
+    putStrLn "+----------------------------------------+"
+
+--
+-- Imprime o resultado geral do campeonato.
+--
+showChampionshipResult :: IO ()
+showChampionshipResult = do
+    teams <- getTeamResult
+    let rank = sortTeamResult teams
+    putStrLn $ U.purple ++ "\n[RESULTADO DO CAMPEONATO]\n" ++ U.reset
+    putStr U.blue
+    printf "   \t\t\t   |  %2s  |  %2s  |  %2s  |  %2s  |  %2s  | %3s |\n" 
+        "VI" "EM" "DE" "GP" "PT" "APR (%)"
+    putStr U.reset
+    formatResult 1 rank
+
+--
+-- Formata e organiza o resultado geral do campeonato.
+--
+formatResult :: Int -> [TeamResult] -> IO ()
+formatResult _ [] = return ()
+formatResult rank (team : teams) = do
+    let color | rank >= 1 && rank <= 3 = putStr U.green 
+              | rank >= 8 && rank <= 10 = putStr U.red
+              | otherwise = putStr U.reset
+    color
+    formatTeam rank team
+    putStr U.reset
+    formatResult (rank + 1) teams 
+
+--
+-- Formata as informações de um determinado time.
+--
+formatTeam :: Int -> TeamResult -> IO ()
+formatTeam rank t = do
+    let tab | rank >= 1 && rank <= 5 || rank >= 7 && rank <= 8 = printf "   %2dº - %s\t" 
+            | otherwise = printf "   %2dº - %s\t\t"
+    tab rank (team t)
+    printf "   |  %02d  |  %02d  |  %02d  |  %02d  |  %02d  |  %.2f  |\n" 
+        (wins t) (draws t) (losses t) (goals t) (points t) (record t)

@@ -24,4 +24,4 @@ data TeamResult = TeamResult {
     losses :: Integer,
     points :: Integer,
     record :: Float
-} deriving (Show)
+} deriving (Show, Eq)
