@@ -120,12 +120,10 @@ menuOptions option = do
             hFlush stdout
             team <- getLine
             let teamName = getTeamByIndex team
-            let result = M.getResultByRoundAndTeam (read round) team matches
+            let result = M.getResultByRoundAndTeam (read round) teamName matches
             let show = do
                     U.cls
                     S.showResultByRoundAndTeam result
-
-                    --S.showGoalsDifferenceByTeam teamName matches
             case team of
                 "1" -> show
                 "2" -> show
@@ -140,11 +138,6 @@ menuOptions option = do
                 _ -> do
                     invalidOption
                     menuOptions "1"
-           {-} putStr $ U.yellow ++ "Digite o nome do time: " ++ U.reset
-            hFlush stdout
-            team <- getLine
-            let result = M.getResultByRoundAndTeam (read round) team matches
-            S.showResultByRoundAndTeam result-}
             returnToMenu
         "6" -> do
             listAllTeams
