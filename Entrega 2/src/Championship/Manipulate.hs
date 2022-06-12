@@ -1,10 +1,11 @@
 module Championship.Manipulate where
 
-import Data.List ( sortOn )
-import Data.Ord ( Down (Down) )
+import Data.List ( sortBy )
+import Data.Ord ( comparing )
+import Text.Printf ( printf )
 
-import qualified Championship.ReadFile as File ( readDatabase, splitBy )
-import Championship.Structures as Struct ( TeamResult(points), Match(..) )
+import qualified Championship.ReadFile as File ( readDatabase, splitBy, readTeamResult )
+import Championship.Structures as Struct ( TeamResult(..), Match(..) )
 import Utils.Utils as U ( green, cyan, reset )
 
 --
@@ -20,6 +21,8 @@ type Draws = Integer
 type Losses = Integer
 type Points = Integer
 type Record = Float
+type Info = String
+type Rank = Int
 
 --
 -- Transforma uma lista de String em uma "struct" de partida.
@@ -28,18 +31,40 @@ parseToMatch :: [String] -> [Match]
 parseToMatch [] = []
 parseToMatch fileLine = map (parseLine . File.splitBy ';') fileLine
     where
-        parseLine line = Match (read (head line)) (line !! 1)
-                               (read (line !! 2)) (read (line !! 3))
+        parseLine line = Match (read $ head line) (line !! 1)
+                               (read $ line !! 2) (read $ line !! 3)
                                (line !! 4)
 
 --
+-- Transforma uma lista de String em uma "struct" de partida.
+--
+parseToTeamResult :: [String] -> [TeamResult]
+parseToTeamResult [] = []
+parseToTeamResult fileLine = map (parseLine . File.splitBy ';') fileLine
+    where
+        parseLine line = TeamResult (head line) (read $ line !! 1)
+                                    (read $ line !! 2) (read $ line !! 3)
+                                    (read $ line !! 4) (read $ line !! 5)
+                                    (read $ line !! 6) (read $ line !! 7)
+
+--
 -- Retorna todas as partidas do arquivo de banco de dados
--- já no formato de "struct" de partida.
+-- já no formato de "struct" de partida (Match).
 --
 getMatches :: IO [Match]
 getMatches = do
     fileContent <- File.readDatabase
     let matches = parseToMatch fileContent
+    return matches
+
+-- 
+-- Retorna o resultado de todas as partidas do campeonato
+-- no formato de "struct" de resultado de partida (TeamResult).
+--
+getTeamResult :: IO [TeamResult]
+getTeamResult = do
+    fileContent <- File.readTeamResult
+    let matches = parseToTeamResult fileContent
     return matches
 
 --
@@ -58,6 +83,15 @@ filterByTeam :: Team -> [Match] -> [Match]
 filterByTeam team [] = []
 filterByTeam team matches = do
     filter (\match -> homeTeam match == team || awayTeam match == team) matches
+
+--
+-- Filtra as partidas do primeiro round do campeonato, isto é,
+-- todos os times, porém sem repetição.
+--
+filterByFirstRound :: [Match] -> [Match]
+filterByFirstRound [] = []
+filterByFirstRound matches = do
+    filter (\match -> _round match == 1) matches
 
 --
 -- Retorna uma "instância" de uma partida passando a rodada
@@ -87,8 +121,12 @@ getWinnerByRoundAndTeam match = do
 -- Ordena o resultado das partidas em ordem decrescente.
 -- Assim, deixando transparente a classificação do campeonato.
 --
-sortMatches :: [TeamResult] -> [TeamResult]
-sortMatches = sortOn (Down . points)
+-- Critérios de ordenação: 
+-- pontos > vitórias > saldo de gols > gols pró.
+--
+sortTeamResult :: [TeamResult] -> [TeamResult]
+sortTeamResult =
+    sortBy (flip (comparing points <> comparing wins <> comparing goalDiff <> comparing goals))
 
 --
 -- Retorna a quantidade de vitórias, empates e derrotas de um determinado time.
@@ -225,4 +263,75 @@ getGoalsDifferenceByTeam team matches = do
 --
 updateGoals :: Goals -> Goals -> Goals
 updateGoals previous goals = previous + goals
-               
+
+--
+-- Armazena as informações de todos os times em um arquivo. A chamada desta
+-- função irá somente considerar a primeira rodada, visto que possui todos 
+-- os times.
+--
+storeTeamResult :: IO ()
+storeTeamResult = do
+    matches <- getMatches
+    let filtered = filterByFirstRound matches
+    writeFile "src/Championship/database/team_result.csv"
+        $ "Time;Gols;Vitorias;Empates;Derrotas;Pontos;Aproveitamento;Saldo de Gols\n"
+        ++ getHomeTeamInfo "" matches filtered
+        ++ getAwayTeamInfo "" matches filtered
+
+--
+-- Retorna todas as informações em texto dos primeiros cinco times
+-- que jogam como 'mandante'. Esta se baseia no filtro dos primeiros
+-- jogos (primeira rodada).
+-- 
+getHomeTeamInfo :: Info -> [Match] -> [Match] -> String
+getHomeTeamInfo text [] [] = text
+getHomeTeamInfo text allMatches [] = text
+getHomeTeamInfo text allMatches (match : matches) = do
+    let ht = homeTeam match
+    let goals = getGoalsForByTeam ht allMatches
+    let goalDiff = getGoalsDifferenceByTeam ht allMatches
+    let wins = getWinsByTeam ht allMatches
+    let draws = getDrawsByTeam ht allMatches
+    let losses = getLossesByTeam ht allMatches
+    let points = getPointsByTeam ht allMatches
+    let record = getRecordsByTeam ht allMatches
+    let append = text ++ ht ++ ";" ++ show goals ++ ";"
+            ++ show wins ++ ";" ++ show draws ++ ";"
+            ++ show losses ++ ";" ++ show points ++ ";"
+            ++ printf "%.2g" record ++ ";"
+            ++ show goalDiff ++ "\n"
+    getHomeTeamInfo append allMatches matches
+
+--
+-- Retorna todas as informações em texto dos primeiros cinco times
+-- que jogam como 'visitante'. Esta se baseia no filtro dos primeiros
+-- jogos (primeira rodada).
+-- 
+getAwayTeamInfo :: Info -> [Match] -> [Match] -> String
+getAwayTeamInfo text [] [] = text
+getAwayTeamInfo text allMatches [] = text
+getAwayTeamInfo text allMatches (match : matches) = do
+    let at = awayTeam match
+    let goals = getGoalsForByTeam at allMatches
+    let goalDiff = getGoalsDifferenceByTeam at allMatches
+    let wins = getWinsByTeam at allMatches
+    let draws = getDrawsByTeam at allMatches
+    let losses = getLossesByTeam at allMatches
+    let points = getPointsByTeam at allMatches
+    let record = getRecordsByTeam at allMatches
+    let append = text ++ at ++ ";" ++ show goals ++ ";"
+            ++ show wins ++ ";" ++ show draws ++ ";"
+            ++ show losses ++ ";" ++ show points ++ ";"
+            ++ printf "%.2g" record ++ ";"
+            ++ show goalDiff ++ "\n"
+    getAwayTeamInfo append allMatches matches
+
+--
+-- Retorna a classificação de um time passado como parâmetro.
+--
+getTeamRank :: Int -> Team -> [TeamResult] -> Rank
+getTeamRank _ _ [] = -1
+getTeamRank count teamToSearchFor (t : st) = do
+    let checkRank | teamToSearchFor == team t = count
+                  | otherwise = getTeamRank (count + 1) teamToSearchFor st
+    checkRank

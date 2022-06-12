@@ -18,6 +18,16 @@ readDatabase = do
     return (tail content)
 
 --
+-- Realiza a leitura do arquivo resultante dos times do
+-- campeonato.
+--
+readTeamResult :: IO [String]
+readTeamResult = do
+    fileContent <- IO.readFile "src/Championship/database/team_result.csv"
+    let content = lines fileContent
+    return (tail content)
+
+--
 -- Transforma um texto que contém um delimitador em uma lista 
 -- de String com os respectivos elementos separados.
 --
