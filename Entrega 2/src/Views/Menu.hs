@@ -13,16 +13,17 @@ menu :: IO ()
 menu = do
     putStrLn $ U.purple ++ "[BEM-VINDO AO CAMPEONATO UNIPAMPA]\n" ++ U.reset
     putStrLn "Menu de opções:\n"
-    putStrLn "\t1 - Número de vitórias, empates e derrotas do time X no campeonato?"
-    putStrLn "\t2 - Classificação do time X no campeonato?"
-    putStrLn "\t3 - Aproveitamento do time X no campeonato?"
-    putStrLn "\t4 - Saldo de gols do time X no campeonato?"
-    putStrLn "\t5 - Resultado da partida da rodada N do time X no campeonato?" -- arrumar isso para selecionar time igual outros itens
-    putStrLn "\t6 - Número de pontos do time X no campeonato?"
-    putStrLn "\t7 - Times que estão nas primeiras 3 colocações?"
-    putStrLn "\t8 - Times rebaixados?"
-    putStrLn "\t9 - Classificação geral do campeonato?"
-    putStrLn "\t0 - Sair"
+    putStrLn "\t 1 - Número de vitórias, empates e derrotas do time X no campeonato?"
+    putStrLn "\t 2 - Classificação do time X no campeonato?"
+    putStrLn "\t 3 - Aproveitamento do time X no campeonato?"
+    putStrLn "\t 4 - Saldo de gols do time X no campeonato?"
+    putStrLn "\t 5 - Resultado da partida da rodada N do time X no campeonato?"
+    putStrLn "\t 6 - Número de pontos do time X no campeonato?"
+    putStrLn "\t 7 - Times que estão nas primeiras 3 colocações?"
+    putStrLn "\t 8 - Times rebaixados?"
+    putStrLn "\t 9 - Classificação geral do campeonato?"
+    putStrLn "\t10 - Consultar regulamento sobre o campeonato?"
+    putStrLn "\t 0 - Sair"
     putStr $ U.yellow ++ "\nDigite uma das opções acima: " ++ U.reset
     hFlush stdout
     option <- getLine
@@ -112,7 +113,8 @@ menuOptions option = do
                     menuOptions "1"
             returnToMenu
         "5" -> do
-            putStr $ U.yellow ++ "Digite a rodada: " ++ U.reset
+            listAllRound
+            putStr $ U.yellow ++ "Digite uma das opções acima para rodada: " ++ U.reset
             hFlush stdout
             round <- getLine
             listAllTeams
@@ -172,11 +174,29 @@ menuOptions option = do
         "9" -> do
             U.cls
             menu
+        "10" -> do
+            informationRegulation
+            returnToMenu
         "0" -> do
             exit
         _ -> do
             invalidOption
             menu
+
+--
+--Listar Rodadas
+--
+listAllRound :: IO()
+listAllRound = do
+    putStrLn $ U.purple ++ "[LISTA DE RODADAS]\n" ++ U.reset
+    putStrLn "+-------------------------------------------------------+"
+    putStrLn "\t1 - Rodada 1\t\t7  - Rodada 7\t\t13  - Rodada 13"
+    putStrLn "\t2 - Rodada 2\t\t8  - Rodada 8\t\t14  - Rodada 14"
+    putStrLn "\t3 - Rodada 3\t\t9  - Rodada 9\t\t15  - Rodada 15"
+    putStrLn "\t4 - Rodada 4\t\t10 - Rodada 10\t\t16  - Rodada 16"
+    putStrLn "\t5 - Rodada 5\t\t11 - Rodada 11\t\t17  - Rodada 17"
+    putStrLn "\t6 - Rodada 6\t\t12 - Rodada 12\t\t18  - Rodada 18"
+    putStrLn "+-------------------------------------------------------+"
 
 --
 -- Retorna o nome do time através da escolha no menu de listagem.
@@ -237,3 +257,23 @@ exit :: IO ()
 exit = do
     U.cls
     putStrLn (U.blue ++ "\nPrograma encerrado." ++ U.reset)
+
+--
+-- Informações gerais sobre o campeonato
+--
+informationRegulation :: IO ()
+informationRegulation = do
+    putStrLn $ U.purple ++ "[INFORMAÇÕES GERAIS]\n" ++ U.reset
+    putStrLn "+------------------------------------------------------------------------+"
+    putStrLn "\tO campeonato é composto por 10 times."
+    putStrLn "\tOs times se enfrentam em turno e returno."
+    putStrLn "\tO vencedor de cada partida ganha 3 pontos."
+    putStrLn "\tEm caso de empate cada time ganha 1 ponto."
+    putStrLn "\tOs times são ranqueados por pontuação."
+    putStrLn $ U.green ++ "\tO time com maior pontuação é o campeão." ++ U.reset
+    putStrLn $ U.red ++ "\tOs 3 times com menor pontuação são rebaixados." ++ U.reset
+    putStrLn "\tCaso haja empate na pontuação, aplicam-se os seguintes critérios: "
+    putStrLn "\t - Número de vitórias"
+    putStrLn "\t - Saldo de gols;"
+    putStrLn "\t - Gols pró;"
+    putStrLn "+------------------------------------------------------------------------+"

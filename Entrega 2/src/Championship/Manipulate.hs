@@ -225,4 +225,4 @@ getGoalsDifferenceByTeam team matches = do
 --
 updateGoals :: Goals -> Goals -> Goals
 updateGoals previous goals = previous + goals
-               
+
