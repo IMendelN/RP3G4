@@ -20,7 +20,7 @@ showTeamPerformance team (wins, draws, losses) = do
     putStrLn "+----------------------------------------+"
 
 --
--- Imprime o aproveitamento de um time específicado (RF3).
+-- Imprime o aproveitamento de um time especificado (RF3).
 --
 showRecordsByTeam :: Team -> [Match] -> IO ()
 showRecordsByTeam _ [] = putStrLn $ U.red ++ "Não há pontuação." ++ U.reset
@@ -35,7 +35,7 @@ showRecordsByTeam team matches = do
     putStrLn "+----------------------------------------------+"
 
 --
--- Imprime o saldo de gols de um time específicado (RF4).
+-- Imprime o saldo de gols de um time especificado (RF4).
 --
 showGoalsDifferenceByTeam :: Team -> [Match] -> IO ()
 showGoalsDifferenceByTeam _ [] = putStrLn $ U.red ++ "Não há pontuação." ++ U.reset
@@ -61,7 +61,7 @@ showResultByRoundAndTeam match = do
     putStrLn $ M.getWinnerByRoundAndTeam match ++ U.reset
 
 --
--- Imprime a pontuação de um time específicado (RF6).
+-- Imprime a pontuação de um time especificado (RF6).
 --
 showPointsByTeam :: Team -> [Match] -> IO ()
 showPointsByTeam _ [] = putStrLn $ U.red ++ "Não há pontuação." ++ U.reset

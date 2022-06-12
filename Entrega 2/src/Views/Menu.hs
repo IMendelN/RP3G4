@@ -61,8 +61,29 @@ menuOptions option = do
                     menuOptions "1"
             returnToMenu
         "2" -> do
-            U.cls
-            menu
+            listAllTeams
+            putStr $ U.yellow ++ "\nDigite uma das opções acima: " ++ U.reset
+            hFlush stdout
+            team <- getLine
+            let teamName = getTeamByIndex team
+            let show = do
+                    U.cls
+                    S.showRecordsByTeam teamName matches
+            case team of
+                "1" -> show
+                "2" -> show
+                "3" -> show
+                "4" -> show
+                "5" -> show
+                "6" -> show
+                "7" -> show
+                "8" -> show
+                "9" -> show
+                "10" -> show
+                _ -> do
+                    invalidOption
+                    menuOptions "1"
+            returnToMenu
         "3" -> do
             listAllTeams
             putStr $ U.yellow ++ "\nDigite uma das opções acima: " ++ U.reset

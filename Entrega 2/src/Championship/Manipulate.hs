@@ -1,13 +1,12 @@
 module Championship.Manipulate where
 
-import Data.List
-import Data.Ord
+import Data.List ( sortBy )
+import Data.Ord ( comparing )
 import Text.Printf ( printf )
 
 import qualified Championship.ReadFile as File ( readDatabase, splitBy, readTeamResult )
 import Championship.Structures as Struct ( TeamResult(..), Match(..) )
 import Utils.Utils as U ( green, cyan, reset )
-import Data.Function
 
 --
 -- Declaração de sinônimos para facilitar a leitura
