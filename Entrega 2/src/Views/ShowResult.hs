@@ -20,31 +20,6 @@ showTeamPerformance team (wins, draws, losses) = do
     putStrLn "+----------------------------------------+"
 
 --
--- Imprime o resultado de uma partida específica (RF5).
---
-showResultByRoundAndTeam :: Match -> IO ()
-showResultByRoundAndTeam match = do
-    putStrLn $ U.purple ++ "\n[RESULTADO DA PARTIDA]\n" ++ U.reset
-    putStrLn "+----------------------------------------+"
-    putStr $ "  " ++ U.blue ++ homeTeam match ++ " | " ++ show (goalsHomeTeam match) ++ " x "
-    putStrLn $ show (goalsAwayTeam match) ++ " | " ++ awayTeam match ++ U.reset
-    putStrLn "+----------------------------------------+"
-    putStrLn $ M.getWinnerByRoundAndTeam match ++ U.reset
-
---
--- Imprime a pontuação de um time específicado (RF6).
---
-showPointsByTeam :: Team -> [Match] -> IO ()
-showPointsByTeam _ [] = putStrLn $ U.red ++ "Não há pontuação." ++ U.reset
-showPointsByTeam team matches = do
-    let filtered = M.filterByTeam team matches
-    let points = M.getPointsByTeam team filtered
-    putStrLn $ U.purple ++ "\n[PONTUAÇÃO DO TIME]\n" ++ U.reset
-    putStrLn "+----------------------------------------+"
-    putStrLn $ "  " ++ U.blue ++ team ++ " possui " ++ show points ++ " pontos." ++ U.reset
-    putStrLn "+----------------------------------------+"
-
---
 -- Imprime o aproveitamento de um time específicado (RF3).
 --
 showRecordsByTeam :: Team -> [Match] -> IO ()
@@ -71,6 +46,31 @@ showGoalsDifferenceByTeam team matches = do
     putStr U.cyan
     putStrLn $ "  O saldo é de " ++ show (getGoalsDifferenceByTeam team matches) ++ " gols."
     putStr U.reset
+    putStrLn "+----------------------------------------+"
+
+--
+-- Imprime o resultado de uma partida específica (RF5).
+--
+showResultByRoundAndTeam :: Match -> IO ()
+showResultByRoundAndTeam match = do
+    putStrLn $ U.purple ++ "\n[RESULTADO DA PARTIDA]\n" ++ U.reset
+    putStrLn "+----------------------------------------+"
+    putStr $ "  " ++ U.blue ++ homeTeam match ++ " | " ++ show (goalsHomeTeam match) ++ " x "
+    putStrLn $ show (goalsAwayTeam match) ++ " | " ++ awayTeam match ++ U.reset
+    putStrLn "+----------------------------------------+"
+    putStrLn $ M.getWinnerByRoundAndTeam match ++ U.reset
+
+--
+-- Imprime a pontuação de um time específicado (RF6).
+--
+showPointsByTeam :: Team -> [Match] -> IO ()
+showPointsByTeam _ [] = putStrLn $ U.red ++ "Não há pontuação." ++ U.reset
+showPointsByTeam team matches = do
+    let filtered = M.filterByTeam team matches
+    let points = M.getPointsByTeam team filtered
+    putStrLn $ U.purple ++ "\n[PONTUAÇÃO DO TIME]\n" ++ U.reset
+    putStrLn "+----------------------------------------+"
+    putStrLn $ "  " ++ U.blue ++ team ++ " possui " ++ show points ++ " pontos." ++ U.reset
     putStrLn "+----------------------------------------+"
 
 --
@@ -102,7 +102,7 @@ showLastPlaces = do
     putStrLn "+----------------------------------------+"
 
 --
--- Imprime o resultado geral do campeonato.
+-- Imprime o resultado geral do campeonato (RF9).
 --
 showChampionshipResult :: IO ()
 showChampionshipResult = do
@@ -110,13 +110,13 @@ showChampionshipResult = do
     let rank = sortTeamResult teams
     putStrLn $ U.purple ++ "\n[RESULTADO DO CAMPEONATO]\n" ++ U.reset
     putStr U.blue
-    printf "   \t\t\t   |  %2s  |  %2s  |  %2s  |  %2s  |  %2s  | %3s |\n" 
-        "VI" "EM" "DE" "GP" "PT" "APR (%)"
+    printf "   \t\t\t   |  %2s  |  %2s  |  %2s  |  %2s  |  %3s  |  %2s  | %3s |\n" 
+        "VI" "EM" "DE" "GP" "SG" "PT" "APR (%)"
     putStr U.reset
     formatResult 1 rank
 
 --
--- Formata e organiza o resultado geral do campeonato.
+-- Formata e organiza o resultado geral do campeonato (RF9).
 --
 formatResult :: Int -> [TeamResult] -> IO ()
 formatResult _ [] = return ()
@@ -130,12 +130,12 @@ formatResult rank (team : teams) = do
     formatResult (rank + 1) teams 
 
 --
--- Formata as informações de um determinado time.
+-- Formata as informações de um determinado time (RF9).
 --
 formatTeam :: Int -> TeamResult -> IO ()
 formatTeam rank t = do
-    let tab | rank >= 1 && rank <= 5 || rank >= 7 && rank <= 8 = printf "   %2dº - %s\t" 
+    let tab | rank >= 1 && rank <= 5 || rank == 6 || rank == 8 = printf "   %2dº - %s\t" 
             | otherwise = printf "   %2dº - %s\t\t"
     tab rank (team t)
-    printf "   |  %02d  |  %02d  |  %02d  |  %02d  |  %02d  |  %.2f  |\n" 
-        (wins t) (draws t) (losses t) (goals t) (points t) (record t)
+    printf "   |  %2d  |  %2d  |  %2d  |  %2d  |  %3d  |  %2d  |  %.2f  |\n" 
+        (wins t) (draws t) (losses t) (goals t) (goalDiff t) (points t) (record t)
