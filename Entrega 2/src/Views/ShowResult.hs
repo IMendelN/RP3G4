@@ -152,7 +152,8 @@ formatResult rank (team : teams) = do
 --
 formatTeam :: Int -> TeamResult -> IO ()
 formatTeam rank t = do
-    let tab | rank >= 1 && rank <= 5 || rank == 6 || rank == 8 = printf "   %2dº - %s\t" 
+    let size = length (team t)
+    let tab | size >= 7 = printf "   %2dº - %s\t" 
             | otherwise = printf "   %2dº - %s\t\t"
     tab rank (team t)
     printf "   |  %2d  |  %2d  |  %2d  |  %2d  |  %3d  |  %2d  |  %.2f  |\n" 
