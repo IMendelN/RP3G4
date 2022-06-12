@@ -325,3 +325,13 @@ getAwayTeamInfo text allMatches (match : matches) = do
             ++ printf "%.2g" record ++ ";"
             ++ show goalDiff ++ "\n"
     getAwayTeamInfo append allMatches matches
+
+--
+-- Retorna a classificação de um time passado como parâmetro.
+--
+getTeamRank :: Int -> Team -> [TeamResult] -> Rank
+getTeamRank _ _ [] = -1
+getTeamRank count teamToSearchFor (t : st) = do
+    let checkRank | teamToSearchFor == team t = count
+                  | otherwise = getTeamRank (count + 1) teamToSearchFor st
+    checkRank

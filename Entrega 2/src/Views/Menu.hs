@@ -5,6 +5,9 @@ import System.IO ( hFlush, stdout )
 import qualified Utils.Utils as U
 import qualified Championship.Manipulate as M
 import qualified Views.ShowResult as S
+import Text.Read ( readMaybe )
+import Championship.Manipulate (getResultByRoundAndTeam)
+import Championship.Structures (Match(..))
 
 --
 -- Menu principal.
@@ -41,131 +44,92 @@ menuOptions option = do
             putStr $ U.yellow ++ "\nDigite uma das opções acima: " ++ U.reset
             hFlush stdout
             team <- getLine
-            let teamName = getTeamByIndex team
+            let checkNumber = read team
+            let teamName = getTeamByIndex checkNumber
             let show = do 
                     U.cls
                     S.showTeamPerformance teamName $ M.getTeamPerformance teamName matches
-            case team of
-                "1" -> show
-                "2" -> show
-                "3" -> show
-                "4" -> show
-                "5" -> show
-                "6" -> show
-                "7" -> show
-                "8" -> show
-                "9" -> show
-                "10" -> show
-                _ -> do
-                    invalidOption
-                    menuOptions "1"
+            if checkNumber >= 1 && checkNumber <= 10 then
+                show
+            else do
+                invalidOption
+                menuOptions "1"
             returnToMenu
         "2" -> do
             listAllTeams
             putStr $ U.yellow ++ "\nDigite uma das opções acima: " ++ U.reset
             hFlush stdout
             team <- getLine
-            let teamName = getTeamByIndex team
-            let show = do
+            let checkNumber = read team
+            let teamName = getTeamByIndex checkNumber
+            let show = do 
                     U.cls
-                    S.showRecordsByTeam teamName matches
-            case team of
-                "1" -> show
-                "2" -> show
-                "3" -> show
-                "4" -> show
-                "5" -> show
-                "6" -> show
-                "7" -> show
-                "8" -> show
-                "9" -> show
-                "10" -> show
-                _ -> do
-                    invalidOption
-                    menuOptions "1"
+                    S.showRankTeam teamName
+            if checkNumber >= 1 && checkNumber <= 10 then
+                show
+            else do
+                invalidOption
+                menuOptions "1"
             returnToMenu
         "3" -> do
             listAllTeams
             putStr $ U.yellow ++ "\nDigite uma das opções acima: " ++ U.reset
             hFlush stdout
             team <- getLine
-            let teamName = getTeamByIndex team
-            let show = do
+            let checkNumber = read team
+            let teamName = getTeamByIndex checkNumber
+            let show = do 
                     U.cls
                     S.showRecordsByTeam teamName matches
-            case team of
-                "1" -> show
-                "2" -> show
-                "3" -> show
-                "4" -> show
-                "5" -> show
-                "6" -> show
-                "7" -> show
-                "8" -> show
-                "9" -> show
-                "10" -> show
-                _ -> do
-                    invalidOption
-                    menuOptions "1"
+            if checkNumber >= 1 && checkNumber <= 10 then
+                show
+            else do
+                invalidOption
+                menuOptions "1"
             returnToMenu
         "4" -> do
             listAllTeams
             putStr $ U.yellow ++ "\nDigite uma das opções acima: " ++ U.reset
             hFlush stdout
             team <- getLine
-            let teamName = getTeamByIndex team
-            let show = do
+            let checkNumber = read team
+            let teamName = getTeamByIndex checkNumber
+            let show = do 
                     U.cls
                     S.showGoalsDifferenceByTeam teamName matches
-            case team of
-                "1" -> show
-                "2" -> show
-                "3" -> show
-                "4" -> show
-                "5" -> show
-                "6" -> show
-                "7" -> show
-                "8" -> show
-                "9" -> show
-                "10" -> show
-                _ -> do
-                    invalidOption
-                    menuOptions "1"
+            if checkNumber >= 1 && checkNumber <= 10 then
+                show
+            else do
+                invalidOption
+                menuOptions "1"
             returnToMenu
         "5" -> do
-            putStr $ U.yellow ++ "Digite a rodada: " ++ U.reset
+            putStr $ U.yellow ++ "Digite a rodada: " ++ U.reset -- Alterar para listagem de lista
             hFlush stdout
             round <- getLine
-            putStr $ U.yellow ++ "Digite o nome do time: " ++ U.reset
-            hFlush stdout
-            team <- getLine
-            let result = M.getResultByRoundAndTeam (read round) team matches
-            S.showResultByRoundAndTeam result
+            let checkRound = read round
+            if checkRound >= 1 && checkRound <= 18 then do
+                U.cls
+                menuOptionInsideFive checkRound matches
+            else do
+                invalidOption
+                menuOptions "5"
             returnToMenu
         "6" -> do
             listAllTeams
             putStr $ U.yellow ++ "\nDigite uma das opções acima: " ++ U.reset
             hFlush stdout
             team <- getLine
-            let teamName = getTeamByIndex team
-            let show = do
+            let checkNumber = read team
+            let teamName = getTeamByIndex checkNumber
+            let show = do 
                     U.cls
                     S.showPointsByTeam teamName matches
-                    returnToMenu
-            case team of
-                "1" -> show
-                "2" -> show
-                "3" -> show
-                "4" -> show
-                "5" -> show
-                "6" -> show
-                "7" -> show
-                "8" -> show
-                "9" -> show
-                "10" -> show
-                _ -> do
-                    invalidOption
-                    menuOptions "1"
+            if checkNumber >= 1 && checkNumber <= 10 then
+                show
+            else do
+                invalidOption
+                menuOptions "1"
             returnToMenu
         "7" -> do
             M.storeTeamResult
@@ -191,18 +155,18 @@ menuOptions option = do
 --
 -- Retorna o nome do time através da escolha no menu de listagem.
 --
-getTeamByIndex :: String -> String
+getTeamByIndex :: Int -> String
 getTeamByIndex team
-    | team == "1" = "Botafogo"
-    | team == "2" = "Figueirense"
-    | team == "3" = "Guarani"
-    | team == "4" = "Avai"
-    | team == "5" = "Nautico"
-    | team == "6" = "Cruzeiro"
-    | team == "7" = "Confianca"
-    | team == "8" = "Sampaio Correa"
-    | team == "9" = "Oeste"
-    | team == "10" = "CSA"
+    | team == 1 = "Botafogo"
+    | team == 2 = "Figueirense"
+    | team == 3 = "Guarani"
+    | team == 4 = "Avai"
+    | team == 5 = "Nautico"
+    | team == 6 = "Cruzeiro"
+    | team == 7 = "Confianca"
+    | team == 8 = "Sampaio Correa"
+    | team == 9 = "Oeste"
+    | team == 10 = "CSA"
     | otherwise = "Sem time"
 
 --
@@ -253,6 +217,27 @@ returnToMenu = do
     let confirm | option == "S" || option == "s" = menu
                 | otherwise = putStrLn $ U.blue ++ "Programa encerrado." ++ U.reset
     confirm
+
+--
+-- Mostra a segunda parte do quinto requisito de maneira separada
+-- para tratamento de erro.
+--
+menuOptionInsideFive :: Integer -> [Match] -> IO ()
+menuOptionInsideFive checkRound matches = do
+    listAllTeams
+    putStr $ U.yellow ++ "\nDigite uma das opções acima: " ++ U.reset
+    hFlush stdout
+    team <- getLine
+    let checkTeam = read team
+    if checkTeam >= 1 && checkTeam <= 10 then do
+        let teamName = getTeamByIndex checkTeam
+        let result = getResultByRoundAndTeam checkRound teamName matches
+        U.cls
+        S.showResultByRoundAndTeam result
+    else do
+        U.cls
+        invalidOption
+        menuOptionInsideFive checkRound matches
 
 --
 -- Mostra uma mensagem de encerramento de 'programa'.
