@@ -14,13 +14,14 @@ data Match = Match {
 
 ---
 --- Criação de uma "struct" responsável em armazenar informações
---- sobre o campeonato em geral.
+--- sobre um determinado time.
 ---
-data MatchResult = MatchResult {
-    rank :: Integer,
+data TeamResult = TeamResult {
+    team :: String,
     goals :: Integer,
     wins :: Integer,
     draws :: Integer,
     losses :: Integer,
-    points :: Integer
+    points :: Integer,
+    record :: Float
 } deriving (Show)

@@ -1,8 +1,11 @@
 module Championship.Manipulate where
 
+import Data.List ( sortOn )
+import Data.Ord ( Down (Down) )
+
 import qualified Championship.ReadFile as File ( readDatabase, splitBy )
-import Championship.Structures as Struct
-import Utils.Utils as U
+import Championship.Structures as Struct ( TeamResult(points), Match(..) )
+import Utils.Utils as U ( green, cyan, reset )
 
 --
 -- Declaração de sinônimos para facilitar a leitura
@@ -12,6 +15,11 @@ type Round = Integer
 type Team = String
 type Goals = Integer
 type Winner = String
+type Wins = Integer
+type Draws = Integer
+type Losses = Integer
+type Points = Integer
+type Record = Float
 
 --
 -- Transforma uma lista de String em uma "struct" de partida.
@@ -40,7 +48,7 @@ getMatches = do
 filterByRound :: Round -> Team -> [Match] -> [Match]
 filterByRound round team [] = []
 filterByRound round team matches = do
-    filter (\match -> _round match == round 
+    filter (\match -> _round match == round
         && (homeTeam match == team || awayTeam match == team)) matches
 
 --
@@ -64,7 +72,8 @@ getResultByRoundAndTeam round team matches = do
     check
 
 --
--- Imprime o nome do time vencedor de uma partida específica.
+-- Imprime o nome do time vencedor de uma partida específica ou
+-- mostra se a mesma obteve um empate.
 --
 getWinnerByRoundAndTeam :: Match -> Winner
 getWinnerByRoundAndTeam match = do
@@ -75,79 +84,155 @@ getWinnerByRoundAndTeam match = do
     check
 
 --
--- Imprime o resultado de uma partida específica (RF5).
+-- Ordena o resultado das partidas em ordem decrescente.
+-- Assim, deixando transparente a classificação do campeonato.
 --
-showResultByRoundAndTeam :: Match -> IO ()
-showResultByRoundAndTeam match = do
-    putStrLn $ U.purple ++ "\n[RESULTADO DA PARTIDA]\n" ++ U.reset
-    putStrLn "+----------------------------------------+"
-    putStr $ "  " ++ U.blue ++ homeTeam match ++ " | " ++ show (goalsHomeTeam match) ++ " x "
-    putStrLn $ show (goalsAwayTeam match) ++ " | " ++ awayTeam match ++ U.reset
-    putStrLn "+----------------------------------------+"
-    putStrLn $ getWinnerByRoundAndTeam match
+sortMatches :: [TeamResult] -> [TeamResult]
+sortMatches = sortOn (Down . points)
 
 --
--- Imprime o empate de uma partida
+-- Retorna a quantidade de vitórias, empates e derrotas de um determinado time.
 --
-getDrawsByRoundAndTeam :: Match -> String
-getDrawsByRoundAndTeam match = do
-    let msg = U.green ++ "partida empatada dos time "
-    let check | goalsHomeTeam match == goalsAwayTeam match = msg ++ homeTeam match ++ awayTeam match ++ U.reset
-              | otherwise = U.cyan ++ "> Alguem venceu." ++ U.reset
-    check
+getTeamPerformance :: Team -> [Match] -> (Wins, Draws, Losses)
+getTeamPerformance _ [] = (0, 0, 0)
+getTeamPerformance team matches = do
+    let filtered = filterByTeam team matches
+    let wins = getWinsByTeam team filtered
+    let draws = getDrawsByTeam team filtered
+    let losses = getLossesByTeam team filtered
+    (wins, draws, losses)
 
 --
--- Somador de pontos em vitórias na Tabela
+-- Retorna as vitórias de um time.
 --
-contPontVit :: String -> Match -> Integer
-contPontVit team _round = do
-    let vitPt  = getWinnerByRoundAndTeam Match _round
-    return $ vitPt * 3
+getWinsByTeam :: Team -> [Match] -> Draws
+getWinsByTeam _ [] = 0
+getWinsByTeam team (match : matches) = do
+    let ght = goalsHomeTeam match
+    let gat = goalsAwayTeam match
+    let wins | homeTeam match == team && ght > gat = updateWins $ getWinsByTeam team matches
+             | awayTeam match == team && gat > ght = updateWins $ getWinsByTeam team matches
+             | otherwise = getWinsByTeam team matches
+    wins
 
 --
--- Somador de pontos em empates na tabela
+-- Retorna os empates de um time.
 --
-contPontEmp :: String -> Match -> Integer
-contPontEmp time rodada pts = do
-    let empPt = getDrawsByRoundAndTeam Match time
-    return $ empPt
+getDrawsByTeam :: Team -> [Match] -> Draws
+getDrawsByTeam _ [] = 0
+getDrawsByTeam team (match : matches) = do
+    let ght = goalsHomeTeam match
+    let gat = goalsAwayTeam match
+    let draws | homeTeam match == team && ght == gat = updateDraws $ getDrawsByTeam team matches
+              | awayTeam match == team && gat == ght = updateDraws $ getDrawsByTeam team matches
+              | otherwise = getDrawsByTeam team matches
+    draws
 
 --
--- Somador total de pontos na tabela
+-- Retorna as derrotas de um time.
 --
-contPtsT :: String -> Match -> Integer
-contPtsT time rodada pts = do
-    let ttPtVit = getWinnerByRoundAndTeam Match time
-    let ttPtEmp = getDrawsByRoundAndTeam  Match time
-    return $ ttPtVit + ttPtEmp
+getLossesByTeam :: Team -> [Match] -> Draws
+getLossesByTeam _ [] = 0
+getLossesByTeam team (match : matches) = do
+    let ght = goalsHomeTeam match
+    let gat = goalsAwayTeam match
+    let losses | homeTeam match == team && ght < gat = updateLosses $ getLossesByTeam team matches
+               | awayTeam match == team && gat < ght = updateLosses $ getLossesByTeam team matches
+               | otherwise = getLossesByTeam team matches
+    losses
 
 --
--- Imprime os 3 primeiros colocados
+-- Atualiza as vitórias de um time.
 --
-timeClassification :: MatchResult -> IO ()
-timeClassification matchresult = do
-    putStrLn $ U.green ++ "\n[TIMES NO PÓDIO]\n" ++ U.reset
-    putStrLn "+----------------------------------------+"
-    putStr $ " " ++ U.blue ++ take [1..3] > points ++ " | " ++ show (rank points) ++ "  |  " ++ show (wins)
-    putStrLn "+----------------------------------------+"
-    
---
--- Imprime os 3 ultimos colocados
---
-timeDesclasifield :: MatchResult -> IO ()
-timeDesclasifield matchresultU = do
-    putStrLn $ U.yellow ++ "\n[TIMES NO PÓDIO DE BAIXO]\n" ++ U.reset
-    putStrLn "+----------------------------------------+"
-    putStr $ "  " ++ U.red ++ take [8..10] < points ++ " |  " ++ show (team points) ++ "  |  " ++ show (rank)
-    putStrLn "+----------------------------------------+"
+updateWins :: Wins -> Wins
+updateWins wins = wins + 1
 
 --
--- Imprime a posicao do time
+-- Atualiza as derrotas de um time.
 --
-timePosicaoTabela :: String -> [Match ] -> Integer 
-timePosicaoTabela matchresultPT = do
-    putStrLn $ U.blue ++ "\n[A POSICAO DO TIME E]\n" ++ U.reset
-    putStrLn "+----------------------------------------+"
-    putStr $ "  " ++ U.green ++ take [1] == rank ++ " | " ++ show (team points) ++ " | " ++ show (rank)
-    putStrLn "+----------------------------------------+"
+updateLosses :: Losses -> Losses
+updateLosses losses = losses + 1
 
+--
+-- Atualiza os empates de um time.
+--
+updateDraws :: Draws -> Draws
+updateDraws draws = draws + 1
+
+--
+-- Calcula os pontos de um time específico.
+--
+getPointsByTeam :: Team -> [Match] -> Points
+getPointsByTeam _ [] = 0
+getPointsByTeam team matches = do
+    let filtered = filterByTeam team matches
+    let winnerPoints = getWinsByTeam team filtered * 3
+    let drawsPoints = getDrawsByTeam team filtered
+    winnerPoints + drawsPoints
+
+--
+-- Calcula o aproveitamento de um time específico.
+--
+getRecordsByTeam :: Team -> [Match] -> Record
+getRecordsByTeam _ [] = 0
+getRecordsByTeam team matches = do
+    let filtered = filterByTeam team matches
+    let record = fromIntegral (getPointsByTeam team filtered) * 100.0 / 54.0
+    record
+
+--
+-- Retorna a quantidade de gols pró de um time específico.
+--
+getGoalsForByTeam :: Team -> [Match] -> Goals
+getGoalsForByTeam _ [] = 0
+getGoalsForByTeam team allMatches = do
+    let (match : matches) = filterByTeam team allMatches
+    let ht = homeTeam match
+    let at = awayTeam match
+    let ght = goalsHomeTeam match
+    let gat = goalsAwayTeam match
+    let goals | ht == team = updateGoals ght $ getGoalsForByTeam team matches
+              | at == team = updateGoals gat $ getGoalsForByTeam team matches
+              | otherwise = getGoalsForByTeam team matches
+    goals
+
+--
+-- Retorna a quantidade de gols sofridos de um time específico.
+--
+getGoalsAgainstByTeam :: Team -> [Match] -> Goals
+getGoalsAgainstByTeam _ [] = 0
+getGoalsAgainstByTeam team allMatches = do
+    let (match : matches) = filterByTeam team allMatches
+    let ht = homeTeam match
+    let at = awayTeam match
+    let ght = goalsHomeTeam match
+    let gat = goalsAwayTeam match
+    let goals | ht == team = updateGoals gat $ getGoalsAgainstByTeam team matches
+              | at == team = updateGoals ght $ getGoalsAgainstByTeam team matches
+              | otherwise = getGoalsAgainstByTeam team matches
+    goals
+
+--
+-- Retorna o saldo de gols de um time.
+--
+getGoalsDifferenceByTeam :: Team -> [Match] -> Goals
+getGoalsDifferenceByTeam _ [] = 0
+getGoalsDifferenceByTeam team matches = do
+    getGoalsForByTeam team matches - getGoalsAgainstByTeam team matches
+
+--
+-- Atualiza os gols de um time.
+--
+updateGoals :: Goals -> Goals -> Goals
+updateGoals previous goals = previous + goals
+
+--
+-- Retorna a classificação de um time passado como parametro.
+--
+getTeamRank :: Int -> Team -> [TeamResult] -> Rank
+getTeamRank _ _ [] = -1
+getTeamRank count teamToSearchFor (t : st) = do
+    let checkRank | teamToSearchFor == team t = count
+                  | otherwise = getTeamRank (count + 1) teamToSearchFor st
+    checkRank
+ 

@@ -1,4 +1,8 @@
 .stack-work
 *~
+<<<<<<< HEAD
 .vscode
 src/.vscode
+=======
+.vscode
+>>>>>>> 9445baf12007311e52a5fa2eb885e051e1869153
