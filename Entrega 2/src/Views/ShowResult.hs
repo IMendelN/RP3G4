@@ -18,7 +18,25 @@ showTeamPerformance team (wins, draws, losses) = do
     putStrLn $ "  Empates: " ++ show draws
     putStrLn $ U.red ++ "  Derrotas: " ++ show losses ++ U.reset
     putStrLn "+----------------------------------------+"
-
+    
+--
+-- Imprime a pontuação de um time especificado (RF2).
+--
+showRankTeam :: Team -> IO ()
+showRankTeam team = do
+    teams <- getTeamResult
+    let sorted = sortTeamResult teams
+    let rank = getTeamRank 1 team sorted
+    let color | rank >= 1 && rank <= 3 = putStr U.green
+              | rank >= 8 && rank <= 10 = putStr U.red
+              | otherwise = putStr U.blue
+    putStrLn $ U.purple ++ "\n[CLASSIFICAÇÃO DO TIME]\n" ++ U.reset
+    putStrLn "+----------------------------------------------+"
+    color
+    putStr $ "  " ++ team ++ " está na " ++ show rank
+    putStrLn $ "ª posição." ++ U.reset
+    putStrLn "+----------------------------------------------+"
+    
 --
 -- Imprime o aproveitamento de um time especificado (RF3).
 --
@@ -139,3 +157,5 @@ formatTeam rank t = do
     tab rank (team t)
     printf "   |  %2d  |  %2d  |  %2d  |  %2d  |  %3d  |  %2d  |  %.2f  |\n" 
         (wins t) (draws t) (losses t) (goals t) (goalDiff t) (points t) (record t)
+
+        

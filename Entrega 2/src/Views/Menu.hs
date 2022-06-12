@@ -68,7 +68,7 @@ menuOptions option = do
             let teamName = getTeamByIndex team
             let show = do
                     U.cls
-                    S.showRecordsByTeam teamName matches
+                    S.showRankTeam teamName
             case team of
                 "1" -> show
                 "2" -> show
