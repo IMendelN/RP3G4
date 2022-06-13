@@ -100,7 +100,7 @@ showPodium = do
     let result = sortTeamResult teams
     putStrLn $ U.purple ++ "\n[PÓDIO DO CAMPEONATO]\n" ++ U.reset
     putStrLn "+----------------------------------------+"
-    putStrLn $ U.green ++ "  1º colocado: " ++ team (head result) ++ U.reset
+    putStrLn $ U.green ++ "  1º colocado: " ++ team (head result)
     putStrLn $ "  2º colocado: " ++ team (result !! 1)
     putStrLn $ "  3º colocado: " ++ team (result !! 2) ++ U.reset
     putStrLn "+----------------------------------------+"
