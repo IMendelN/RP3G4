@@ -128,8 +128,8 @@ showChampionshipResult = do
     let rank = sortTeamResult teams
     putStrLn $ U.purple ++ "\n[RESULTADO DO CAMPEONATO]\n" ++ U.reset
     putStr U.blue
-    printf "   \t\t\t   |  %2s  |  %2s  |  %2s  |  %2s  |  %3s  |  %2s  | %3s |\n" 
-        "VI" "EM" "DE" "GP" "SG" "PT" "APR (%)"
+    printf "   \t\t\t   |  %2s  |  %2s  |  %2s  |  %2s  |  %2s  |  %3s  |  %2s  | %3s |\n" 
+        "VI" "EM" "DE" "GP" "GS" "SG" "PT" "APR (%)"
     putStr U.reset
     formatResult 1 rank
 
@@ -156,5 +156,5 @@ formatTeam rank t = do
     let tab | size >= 7 = printf "   %2dº - %s\t" 
             | otherwise = printf "   %2dº - %s\t\t"
     tab rank (team t)
-    printf "   |  %2d  |  %2d  |  %2d  |  %2d  |  %3d  |  %2d  |  %.2f  |\n" 
-        (wins t) (draws t) (losses t) (goals t) (goalDiff t) (points t) (record t)
+    printf "   |  %2d  |  %2d  |  %2d  |  %2d  |  %2d  |  %3d  |  %2d  |  %.2f  |\n" 
+        (wins t) (draws t) (losses t) (goals t) (goalsConceded t) (goalsDiff t) (points t) (record t)

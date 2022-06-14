@@ -46,6 +46,7 @@ parseToTeamResult fileLine = map (parseLine . File.splitBy ';') fileLine
                                     (read $ line !! 2) (read $ line !! 3)
                                     (read $ line !! 4) (read $ line !! 5)
                                     (read $ line !! 6) (read $ line !! 7)
+                                    (read $ line !! 8)
 
 --
 -- Retorna todas as partidas do arquivo de banco de dados
@@ -126,7 +127,7 @@ getWinnerByRoundAndTeam match = do
 --
 sortTeamResult :: [TeamResult] -> [TeamResult]
 sortTeamResult =
-    sortBy (flip (comparing points <> comparing wins <> comparing goalDiff <> comparing goals))
+    sortBy (flip (comparing points <> comparing wins <> comparing goalsDiff <> comparing goals))
 
 --
 -- Retorna a quantidade de vitórias, empates e derrotas de um determinado time.
@@ -289,17 +290,18 @@ getHomeTeamInfo text allMatches [] = text
 getHomeTeamInfo text allMatches (match : matches) = do
     let ht = homeTeam match
     let goals = getGoalsForByTeam ht allMatches
-    let goalDiff = getGoalsDifferenceByTeam ht allMatches
+    let goalsDiff = getGoalsDifferenceByTeam ht allMatches
     let wins = getWinsByTeam ht allMatches
     let draws = getDrawsByTeam ht allMatches
     let losses = getLossesByTeam ht allMatches
     let points = getPointsByTeam ht allMatches
     let record = getRecordsByTeam ht allMatches
+    let goalsConceded = getGoalsAgainstByTeam ht allMatches
     let append = text ++ ht ++ ";" ++ show goals ++ ";"
             ++ show wins ++ ";" ++ show draws ++ ";"
             ++ show losses ++ ";" ++ show points ++ ";"
             ++ printf "%.2g" record ++ ";"
-            ++ show goalDiff ++ "\n"
+            ++ show goalsDiff ++ ";" ++ show goalsConceded ++ "\n"
     getHomeTeamInfo append allMatches matches
 
 --
@@ -313,17 +315,18 @@ getAwayTeamInfo text allMatches [] = text
 getAwayTeamInfo text allMatches (match : matches) = do
     let at = awayTeam match
     let goals = getGoalsForByTeam at allMatches
-    let goalDiff = getGoalsDifferenceByTeam at allMatches
+    let goalsDiff = getGoalsDifferenceByTeam at allMatches
     let wins = getWinsByTeam at allMatches
     let draws = getDrawsByTeam at allMatches
     let losses = getLossesByTeam at allMatches
     let points = getPointsByTeam at allMatches
     let record = getRecordsByTeam at allMatches
+    let goalsConceded = getGoalsAgainstByTeam at allMatches
     let append = text ++ at ++ ";" ++ show goals ++ ";"
             ++ show wins ++ ";" ++ show draws ++ ";"
             ++ show losses ++ ";" ++ show points ++ ";"
             ++ printf "%.2g" record ++ ";"
-            ++ show goalDiff ++ "\n"
+            ++ show goalsDiff ++ ";" ++ show goalsConceded ++ "\n"
     getAwayTeamInfo append allMatches matches
 
 --
