@@ -14,7 +14,7 @@ import Championship.Structures (Match(..))
 --
 menu :: IO ()
 menu = do
-    putStrLn $ U.purple ++ "[BEM-VINDO AO CAMPEONATO UNIPAMPA]\n" ++ U.reset
+    U.putStrLnColor "purple" "[BEM-VINDO AO CAMPEONATO UNIPAMPA]\n"
     putStrLn "Menu de opções:\n"
     putStrLn "\t1 - Número de vitórias, empates e derrotas do time X no campeonato?"
     putStrLn "\t2 - Classificação do time X no campeonato?"
@@ -26,7 +26,7 @@ menu = do
     putStrLn "\t8 - Times rebaixados?"
     putStrLn "\t9 - Classificação geral do campeonato?"
     putStrLn "\t0 - Sair"
-    putStr $ U.yellow ++ "\nDigite uma das opções acima: " ++ U.reset
+    U.putStrColor "yellow" "\nDigite uma das opções acima: "
     hFlush stdout
     option <- getLine
     U.cls
@@ -41,7 +41,7 @@ menuOptions option = do
     case option of
         "1" -> do
             listAllTeams
-            putStr $ U.yellow ++ "\nDigite uma das opções acima: " ++ U.reset
+            U.putStrColor "yellow" "\nDigite uma das opções acima: "
             hFlush stdout
             team <- getLine
             let checkNumber = read team
@@ -57,7 +57,7 @@ menuOptions option = do
             returnToMenu
         "2" -> do
             listAllTeams
-            putStr $ U.yellow ++ "\nDigite uma das opções acima: " ++ U.reset
+            U.putStrColor "yellow" "\nDigite uma das opções acima: "
             hFlush stdout
             team <- getLine
             let checkNumber = read team
@@ -73,7 +73,7 @@ menuOptions option = do
             returnToMenu
         "3" -> do
             listAllTeams
-            putStr $ U.yellow ++ "\nDigite uma das opções acima: " ++ U.reset
+            U.putStrColor "yellow" "\nDigite uma das opções acima: "
             hFlush stdout
             team <- getLine
             let checkNumber = read team
@@ -89,7 +89,7 @@ menuOptions option = do
             returnToMenu
         "4" -> do
             listAllTeams
-            putStr $ U.yellow ++ "\nDigite uma das opções acima: " ++ U.reset
+            U.putStrColor "yellow" "\nDigite uma das opções acima: "
             hFlush stdout
             team <- getLine
             let checkNumber = read team
@@ -104,7 +104,7 @@ menuOptions option = do
                 menuOptions "1"
             returnToMenu
         "5" -> do
-            putStr $ U.yellow ++ "Digite a rodada: " ++ U.reset -- Alterar para listagem de lista
+            U.putStrColor "yellow" "Digite a rodada: " -- Alterar para listagem de lista
             hFlush stdout
             round <- getLine
             let checkRound = read round
@@ -117,7 +117,7 @@ menuOptions option = do
             returnToMenu
         "6" -> do
             listAllTeams
-            putStr $ U.yellow ++ "\nDigite uma das opções acima: " ++ U.reset
+            U.putStrColor "yellow" "\nDigite uma das opções acima: "
             hFlush stdout
             team <- getLine
             let checkNumber = read team
@@ -174,7 +174,7 @@ getTeamByIndex team
 --
 listAllRounds :: IO ()
 listAllRounds = do
-    putStrLn $ U.purple ++ "[LISTA DE TIMES]\n" ++ U.reset
+    U.putStrLnColor "purple" "[LISTA DE TIMES]\n"
     putStrLn "+-------------------------------------------------------+"
     putStrLn "\t1 - Botafogo\t\t6  - Cruzeiro"
     putStrLn "\t2 - Figueirense\t\t7  - Confiança"
@@ -188,7 +188,7 @@ listAllRounds = do
 --
 listAllTeams :: IO ()
 listAllTeams = do
-    putStrLn $ U.purple ++ "[LISTA DE TIMES]\n" ++ U.reset
+    U.putStrLnColor "purple" "[LISTA DE TIMES]\n"
     putStrLn "+-------------------------------------------------------+"
     putStrLn "\t1 - Botafogo\t\t6  - Cruzeiro"
     putStrLn "\t2 - Figueirense\t\t7  - Confiança"
@@ -203,14 +203,15 @@ listAllTeams = do
 invalidOption :: IO ()
 invalidOption = do
     U.cls
-    putStrLn $ U.red ++ "* Por favor, digite uma opção válida.\n" ++ U.reset
+    U.putStrLnColor "red" "* Por favor, digite uma opção válida.\n"
 
 --
 -- Opção para retornar ao menu principal
 --
 returnToMenu :: IO ()
 returnToMenu = do
-    putStr $ U.white ++ "\nDeseja retornar ao menu principal? (S/N):" ++ U.reset ++ " "
+    U.putStrColor "white" "\nDeseja retornar ao menu principal? (S/N):"
+    putStr " "
     hFlush stdout
     option <- getLine
     U.cls
@@ -225,7 +226,7 @@ returnToMenu = do
 menuOptionInsideFive :: Integer -> [Match] -> IO ()
 menuOptionInsideFive checkRound matches = do
     listAllTeams
-    putStr $ U.yellow ++ "\nDigite uma das opções acima: " ++ U.reset
+    U.putStrColor "yellow" "\nDigite uma das opções acima: "
     hFlush stdout
     team <- getLine
     let checkTeam = read team

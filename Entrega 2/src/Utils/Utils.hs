@@ -1,5 +1,8 @@
 module Utils.Utils where
 
+type Color = String
+type Text = String
+
 --- 
 --- Limpa o console
 ---
@@ -33,3 +36,27 @@ cyan = "\27[0;36m"
 white = "\27[4;37m"
 brown = "\27[22;3m"
 reset = "\27[0;0m"
+
+--
+-- Função para imprimir algo na tela passando uma cor
+-- como parâmetro. Esta não possui '\n' no final da linha.
+--
+putStrColor :: Color -> Text -> IO ()
+putStrColor c t
+    | c == "yellow" = putStr $ yellow ++ t ++ reset
+    | c == "red" = putStr $ red ++ t ++ reset
+    | c == "green" = putStr $ green ++ t ++ reset
+    | c == "blue" = putStr $ blue ++ t ++ reset
+    | c == "purple" = putStr $ purple ++ t ++ reset
+    | c == "cyan" = putStr $ cyan ++ t ++ reset
+    | c == "white" = putStr $ white ++ t ++ reset
+    | c == "gray" = putStr $ gray ++ t ++ reset
+    | otherwise = putStr t
+
+--
+-- Função para imprimir algo na tela passando uma cor
+-- como parâmetro. Esta possui um '\n' no final da linha.
+--
+putStrLnColor :: Color -> Text -> IO ()
+putStrLnColor c t =
+    putStrColor c (t ++ "\n")

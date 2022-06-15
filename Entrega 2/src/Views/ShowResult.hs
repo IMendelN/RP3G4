@@ -11,12 +11,12 @@ import Championship.Structures ( Match(..), TeamResult (..) )
 --
 showTeamPerformance :: Team -> (Wins, Draws, Losses) -> IO ()
 showTeamPerformance team (wins, draws, losses) = do
-    putStrLn $ U.purple ++ "\n[DESEMPENHO DO TIME]\n" ++ U.reset
-    putStrLn $ U.blue ++ "> Time: " ++ team ++ U.reset
+    U.putStrLnColor "purple" "\n[DESEMPENHO DO TIME]\n"
+    U.putStrLnColor "blue" $ "> Time: " ++ team
     putStrLn "+----------------------------------------+"
-    putStrLn $ U.green ++ "  Vitórias: " ++ show wins ++ U.reset
+    U.putStrLnColor "green" $ "  Vitórias: " ++ show wins
     putStrLn $ "  Empates: " ++ show draws
-    putStrLn $ U.red ++ "  Derrotas: " ++ show losses ++ U.reset
+    U.putStrLnColor "red" $ "  Derrotas: " ++ show losses
     putStrLn "+----------------------------------------+"
 
 --
@@ -30,7 +30,7 @@ showRankTeam team = do
     let color | rank >= 1 && rank <= 3 = putStr U.green
               | rank >= 8 && rank <= 10 = putStr U.red
               | otherwise = putStr U.blue
-    putStrLn $ U.purple ++ "\n[CLASSIFICAÇÃO DO TIME]\n" ++ U.reset
+    U.putStrLnColor "purple" "\n[CLASSIFICAÇÃO DO TIME]\n"
     putStrLn "+----------------------------------------------+"
     color
     putStr $ "  " ++ team ++ " está na " ++ show rank
@@ -45,7 +45,7 @@ showRecordsByTeam _ [] = putStrLn $ U.red ++ "Não há pontuação." ++ U.reset
 showRecordsByTeam team matches = do
     let filtered = M.filterByTeam team matches
     let records = M.getRecordsByTeam team filtered
-    putStrLn $ U.purple ++ "\n[APROVEITAMENTO DO TIME]\n" ++ U.reset
+    U.putStrLnColor "purple" "\n[APROVEITAMENTO DO TIME]\n"
     putStrLn "+----------------------------------------------+"
     putStr $ "  " ++ U.blue ++ team ++ " teve "
     printf "%.2g" records
@@ -58,12 +58,11 @@ showRecordsByTeam team matches = do
 showGoalsDifferenceByTeam :: Team -> [Match] -> IO ()
 showGoalsDifferenceByTeam _ [] = putStrLn $ U.red ++ "Não há pontuação." ++ U.reset
 showGoalsDifferenceByTeam team matches = do
-    putStrLn $ U.purple ++ "\n[SALDO DE GOLS DO TIME]\n" ++ U.reset
-    putStrLn $ U.blue ++ "> Time: " ++ team ++ U.reset
+    U.putStrLnColor "purple" "\n[SALDO DE GOLS DO TIME]\n"
+    U.putStrLnColor "blue" $ "> Time: " ++ team
     putStrLn "+----------------------------------------+"
-    putStr U.cyan
-    putStrLn $ "  O saldo é de " ++ show (getGoalsDifferenceByTeam team matches) ++ " gols."
-    putStr U.reset
+    U.putStrLnColor "cyan" 
+        $ "  O saldo é de " ++ show (getGoalsDifferenceByTeam team matches) ++ " gols."
     putStrLn "+----------------------------------------+"
 
 --
@@ -71,10 +70,11 @@ showGoalsDifferenceByTeam team matches = do
 --
 showResultByRoundAndTeam :: Match -> IO ()
 showResultByRoundAndTeam match = do
-    putStrLn $ U.purple ++ "\n[RESULTADO DA PARTIDA]\n" ++ U.reset
+    U.putStrLnColor "purple" "\n[RESULTADO DA PARTIDA]\n"
     putStrLn "+----------------------------------------+"
-    putStr $ "  " ++ U.blue ++ homeTeam match ++ " | " ++ show (goalsHomeTeam match) ++ " x "
-    putStrLn $ show (goalsAwayTeam match) ++ " | " ++ awayTeam match ++ U.reset
+    U.putStrLnColor "blue" 
+        $ "  " ++ homeTeam match ++ " | " ++ show (goalsHomeTeam match) ++ " x "
+        ++ show (goalsAwayTeam match) ++ " | " ++ awayTeam match
     putStrLn "+----------------------------------------+"
     putStrLn $ M.getWinnerByRoundAndTeam match ++ U.reset
 
@@ -88,7 +88,7 @@ showPointsByTeam team matches = do
     let points = M.getPointsByTeam team filtered
     putStrLn $ U.purple ++ "\n[PONTUAÇÃO DO TIME]\n" ++ U.reset
     putStrLn "+----------------------------------------+"
-    putStrLn $ "  " ++ U.blue ++ team ++ " possui " ++ show points ++ " pontos." ++ U.reset
+    U.putStrLnColor "blue" $ "  " ++ team ++ " possui " ++ show points ++ " pontos."
     putStrLn "+----------------------------------------+"
 
 --
@@ -98,11 +98,12 @@ showPodium :: IO ()
 showPodium = do
     teams <- getTeamResult
     let result = sortTeamResult teams
-    putStrLn $ U.purple ++ "\n[PÓDIO DO CAMPEONATO]\n" ++ U.reset
+    U.putStrLnColor "purple" "\n[PÓDIO DO CAMPEONATO]\n"
     putStrLn "+----------------------------------------+"
-    putStrLn $ U.green ++ "  1º colocado: " ++ team (head result)
-    putStrLn $ "  2º colocado: " ++ team (result !! 1)
-    putStrLn $ "  3º colocado: " ++ team (result !! 2) ++ U.reset
+    U.putStrLnColor "green" 
+        $  "  1º colocado: " ++ team (head result) ++ "\n"
+        ++ "  2º colocado: " ++ team (result !! 1) ++ "\n"
+        ++ "  3º colocado: " ++ team (result !! 2)
     putStrLn "+----------------------------------------+"
 
 --
@@ -112,11 +113,12 @@ showLastPlaces :: IO ()
 showLastPlaces = do
     teams <- getTeamResult
     let result = sortTeamResult teams
-    putStrLn $ U.purple ++ "\n[ÚLTIMOS COLOCADOS DO CAMPEONATO]\n" ++ U.reset
+    U.putStrLnColor "purple" "\n[ÚLTIMOS COLOCADOS DO CAMPEONATO]\n"
     putStrLn "+----------------------------------------+"
-    putStrLn $ U.red ++ "   8º colocado: " ++ team (result !! 7)
-    putStrLn $ "   9º colocado: " ++ team (result !! 8)
-    putStrLn $ "  10º colocado: " ++ team (result !! 9) ++ U.reset
+    U.putStrLnColor "red" 
+        $  "   8º colocado: " ++ team (result !! 7) ++ "\n"
+        ++ "   9º colocado: " ++ team (result !! 8) ++ "\n"
+        ++ "  10º colocado: " ++ team (result !! 9)
     putStrLn "+----------------------------------------+"
 
 --

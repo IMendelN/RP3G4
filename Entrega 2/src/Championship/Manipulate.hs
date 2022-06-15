@@ -275,7 +275,7 @@ storeTeamResult = do
     matches <- getMatches
     let filtered = filterByFirstRound matches
     writeFile "src/Championship/database/team_result.csv"
-        $ "Time;Gols;Vitorias;Empates;Derrotas;Pontos;Aproveitamento;Saldo de Gols\n"
+        $ "Time;Gols;Vitorias;Empates;Derrotas;Pontos;Aproveitamento;Saldo de Gols;Gols Sofridos\n"
         ++ getHomeTeamInfo "" matches filtered
         ++ getAwayTeamInfo "" matches filtered
 
