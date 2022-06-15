@@ -23,5 +23,7 @@ data TeamResult = TeamResult {
     draws :: Integer,
     losses :: Integer,
     points :: Integer,
-    record :: Float
-} deriving (Show)
+    record :: Float,
+    goalsDiff :: Integer,
+    goalsConceded :: Integer
+} deriving (Show, Eq, Ord)
