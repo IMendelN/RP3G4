@@ -69,7 +69,7 @@ menuOptions option = do
                 show
             else do
                 invalidOption
-                menuOptions "1"
+                menuOptions "2"
             returnToMenu
         "3" -> do
             listAllTeams
@@ -85,7 +85,7 @@ menuOptions option = do
                 show
             else do
                 invalidOption
-                menuOptions "1"
+                menuOptions "3"
             returnToMenu
         "4" -> do
             listAllTeams
@@ -101,7 +101,7 @@ menuOptions option = do
                 show
             else do
                 invalidOption
-                menuOptions "1"
+                menuOptions "4"
             returnToMenu
         "5" -> do
             U.putStrColor "yellow" "Digite a rodada: " -- Alterar para listagem de lista
@@ -129,7 +129,7 @@ menuOptions option = do
                 show
             else do
                 invalidOption
-                menuOptions "1"
+                menuOptions "6"
             returnToMenu
         "7" -> do
             M.storeTeamResult
@@ -172,31 +172,17 @@ listAllRound = do
 --
 getTeamByIndex :: Int -> String
 getTeamByIndex team
-    | team == 1 = "Botafogo"
-    | team == 2 = "Figueirense"
-    | team == 3 = "Guarani"
-    | team == 4 = "Avai"
-    | team == 5 = "Nautico"
-    | team == 6 = "Cruzeiro"
-    | team == 7 = "Confianca"
-    | team == 8 = "Sampaio Correa"
-    | team == 9 = "Oeste"
-    | team == 10 = "CSA"
+    | team == 1 = "Brasil"
+    | team == 2 = "Argentina"
+    | team == 3 = "Uruguai"
+    | team == 4 = "Equador"
+    | team == 5 = "Peru"
+    | team == 6 = "Colombia"
+    | team == 7 = "Chile"
+    | team == 8 = "Paraguai"
+    | team == 9 = "Bolivia"
+    | team == 10 = "Venezuela"
     | otherwise = "Sem time"
-
---
--- Imprime o número de rodadas.
---
-listAllRounds :: IO ()
-listAllRounds = do
-    U.putStrLnColor "purple" "[LISTA DE TIMES]\n"
-    putStrLn "+-------------------------------------------------------+"
-    putStrLn "\t1 - Botafogo\t\t6  - Cruzeiro"
-    putStrLn "\t2 - Figueirense\t\t7  - Confiança"
-    putStrLn "\t3 - Guarani\t\t8  - Sampaio Correa"
-    putStrLn "\t4 - Avai\t\t9  - Oeste"
-    putStrLn "\t5 - Nautico\t\t10 - CSA"
-    putStrLn "+-------------------------------------------------------+"
 
 --
 -- Lista todos os times do campeonato.
@@ -205,11 +191,11 @@ listAllTeams :: IO ()
 listAllTeams = do
     U.putStrLnColor "purple" "[LISTA DE TIMES]\n"
     putStrLn "+-------------------------------------------------------+"
-    putStrLn "\t1 - Botafogo\t\t6  - Cruzeiro"
-    putStrLn "\t2 - Figueirense\t\t7  - Confiança"
-    putStrLn "\t3 - Guarani\t\t8  - Sampaio Correa"
-    putStrLn "\t4 - Avai\t\t9  - Oeste"
-    putStrLn "\t5 - Nautico\t\t10 - CSA"
+    putStrLn "\t1 - Brasil\t\t6  - Colombia"
+    putStrLn "\t2 - Argentina\t\t7  - Chile"
+    putStrLn "\t3 - Uruguai\t\t8  - Paraguai"
+    putStrLn "\t4 - Equador\t\t9  - Bolivia"
+    putStrLn "\t5 - Peru\t\t10 - Venezuela"
     putStrLn "+-------------------------------------------------------+"
 
 --
@@ -221,7 +207,7 @@ invalidOption = do
     U.putStrLnColor "red" "* Por favor, digite uma opção válida.\n"
 
 --
--- Opção para retornar ao menu principal
+-- Opção para retornar ao menu principal 
 --
 returnToMenu :: IO ()
 returnToMenu = do

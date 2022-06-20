@@ -13,7 +13,7 @@ type Delimiter = Char
 --
 readDatabase :: IO [String]
 readDatabase = do
-    fileContent <- IO.readFile "src/Championship/database/result.csv"
+    fileContent <- IO.readFile "src/Championship/database/result_test.csv"
     let content = lines fileContent
     return (tail content)
 
