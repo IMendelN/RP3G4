@@ -1,6 +1,7 @@
 module Views.Menu where
 
 import System.IO ( hFlush, stdout )
+import System.Exit ( exitSuccess )
 
 import qualified Utils.AppUtils as U
 import qualified Championship.Manipulate as M
@@ -247,3 +248,4 @@ menuOptionInsideFive checkRound matches = do
 exit :: IO ()
 exit = do
     U.putStrLnColor "blue" "\nPrograma encerrado."
+    exitSuccess
