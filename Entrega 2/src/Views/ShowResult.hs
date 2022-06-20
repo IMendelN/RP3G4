@@ -3,7 +3,7 @@ module Views.ShowResult where
 import Text.Printf ( printf )
 
 import Championship.Manipulate as M
-import qualified Utils.Utils as U
+import qualified Utils.AppUtils as U
 import Championship.Structures ( Match(..), TeamResult (..) )
 
 --

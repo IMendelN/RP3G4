@@ -1,4 +1,4 @@
-module Utils.Utils where
+module Utils.AppUtils where
 
 type Color = String
 type Text = String

@@ -2,7 +2,7 @@ module Views.Menu where
 
 import System.IO ( hFlush, stdout )
 
-import qualified Utils.Utils as U
+import qualified Utils.AppUtils as U
 import qualified Championship.Manipulate as M
 import qualified Views.ShowResult as S
 import Text.Read ( readMaybe )
@@ -210,13 +210,14 @@ invalidOption = do
 --
 returnToMenu :: IO ()
 returnToMenu = do
-    U.putStrColor "white" "\nDeseja retornar ao menu principal? (S/N):"
+    U.putStrColor "white" "\nDeseja retornar ao menu principal? (S/N) - PADRÃO: [N]:"
     putStr " "
     hFlush stdout
     option <- getLine
-    U.cls
-    let confirm | option == "S" || option == "s" = menu
-                | otherwise = putStrLn $ U.blue ++ "Programa encerrado." ++ U.reset
+    let confirm | option == "S" || option == "s" = do 
+                    U.cls
+                    menu
+                | otherwise = exit
     confirm
 
 --
@@ -245,5 +246,4 @@ menuOptionInsideFive checkRound matches = do
 --
 exit :: IO ()
 exit = do
-    U.cls
-    putStrLn (U.blue ++ "\nPrograma encerrado." ++ U.reset)
+    U.putStrLnColor "blue" "\nPrograma encerrado."
