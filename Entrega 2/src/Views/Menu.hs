@@ -70,7 +70,7 @@ menuOptions option = do
                 show
             else do
                 invalidOption
-                menuOptions "1"
+                menuOptions "2"
             returnToMenu
         "3" -> do
             listAllTeams
@@ -86,7 +86,7 @@ menuOptions option = do
                 show
             else do
                 invalidOption
-                menuOptions "1"
+                menuOptions "3"
             returnToMenu
         "4" -> do
             listAllTeams
@@ -102,10 +102,10 @@ menuOptions option = do
                 show
             else do
                 invalidOption
-                menuOptions "1"
+                menuOptions "4"
             returnToMenu
         "5" -> do
-            U.putStrColor "yellow" "Digite a rodada: " -- Alterar para listagem de lista
+            U.putStrColor "yellow" "Digite a rodada: (de 1 a 18) " -- Alterar para listagem de lista
             hFlush stdout
             round <- getLine
             let checkRound = read round
@@ -130,7 +130,7 @@ menuOptions option = do
                 show
             else do
                 invalidOption
-                menuOptions "1"
+                menuOptions "6"
             returnToMenu
         "7" -> do
             M.storeTeamResult
