@@ -105,7 +105,8 @@ menuOptions option = do
                 menuOptions "4"
             returnToMenu
         "5" -> do
-            U.putStrColor "yellow" "Digite a rodada: (de 1 a 18) " -- Alterar para listagem de lista
+            listAllRounds
+            U.putStrColor "yellow" "\nDigite o número da rodada: "
             hFlush stdout
             round <- getLine
             let checkRound = read round
@@ -175,13 +176,14 @@ getTeamByIndex team
 --
 listAllRounds :: IO ()
 listAllRounds = do
-    U.putStrLnColor "purple" "[LISTA DE TIMES]\n"
+    U.putStrLnColor "purple" "[LISTA DE RODADAS]\n"
     putStrLn "+-------------------------------------------------------+"
-    putStrLn "\t1 - Botafogo\t\t6  - Cruzeiro"
-    putStrLn "\t2 - Figueirense\t\t7  - Confiança"
-    putStrLn "\t3 - Guarani\t\t8  - Sampaio Correa"
-    putStrLn "\t4 - Avai\t\t9  - Oeste"
-    putStrLn "\t5 - Nautico\t\t10 - CSA"
+    U.putStrLnColor "cyan" "\tRodada 1\tRodada 7 \tRodada 13"
+    U.putStrLnColor "cyan" "\tRodada 2\tRodada 8 \tRodada 14"
+    U.putStrLnColor "cyan" "\tRodada 3\tRodada 9 \tRodada 15"
+    U.putStrLnColor "cyan" "\tRodada 4\tRodada 10\tRodada 16"
+    U.putStrLnColor "cyan" "\tRodada 5\tRodada 11\tRodada 17"
+    U.putStrLnColor "cyan" "\tRodada 6\tRodada 12\tRodada 18"
     putStrLn "+-------------------------------------------------------+"
 
 --
@@ -191,11 +193,11 @@ listAllTeams :: IO ()
 listAllTeams = do
     U.putStrLnColor "purple" "[LISTA DE TIMES]\n"
     putStrLn "+-------------------------------------------------------+"
-    putStrLn "\t1 - Botafogo\t\t6  - Cruzeiro"
-    putStrLn "\t2 - Figueirense\t\t7  - Confiança"
-    putStrLn "\t3 - Guarani\t\t8  - Sampaio Correa"
-    putStrLn "\t4 - Avai\t\t9  - Oeste"
-    putStrLn "\t5 - Nautico\t\t10 - CSA"
+    U.putStrLnColor "cyan" "\t1 - Botafogo\t\t6  - Cruzeiro"
+    U.putStrLnColor "cyan" "\t2 - Figueirense\t\t7  - Confiança"
+    U.putStrLnColor "cyan" "\t3 - Guarani\t\t8  - Sampaio Correa"
+    U.putStrLnColor "cyan" "\t4 - Avai\t\t9  - Oeste"
+    U.putStrLnColor "cyan" "\t5 - Nautico\t\t10 - CSA"
     putStrLn "+-------------------------------------------------------+"
 
 --
