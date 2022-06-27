@@ -1,4 +1,4 @@
-package Sales;
+package sales;
 
 public class WeekSalesReports {
     private int genreQuantities;
