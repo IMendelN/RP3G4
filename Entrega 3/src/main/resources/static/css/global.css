@@ -1,13 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;1,100;1,200;1,300&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;1,100;1,200;1,300&display=swap");
 
 :root {
-    --header-color: #151b1f;
+    --body-color: #22241b;
+    --header-color: #191f15;
     --footer-color: #01060e;
 }
 
 body {
-    background: url("../img/wallpaper.jpg") no-repeat center center;
-    height: 100vh;
+    background: url("../img/wallpaper.jpg") no-repeat;
+    background-color: var(--body-color);
 }
 
 * {
@@ -21,10 +22,9 @@ body {
     width: 100vw;
     height: 100vh;
     display: grid;
-    grid-template-rows: 65px 90vh;
+    grid-template-rows: 80px 1fr;
     grid-template-columns: 1fr;
-    grid-template-areas: "header"
-                         "main";
+    grid-template-areas: "header" "main";
 }
 
 main {
