@@ -1,8 +1,9 @@
 module Views.Menu where
 
 import System.IO ( hFlush, stdout )
+import System.Exit ( exitSuccess )
 
-import qualified Utils.Utils as U
+import qualified Utils.AppUtils as U
 import qualified Championship.Manipulate as M
 import qualified Views.ShowResult as S
 import Text.Read ( readMaybe )
@@ -104,7 +105,8 @@ menuOptions option = do
                 menuOptions "4"
             returnToMenu
         "5" -> do
-            U.putStrColor "yellow" "Digite a rodada: " -- Alterar para listagem de lista
+            listAllRounds
+            U.putStrColor "yellow" "\nDigite o número da rodada: "
             hFlush stdout
             round <- getLine
             let checkRound = read round
@@ -185,17 +187,32 @@ getTeamByIndex team
     | otherwise = "Sem time"
 
 --
+-- Imprime o número de rodadas.
+--
+listAllRounds :: IO ()
+listAllRounds = do
+    U.putStrLnColor "purple" "[LISTA DE RODADAS]\n"
+    putStrLn "+-------------------------------------------------------+"
+    U.putStrLnColor "cyan" "\tRodada 1\tRodada 7 \tRodada 13"
+    U.putStrLnColor "cyan" "\tRodada 2\tRodada 8 \tRodada 14"
+    U.putStrLnColor "cyan" "\tRodada 3\tRodada 9 \tRodada 15"
+    U.putStrLnColor "cyan" "\tRodada 4\tRodada 10\tRodada 16"
+    U.putStrLnColor "cyan" "\tRodada 5\tRodada 11\tRodada 17"
+    U.putStrLnColor "cyan" "\tRodada 6\tRodada 12\tRodada 18"
+    putStrLn "+-------------------------------------------------------+"
+
+--
 -- Lista todos os times do campeonato.
 --
 listAllTeams :: IO ()
 listAllTeams = do
     U.putStrLnColor "purple" "[LISTA DE TIMES]\n"
     putStrLn "+-------------------------------------------------------+"
-    putStrLn "\t1 - Brasil\t\t6  - Colombia"
-    putStrLn "\t2 - Argentina\t\t7  - Chile"
-    putStrLn "\t3 - Uruguai\t\t8  - Paraguai"
-    putStrLn "\t4 - Equador\t\t9  - Bolivia"
-    putStrLn "\t5 - Peru\t\t10 - Venezuela"
+    U.putStrLnColor "cyan" "\t1 - Botafogo\t\t6  - Cruzeiro"
+    U.putStrLnColor "cyan" "\t2 - Figueirense\t\t7  - Confiança"
+    U.putStrLnColor "cyan" "\t3 - Guarani\t\t8  - Sampaio Correa"
+    U.putStrLnColor "cyan" "\t4 - Avai\t\t9  - Oeste"
+    U.putStrLnColor "cyan" "\t5 - Nautico\t\t10 - CSA"
     putStrLn "+-------------------------------------------------------+"
 
 --
@@ -211,13 +228,14 @@ invalidOption = do
 --
 returnToMenu :: IO ()
 returnToMenu = do
-    U.putStrColor "white" "\nDeseja retornar ao menu principal? (S/N):"
+    U.putStrColor "white" "\nDeseja retornar ao menu principal? (S/N) - PADRÃO: [N]:"
     putStr " "
     hFlush stdout
     option <- getLine
-    U.cls
-    let confirm | option == "S" || option == "s" = menu
-                | otherwise = putStrLn $ U.blue ++ "Programa encerrado." ++ U.reset
+    let confirm | option == "S" || option == "s" = do 
+                    U.cls
+                    menu
+                | otherwise = exit
     confirm
 
 --
@@ -246,25 +264,5 @@ menuOptionInsideFive checkRound matches = do
 --
 exit :: IO ()
 exit = do
-    U.cls
-    putStrLn (U.blue ++ "\nPrograma encerrado." ++ U.reset)
-
---
--- Informações gerais sobre o campeonato
---
-informationRegulation :: IO ()
-informationRegulation = do
-    putStrLn $ U.purple ++ "[INFORMAÇÕES GERAIS]\n" ++ U.reset
-    putStrLn "+------------------------------------------------------------------------+"
-    putStrLn "\tO campeonato é composto por 10 times."
-    putStrLn "\tOs times se enfrentam em turno e returno."
-    putStrLn "\tO vencedor de cada partida ganha 3 pontos."
-    putStrLn "\tEm caso de empate cada time ganha 1 ponto."
-    putStrLn "\tOs times são ranqueados por pontuação."
-    putStrLn $ U.green ++ "\tO time com maior pontuação é o campeão." ++ U.reset
-    putStrLn $ U.red ++ "\tOs 3 times com menor pontuação são rebaixados." ++ U.reset
-    putStrLn "\tCaso haja empate na pontuação, aplicam-se os seguintes critérios: "
-    putStrLn "\t - Número de vitórias"
-    putStrLn "\t - Saldo de gols;"
-    putStrLn "\t - Gols pró;"
-    putStrLn "+------------------------------------------------------------------------+"
+    U.putStrLnColor "blue" "\nPrograma encerrado."
+    exitSuccess

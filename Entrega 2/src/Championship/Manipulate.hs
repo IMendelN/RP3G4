@@ -6,7 +6,7 @@ import Text.Printf ( printf )
 
 import qualified Championship.ReadFile as File ( readDatabase, splitBy, readTeamResult )
 import Championship.Structures as Struct ( TeamResult(..), Match(..) )
-import Utils.Utils as U ( green, cyan, reset )
+import Utils.AppUtils as U ( green, cyan, reset )
 
 --
 -- Declaração de sinônimos para facilitar a leitura
