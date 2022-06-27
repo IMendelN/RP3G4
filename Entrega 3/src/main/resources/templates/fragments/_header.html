@@ -1,17 +1,19 @@
-<header class="header" th:fragment="header">
-    <nav class="navbar">
-        <a class="navbar-logo" href="">GamingStore</a>
-        <div class="mobile-menu">
-            <div class="line1"></div>
-            <div class="line2"></div>
-            <div class="line3"></div>
-        </div>
-        <ul class="navbar-list">
-            <li><a href="/">Promoções</a></li>
-            <li><a href="/">PC</a></li>
-            <li><a href="/">Consoles</a></li>
-            <li><a href="/">Mobile</a></li>
-            <li><a href="/">Search</a></li>
-        </ul>
-    </nav>
+<header th:fragment="header">
+    <div class="container">
+        <nav>
+            <a th:href="@{/}" class="logo">GamingStore</a>
+            <div class="mobile-menu">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+            <ul class="nav-list">
+                <li><a href="/">Início</a></li>
+                <li><a href="/">Promoções</a></li>
+                <li><a href="/">PC</a></li>
+                <li><a href="/">Console</a></li>
+                <li><a href="/">Mobile</a></li>
+            </ul>
+        </nav>
+    </div>
 </header>
