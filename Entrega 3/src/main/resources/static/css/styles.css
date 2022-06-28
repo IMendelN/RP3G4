@@ -1,8 +1,5 @@
+@import "global.css";
 @import "icons.css";
-
-:root {
-    --nav-color: #191d11;
-}
 
 * {
     margin: 0;
@@ -24,7 +21,7 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: var(--nav-color);
+    background: var(--header-color);
     height: 80px;
 }
 
@@ -106,7 +103,7 @@ nav {
 
 footer {
     display: flex;
-    background-color: var(--nav-color);
+    background-color: var(--header-color);
 }
 
 footer ul {
