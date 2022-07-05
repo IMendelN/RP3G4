@@ -34,25 +34,25 @@ public class App {
      */
     private static String getColor(Color color) {
         switch (color) {
-            case BLACK ->       { return BLACK; }
-            case RED ->         { return RED; }
-            case GREEN ->       { return GREEN; }
-            case YELLOW ->      { return YELLOW; }
-            case BLUE ->        { return BLUE; }
-            case PURPLE ->      { return PURPLE; }
-            case CYAN ->        { return CYAN; }
-            case WHITE ->       { return WHITE; }
-            case BLACK_BG ->    { return BLACK_BG; }
-            case RED_BG ->      { return RED_BG; }
-            case GREEN_BG ->    { return GREEN_BG; }
-            case GREEN_BL ->    { return GREEN_BL; }
-            case YELLOW_BG ->   { return YELLOW_BG; }
-            case BLUE_BG ->     { return BLUE_BG; }
-            case PURPLE_BG ->   { return PURPLE_BG; }
-            case CYAN_BG ->     { return CYAN_BG; }
-            case WHITE_BG ->    { return WHITE_BG; }
-            case YELLOW_BRIGHT ->    { return YELLOW_BRIGHT; }
-            default ->          { return RESET; }
+            case BLACK :       { return BLACK; }
+            case RED :        { return RED; }
+            case GREEN :       { return GREEN; }
+            case YELLOW :      { return YELLOW; }
+            case BLUE :       { return BLUE; }
+            case PURPLE :      { return PURPLE; }
+            case CYAN :       { return CYAN; }
+            case WHITE :       { return WHITE; }
+            case BLACK_BG :    { return BLACK_BG; }
+            case RED_BG :      { return RED_BG; }
+            case GREEN_BG :    { return GREEN_BG; }
+            case GREEN_BL :    { return GREEN_BL; }
+            case YELLOW_BG :   { return YELLOW_BG; }
+            case BLUE_BG :    { return BLUE_BG; }
+            case PURPLE_BG :   { return PURPLE_BG; }
+            case CYAN_BG :     { return CYAN_BG; }
+            case WHITE_BG :    { return WHITE_BG; }
+            case YELLOW_BRIGHT :    { return YELLOW_BRIGHT; }
+            default :          { return RESET; }
         }
     }
 
@@ -75,8 +75,7 @@ public class App {
      * 
      * @param s    the text accepting the format syntax of {@code printf()}
      * @param args the arguments
-     * 
-     * @see #printf(Color, Object, Object)
+     *
      */
     public static void printf(Object s, Object... args) {
         printf(Color.NONE, s, args);
@@ -131,7 +130,7 @@ public class App {
      * Prints the text specified and wait one second to proceed.
      * @param c         the color to choose
      * @param s         the text to output
-     * @param seconds   the seconds to wait
+     * @param millis   the seconds to wait
      */    
     public static void printfAndWait(Color c, String s, long millis) {
         printf(c, s);
