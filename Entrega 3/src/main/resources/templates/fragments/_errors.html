@@ -1,0 +1,6 @@
+<div class="errors" th:fragment="errors">
+    <div class="alert alert-danger" th:if="${error != null}">
+        <span th:text="${error}"></span>
+        <i class="fa-solid fa-triangle-exclamation float-end mt-1"></i>
+    </div>
+</div>

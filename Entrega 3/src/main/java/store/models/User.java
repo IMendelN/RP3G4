@@ -1,84 +1,61 @@
 package store.models;
 
+import java.time.LocalDate;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+
+import lombok.Data;
+import store.models.enums.UserRole;
 
 @Entity
+@Data
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "name", length = 255, nullable = false)
+    
+    @Column(nullable = false)
     private String name;
-	
-	@Column(name = "password", length = 30, nullable = false)
+
+    @Column(nullable = false)
 	private String password;
-	
-	@Column(name = "address")
+
+    @Column(nullable = false)
 	private String address;
 
-    @Column(name = "email")
-	private String email;
+    @Column(nullable = false)
+	private String email; 
 
-    @Column(name = "birth_date")
-	private String birthDate;
-	
-	@Column(name = "role")
-	private String role;
+    @Enumerated(EnumType.ORDINAL)
+	private UserRole role;
+    
+    private LocalDate birthDate;
 
-    public Long getId() {
-        return id;
-    }
+    @ManyToMany
+    private Set<Platform> platform;
 
-    public String getName() {
-        return name;
-    }
+    @ManyToMany
+    private Set<Genre> genre;
 
-    public void setName(String name) {
+    @ManyToMany
+    private Set<Game> game;
+
+    public User() {}
+
+    public User(String name, String password, String address, String email, UserRole role, LocalDate birthDate) {
         this.name = name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
         this.address = address;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(String birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
         this.role = role;
+        this.birthDate = birthDate;
     }
 }
