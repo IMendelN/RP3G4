@@ -1,3 +1,15 @@
+/**
+ * Ativando o uso das tooltips globalmente.
+ */
+ var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+     return new bootstrap.Tooltip(tooltipTriggerEl)
+ })
+
+/**
+ * Adiciona efeito de animação ao clicar no "hamburguer" quando a tela
+ * é menor que 999px.
+ */
 class MobileNavbar {
     constructor(mobileMenu, navList, navLinks) {
         this.mobileMenu = document.querySelector(mobileMenu);

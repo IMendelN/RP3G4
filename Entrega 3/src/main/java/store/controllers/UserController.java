@@ -1,36 +1,52 @@
 package store.controllers;
 
-import java.time.LocalDate;
-import java.util.List;
+import javax.validation.Valid;
 
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
-import store.models.entities.User;
-import store.services.UserService;
-import store.utils.DateUtil;
+import store.DTO.UserDTO;
+import store.models.enums.UserRole;
+import store.repositories.UserRepository;
 
-@RestController
+@Controller
 @RequestMapping("/users")
-@Log4j2 // Apenas para fins de teste!
-@RequiredArgsConstructor
 public class UserController {
-    private final DateUtil dateUtil;
-    private final UserService userService;
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping
-    public ResponseEntity<List<User>> list() {
-        log.info(dateUtil.formatDateToDatabase(LocalDate.now())); // Apenas para fins de teste!
-        return ResponseEntity.ok(userService.listAll());
+    public ModelAndView list() {
+        return new ModelAndView("users/list")
+            .addObject("users", userRepository.findAll());
+    }
+
+    @GetMapping("/new")
+    public ModelAndView newUser(UserDTO userDTO) {
+        return new ModelAndView("users/new")
+            .addObject("errorMessage", "")
+            .addObject("roles", UserRole.values());
+    }
+
+    @PostMapping
+    public ModelAndView create(@Valid UserDTO userDTO, BindingResult result) {
+        if (result.hasErrors())
+            return new ModelAndView("users/new")
+                .addObject("roles", UserRole.values());
+        
+        userRepository.save(userDTO.toUser());
+        return new ModelAndView("redirect:/users")
+            .addObject("roles", UserRole.values());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> findById(@PathVariable long id) {
-        return ResponseEntity.ok(userService.findById(id));
+    public String findById(@PathVariable long id) {
+        return "teste";
     }
 }

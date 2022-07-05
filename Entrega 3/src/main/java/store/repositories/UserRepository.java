@@ -1,10 +1,13 @@
 package store.repositories;
 
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import store.models.User;
 
-import store.models.entities.User;
-
-public interface UserRepository {
-    List<User> listAll();
-    User findById(long id);
+public interface UserRepository extends JpaRepository<User, Long> {
+  @Query(
+    value = "SELECT * FROM user WHERE email = :email AND password = :password",
+    nativeQuery = true
+  )
+  public abstract User login(String email, String password);
 }

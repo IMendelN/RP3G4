@@ -56,7 +56,7 @@ nav {
         right: 0;
         width: 100vw;
         height: 75px;
-        background: var(--nav-color);
+        background: var(--header-color);
         flex-direction: row;
         align-items: center;
         justify-content: space-around;

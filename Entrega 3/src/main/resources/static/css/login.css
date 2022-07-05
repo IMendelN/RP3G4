@@ -1,0 +1,39 @@
+:root {
+    --body-color: #22241b;
+    --header-color: #191f15;
+    --footer-color: #01060e;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url("../img/login-wallpaper.jpg") no-repeat;
+    background-size: cover;
+    background-color: var(--body-color);
+}
+
+.form-login {
+    flex-basis: 625px;
+}
+
+.card-header {
+    height: 325px;
+    background: url("../img/card-wallpaper.jpg") no-repeat;
+    background-size: cover;
+    background-color: var(--body-color);
+}
+
+.login-card .card-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.8rem;
+}
+
+.login-card .card-footer {
+    display: flex;
+    justify-content: center;
+    border-radius: var(--login-border);
+}
