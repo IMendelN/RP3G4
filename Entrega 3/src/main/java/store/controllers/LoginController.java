@@ -1,5 +1,7 @@
 package store.controllers;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,17 +19,19 @@ public class LoginController {
     private UserRepository userRepository;
 
     @GetMapping
-    public String index(User user) {
+    public String index(User user, HttpSession session) {
+        session.invalidate();
         return "login";
     }
 
     @PostMapping
-    public String login(Model model, User user) {
+    public String login(Model model, User user, HttpSession session) {
         var userFound = userRepository.login(user.getEmail(), user.getPassword());
 
-        if (userFound != null) 
+        if (userFound != null) {
+            session.setAttribute("logged", true);
             return "redirect:/";
-
+        }
         model.addAttribute("error", "E-mail ou senha inválidos.");
         return "login";
     }
