@@ -5,24 +5,25 @@ import java.util.Scanner;
 import store.utils.enums.Color;
 
 public class App {
-    public static final String RESET = "\u001B[1;0m";
-    public static final String BLACK = "\u001B[1;30m";
-    public static final String RED = "\u001B[1;31m";
-    public static final String GREEN = "\u001B[0;32m";
-    public static final String YELLOW = "\u001B[0;33m";
-    public static final String BLUE = "\u001B[0;34m";
-    public static final String PURPLE = "\u001B[1;35m";
-    public static final String CYAN = "\u001B[1;36m";
-    public static final String WHITE = "\u001B[1;37m";
-    public static final String BLACK_BG = "\u001B[1;40m";
-    public static final String RED_BG = "\u001B[1;41m";
-    public static final String GREEN_BG = "\u001B[1;42m";
-    public static final String GREEN_BL = "\u001B[4;42m";
-    public static final String YELLOW_BG = "\u001B[1;43m";
-    public static final String BLUE_BG = "\u001B[1;44m";
-    public static final String PURPLE_BG = "\u001B[1;45m";
-    public static final String CYAN_BG = "\u001B[1;46m";
-    public static final String WHITE_BG = "\u001B[1;47m";
+    public static final String RESET = "\033[1;0m";
+    public static final String BLACK = "\033[1;30m";
+    public static final String RED = "\033[1;31m";
+    public static final String GREEN = "\033[0;32m";
+    public static final String YELLOW = "\033[0;33m";
+    public static final String BLUE = "\033[0;34m";
+    public static final String PURPLE = "\033[0;35m";
+    public static final String CYAN = "\033[1;36m";
+    public static final String WHITE = "\033[1;37m";
+    public static final String BLACK_BG = "\033[1;40m";
+    public static final String RED_BG = "\033[1;41m";
+    public static final String GREEN_BG = "\033[1;42m";
+    public static final String GREEN_BL = "\033[4;42m";
+    public static final String YELLOW_BG = "\033[1;43m";
+    public static final String BLUE_BG = "\033[1;44m";
+    public static final String PURPLE_BG = "\033[1;45m";
+    public static final String CYAN_BG = "\033[1;46m";
+    public static final String WHITE_BG = "\033[1;47m";
+    public static final String YELLOW_BRIGHT = "\033[0;93m";
 
     /**
      * Gets the ANSI code of the specified color. This is
@@ -50,6 +51,7 @@ public class App {
             case PURPLE_BG ->   { return PURPLE_BG; }
             case CYAN_BG ->     { return CYAN_BG; }
             case WHITE_BG ->    { return WHITE_BG; }
+            case YELLOW_BRIGHT ->    { return YELLOW_BRIGHT; }
             default ->          { return RESET; }
         }
     }

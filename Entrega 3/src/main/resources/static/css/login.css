@@ -37,3 +37,7 @@ body {
     justify-content: center;
     border-radius: var(--login-border);
 }
+
+.card-footer > button {
+    padding: 8px 275px;
+}

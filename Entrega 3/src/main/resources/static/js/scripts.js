@@ -1,10 +1,10 @@
 /**
  * Ativando o uso das tooltips globalmente.
  */
- var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
- var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-     return new bootstrap.Tooltip(tooltipTriggerEl)
- })
+var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl)
+})
 
 /**
  * Adiciona efeito de animação ao clicar no "hamburguer" quando a tela
@@ -22,8 +22,8 @@ class MobileNavbar {
 
     animateLinks() {
         this.navLinks.forEach((link, index) => {
-            link.style.animation 
-                ? (link.style.animation = "") 
+            link.style.animation
+                ? (link.style.animation = "")
                 : (link.style.animation = `navLinkFade 0.5s ease forwards ${index / 7 + 0.3}s`);
         });
     }

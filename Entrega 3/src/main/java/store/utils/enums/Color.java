@@ -18,5 +18,6 @@ public enum Color {
     PURPLE_BG,
     CYAN_BG,
     WHITE_BG,
-    GREEN_BL;
+    GREEN_BL,
+    YELLOW_BRIGHT;
 }
