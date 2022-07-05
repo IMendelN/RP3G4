@@ -1,0 +1,329 @@
+
+.e1_2 { 
+
+	overflow:hidden;
+}
+.e1_2 { 
+	background-color:rgb(0, 0, 0);
+	width:1440px;
+	height:1024px;
+	position:absolute;
+}
+.e1_3 { 
+	width:1440px;
+	height:1024px;
+	position:absolute;
+	left:0px;
+	top:0px;
+	background-image:url(../images/elements/login-wallpaper.jpg);
+	background-repeat:no-repeat;
+	background-size:cover;
+}
+.e2_79 { 
+	width:200px;
+	height:263.7799987792969px;
+	position:absolute;
+	left:1022px;
+	top:669px;
+	background-image:url(../images/games/Fifa22.jpeg);
+	background-repeat:no-repeat;
+	background-size:cover;
+}
+.e2_77 { 
+	width:200px;
+	height:263.7799987792969px;
+	position:absolute;
+	left:458px;
+	top:669px;
+	background-image:url(../images/games/TW3WildHunt.jpeg);
+	background-repeat:no-repeat;
+	background-size:cover;
+}
+.e1_30 { 
+	width:1440px;
+	height:161px;
+	position:absolute;
+	left:0px;
+	top:0px;
+}
+.e1_29 { 
+	background-color:rgb(0, 0, 0);
+	width:1440px;
+	height:161px;
+	position:absolute;
+	left:0px;
+	top:0px;
+}
+.e1_61 { 
+	width:512px;
+	height:512px;
+	position:absolute;
+	left:299px;
+	top:0px;
+}
+
+.e1_38 { 
+	color:rgb(255, 255, 255);
+	width:247px;
+	height:48px;
+	position:absolute;
+	left:176px;
+	top:57px;
+	font-family:Inter;
+	text-align:left;
+	font-size:40px;
+	letter-spacing:0;
+}
+.e1_35 { 
+	width:179px;
+	height:161px;
+	position:absolute;
+	left:0px;
+	top:0px;
+	background-image:url(../images/elements/ONLINE\ GAMES.jpeg);
+	background-repeat:no-repeat;
+	background-size:cover;
+}
+.e1_63 { 
+	width:146px;
+	height:30px;
+	position:absolute;
+	left:528px;
+	top:70px;
+}
+.e1_37 { 
+	color:rgb(255, 255, 255);
+	width:107px;
+	height:24px;
+	position:absolute;
+	left:39px;
+	top:4px;
+	font-family:Inter;
+	text-align:left;
+	font-size:20px;
+	letter-spacing:0;
+    background-image: url(../images/elements/icones/tags-solid.jpeg);
+}
+.e1_55 { 
+	width:30px;
+	height:30px;
+	position:absolute;
+	left:0px;
+	top:0px;
+}
+.e1_56 { 
+	background-color:rgba(255, 255, 255, 1);
+	width:30.001461029052734px;
+	height:26.250856399536133px;
+	position:absolute;
+	left:0px;
+	top:1.8749022483825684px;
+}
+.e1_60 { 
+	width:68px;
+	height:30px;
+	position:absolute;
+	left:741px;
+	top:70px;
+}
+.e1_39 { 
+	color:rgba(255, 255, 255, 1);
+	width:28px;
+	height:24px;
+	position:absolute;
+	left:40px;
+	top:5px;
+	font-family:Inter;
+	text-align:left;
+	font-size:20px;
+	letter-spacing:0;
+}
+.e1_58 { 
+	width:30px;
+	height:30px;
+	position:absolute;
+	left:0px;
+	top:0px;
+}
+.e1_59 { 
+	background-color:rgba(255, 255, 255, 1);
+	width:30px;
+	height:26.25px;
+	position:absolute;
+	left:0px;
+	top:1.875px;
+}
+.e1_54 { 
+	width:77px;
+	height:30px;
+	position:absolute;
+	left:1283px;
+	top:70px;
+}
+.e1_45 { 
+	color:rgba(255, 255, 255, 1);
+	width:37px;
+	height:24px;
+	position:absolute;
+	left:40px;
+	top:3px;
+	font-family:Inter;
+	text-align:left;
+	font-size:20px;
+	letter-spacing:0;
+}
+.e1_42 { 
+	width:30px;
+	height:30px;
+	position:absolute;
+	left:0px;
+	top:0px;
+}
+.e1_43 { 
+	background-color:rgba(255, 255, 255, 1);
+	width:30px;
+	height:26.25px;
+	position:absolute;
+	left:0px;
+	top:0px;
+}
+.e1_53 { 
+	width:103px;
+	height:30px;
+	position:absolute;
+	left:1039px;
+	top:70px;
+}
+.e1_41 { 
+	color:rgba(255, 255, 255, 1);
+	width:64px;
+	height:24px;
+	position:absolute;
+	left:39px;
+	top:5px;
+	font-family:Inter;
+	text-align:left;
+	font-size:20px;
+	letter-spacing:0;
+}
+.e1_49 { 
+	width:30px;
+	height:30px;
+	position:absolute;
+	left:0px;
+	top:0px;
+}
+.e1_50 { 
+	background-color:rgba(255, 255, 255, 1);
+	width:27.5px;
+	height:30px;
+	position:absolute;
+	left:1.25px;
+	top:0px;
+}
+.e1_66 { 
+	width:116px;
+	height:30px;
+	position:absolute;
+	left:862px;
+	top:70px;
+}
+.e1_40 { 
+	color:rgba(255, 255, 255, 1);
+	width:77px;
+	height:24px;
+	position:absolute;
+	left:39px;
+	top:5px;
+	font-family:Inter;
+	text-align:left;
+	font-size:20px;
+	letter-spacing:0;
+}
+.e1_64 { 
+	width:30px;
+	height:30px;
+	position:absolute;
+	left:0px;
+	top:0px;
+}
+.e1_65 { 
+	background-color:rgba(255, 254.3625310063362, 254.3625310063362, 1);
+	width:30px;
+	height:22.5px;
+	position:absolute;
+	left:0px;
+	top:3.75px;
+}
+.e1_69 { 
+	width:200px;
+	height:263.78155517578125px;
+	position:absolute;
+	left:176px;
+	top:333px;
+	background-image:url(../images/games/GodofWar.jpeg);
+	background-repeat:no-repeat;
+	background-size:cover;
+}
+.e2_70 { 
+	color:rgba(255, 255, 255, 1);
+	width:248px;
+	height:44px;
+	position:absolute;
+	left:52px;
+	top:225px;
+	font-family:Inter;
+	text-align:left;
+	font-size:36px;
+	letter-spacing:0;
+}
+.e2_73 { 
+	width:200px;
+	height:263.7799987792969px;
+	position:absolute;
+	left:458px;
+	top:333px;
+	background-image:url(../images/games/GTAV.jpeg);
+	background-repeat:no-repeat;
+	background-size:cover;
+}
+.e2_74 { 
+	width:200px;
+	height:263.7799987792969px;
+	position:absolute;
+	left:740px;
+	top:333px;
+	background-image:url(../images/games/Hellblade.jpeg);
+	background-repeat:no-repeat;
+	background-size:cover;
+}
+.e2_75 { 
+	width:200px;
+	height:263.7799987792969px;
+	position:absolute;
+	left:1022px;
+	top:333px;
+	background-image:url(../images/games/ProjectCars3.jpeg);
+	background-repeat:no-repeat;
+	background-size:cover;
+}
+.e2_76 { 
+	width:200px;
+	height:263.7799987792969px;
+	position:absolute;
+	left:176px;
+	top:669px;
+	background-image:url(../images/games/TheCrew2.jpeg);
+	background-repeat:no-repeat;
+	background-size:cover;
+}
+.e2_78 { 
+	width:200px;
+	height:263.7799987792969px;
+	position:absolute;
+	left:740px;
+	top:669px;
+	background-image:url(../images/games/MortalKombat.jpeg);
+	background-repeat:no-repeat;
+	background-size:cover;
+}
