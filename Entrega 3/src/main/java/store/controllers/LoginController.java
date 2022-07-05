@@ -30,6 +30,7 @@ public class LoginController {
 
         if (userFound != null) {
             session.setAttribute("logged", true);
+            session.setAttribute("role", userFound.getRole().VALUE);
             return "redirect:/";
         }
         model.addAttribute("error", "E-mail ou senha inválidos.");
