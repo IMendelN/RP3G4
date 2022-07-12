@@ -1,0 +1,136 @@
+:root {
+    --logo-color: #20c997;
+    --sales-color: #fd8e00;
+    --pc-color: #ca5fa4;
+    --console-color: #56c6cd;
+    --mobile-color: #fd0067;
+    --logout-color: red;
+}
+
+.icon::before {
+    display: inline-block;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+}
+
+.brand {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+}
+
+.brand li .logo:hover::after {
+    width: 100%;
+}
+
+.brand li .logo::before {
+    font: var(--fa-font-solid);
+    margin-right: 5px;
+}
+
+.brand li .logo {
+    padding: 20px 20px;
+    position: relative;
+}
+
+.brand li .logo::after {
+    content: " ";
+    width: 0%;
+    height: 3px;
+    position: absolute;
+    top: -3px;
+    left: 0;
+}
+
+.logo:hover {
+    color: var(--logo-color);
+}
+
+.logo:hover::after {
+    background-color: var(--logo-color);
+}
+
+.nav-list li a::before {
+    font: var(--fa-font-solid);
+    margin-right: 5px;
+}
+
+.nav-list li a {
+    padding: 20px 20px;
+    position: relative;
+}
+
+.nav-list li a::after {
+    content: " ";
+    width: 0%;
+    height: 3px;
+    position: absolute;
+    top: -8px;
+    left: 0;
+}
+
+.nav-list li a:hover::after {
+    width: 100%;
+}
+
+.sales:hover {
+    color: var(--sales-color);
+}
+
+.sales::before {
+    content: "\f02c";
+}
+
+.sales:hover::after {
+    background-color: var(--sales-color);
+}
+
+.pc:hover {
+    color: var(--pc-color);
+}
+
+.pc::before {
+    content: "\e4e5";
+}
+
+.pc:hover::after {
+    background-color: var(--pc-color);
+}
+
+.console:hover {
+    color: var(--console-color);
+}
+
+.console::before {
+    content: "\f11b";
+}
+
+.console:hover::after {
+    background-color: var(--console-color);
+}
+
+.mobile:hover {
+    color: var(--mobile-color);
+}
+
+.mobile::before {
+    content: "\f3cd";
+}
+
+.mobile:hover::after {
+    background-color: var(--mobile-color);
+}
+
+.logout:hover {
+    color: var(--logout-color);
+}
+
+.logout::before {
+    content: "\f08b";
+}
+
+.logout:hover::after {
+    background-color: var(--logout-color);
+}
+
