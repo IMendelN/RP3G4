@@ -11,7 +11,7 @@ import store.models.User;
 
 @Controller
 @RequestMapping("/")
-public class HomeController {   
+public class StoreController {   
     @GetMapping
     public ModelAndView index() {
         return new ModelAndView("index");

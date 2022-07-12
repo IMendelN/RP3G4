@@ -2,5 +2,6 @@ package store.models.enums;
 
 public enum TypeLog {
     ERROR,
-    INFO
+    INFO,
+    WARN;
 }

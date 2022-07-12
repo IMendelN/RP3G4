@@ -27,6 +27,8 @@ public class Log implements Serializable {
     private String message;
     private LocalDateTime date;
 
+    Log() {}
+
     public Log(Long userId, String pathClass, String methodName, TypeLog type, String message, LocalDateTime date) {
         this.userId = userId;
         this.message = message;

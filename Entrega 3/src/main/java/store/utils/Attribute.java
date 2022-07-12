@@ -7,7 +7,7 @@ import store.models.User;
 public class Attribute {
     public static void setUserAttributes(HttpSession session, User user) {
         session.setAttribute("role", user.getRole().VALUE);
-        session.setAttribute("logged", true);
+        session.setAttribute("auth", true);
         session.setAttribute("userId", user.getId());
     }
 }

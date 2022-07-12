@@ -16,7 +16,7 @@ import store.services.UserService;
 
 @Controller
 @RequestMapping("/users")
-public class UserController {
+public class TestController {
     @Autowired
     private UserService userService;
 

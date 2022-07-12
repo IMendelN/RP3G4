@@ -1,7 +1,5 @@
 package store.aspects;
 
-import java.time.LocalDateTime;
-
 import javax.servlet.http.HttpSession;
 
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -13,97 +11,65 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
-import store.models.Log;
-import store.models.User;
 import store.models.enums.TypeLog;
-import store.services.LogService;
 import store.services.UserService;
-import store.utils.App;
-import store.utils.DateUtil;
-import store.utils.enums.Color;
 
 @Aspect
 @Component
 public class LoggingAdvice {
-    @Autowired private HttpSession session;
-    @Autowired private LogService logService;
-    @Autowired private UserService userService;
+    @Autowired
+    private HttpSession session;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private Logger logger;
+    
+    @Pointcut("execution(* store.controllers.LoginController.*(..))")           void pointcutLogin() {}
+    @Pointcut("execution(* store.controllers.LoginController.login(..))")       void pointcutAfterLogin() {}
+    @Pointcut("execution(* store.controllers.*.*(..))")                         void pointcutAuth() {}
+    @Pointcut("execution(* store.controllers.StoreController.logout(..))")      void pointcutLogout() {}
+    @Pointcut("execution(* store.controllers.admin.*.*(..))")                   void pointcutAdmin() {}
 
-    private static final String MESSAGE_ERROR = "Login não detectado. Redirecionando para a tela de login.";
-    private static final String MESSAGE_NOT_ADMIN = "Permissão negada. Redirecionando para a tela inicial.";
+    @Around("pointcutAuth() && !pointcutLogin()")
+    public ModelAndView isAuthenticated(ProceedingJoinPoint joinPoint) throws Throwable {
+        Boolean isAuthenticated = (Boolean) session.getAttribute("auth");
 
-    /**
-     * Método responsável em deixar um log no terminal caso um erro
-     * ocorra.
-     * 
-     * @param message a mensagem de erro
-     */
-    public void log(String message) {
-        App.printf(Color.YELLOW_BRIGHT, DateUtil.formatDateTime(LocalDateTime.now()) + "\t");
-        App.printf(Color.GREEN, " INFO");
-        App.printf(Color.PURPLE, " 8080\t");
-        App.printf(Color.RED, message + "\n");
-    }
-
-    /**
-     * Método responsável em deixar um log no terminal caso um erro
-     * ocorra e salvar no banco de dados.
-     * 
-     * @param message a mensagem de erro
-     */
-    public void logAndSave(Long userId, TypeLog type, String message, ProceedingJoinPoint joinPoint) {
-        log(message);
-        logService.save(
-            new Log(
-                userId, 
-                joinPoint.getSignature().getDeclaringTypeName(),
-                joinPoint.getSignature().getName(), 
-                type,
-                message, 
-                LocalDateTime.now())
-        );
-    }
-
-    @Pointcut("execution(* store.controllers.UserController.*(..))")        void userController() {}
-    @Pointcut("execution(* store.controllers.UserController.*(..))")        void homeController() {}
-    @Pointcut("execution(* store.controllers.HomeController.logout(..))")   void homeControllerLogout() {}
-
-    @Around("homeController()")
-    public ModelAndView isLogged(ProceedingJoinPoint joinPoint) throws Throwable {
-        if (session.getAttribute("logged") == null) {
-            log(MESSAGE_ERROR);
-            return new ModelAndView("redirect:/login");
+        if (isAuthenticated != null && isAuthenticated) {
+            return (ModelAndView) joinPoint.proceed();
         }
-        return (ModelAndView) joinPoint.proceed();
+        return new ModelAndView("redirect:/login");
     }
 
-    @After("homeControllerLogout()")
-    public void logout() {
-        User user = userService.findById((Long) session.getAttribute("userId"));
-        log("Usuário '" + user.getName() + "'' deslogou do sistema.");
-        session.invalidate();
-    }
+    @After("pointcutAfterLogin()")
+    public void afterLogin() {
+        var id = (Long) session.getAttribute("userId");
 
-    @Around("userController()")
-    public ModelAndView userAccess(ProceedingJoinPoint joinPoint) throws Throwable {
-        Object role = session.getAttribute("role");
-        Object isLogged = session.getAttribute("logged");
-        Object userId = session.getAttribute("userId");
-
-        if (isLogged == null) {
-            log(MESSAGE_ERROR);
-            return new ModelAndView("redirect:/login");
-        }
-
-        if ((Integer) role != 3) {
-            logAndSave(
-                Long.parseLong(userId.toString()), 
-                TypeLog.ERROR,
-                MESSAGE_NOT_ADMIN,
-                joinPoint
+        if (id != null) {
+            logger.log(
+                String.format("Usuário '%s' entrou no sistema.", 
+                userService.findById(id).getName()), 
+                TypeLog.INFO
             );
-            return new ModelAndView("redirect:/");
         }
-        return (ModelAndView) joinPoint.proceed();
+    }
+
+    @Around("pointcutLogout()")
+    public ModelAndView logout() {
+        var id = (Long) session.getAttribute("userId");
+        logger.log(String.format("Usuário '%s' saiu do sistema.", userService.findById(id).getName()), TypeLog.INFO);
+        session.invalidate();
+        return new ModelAndView("redirect:/login");
+    }
+
+    @Around("pointcutAdmin()")
+    public String adminArea(ProceedingJoinPoint joinPoint) throws Throwable {
+        Integer role = (Integer) session.getAttribute("role");
+        Long userId = (Long) session.getAttribute("userId");
+
+        if (role != null && userId != null && role == 3) {
+            return (String) joinPoint.proceed();
+        }
+        logger.logAndSave(userId, TypeLog.ERROR, logger.MESSAGE_NOT_ADMIN, joinPoint);
+        return "Área permitida para somente administradores.";
     }
 }
