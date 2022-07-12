@@ -8,9 +8,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import store.models.User;
 import store.repositories.UserRepository;
+import store.utils.Attribute;
 
 @Controller
 @RequestMapping("/login")
@@ -19,21 +21,19 @@ public class LoginController {
     private UserRepository userRepository;
 
     @GetMapping
-    public String index(User user, HttpSession session) {
-        session.invalidate();
-        return "login";
+    public ModelAndView index(User user, HttpSession session) {
+        return new ModelAndView("login");
     }
 
     @PostMapping
-    public String login(Model model, User user, HttpSession session) {
+    public ModelAndView login(Model model, User user, HttpSession session) {
         var userFound = userRepository.login(user.getEmail(), user.getPassword());
 
         if (userFound != null) {
-            session.setAttribute("logged", true);
-            session.setAttribute("role", userFound.getRole().VALUE);
-            return "redirect:/";
+            Attribute.setUserAttributes(session, userFound);
+            return new ModelAndView("redirect:/");
         }
         model.addAttribute("error", "E-mail ou senha inválidos.");
-        return "login";
+        return new ModelAndView("login");
     }
 }
