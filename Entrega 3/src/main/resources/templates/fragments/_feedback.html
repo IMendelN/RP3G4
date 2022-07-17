@@ -1,0 +1,6 @@
+<th:block th:fragment="success">
+    <div class="alert alert-success" th:if="${success != null}">
+        <span th:text="${success}"></span>
+        <i class="fa-solid fa-circle-check float-end mt-1"></i>
+    </div>
+</th:block>

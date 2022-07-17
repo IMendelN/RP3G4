@@ -42,4 +42,27 @@ public class UserService {
     public User findById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
+
+    /**
+     * Verifica se o usuário digitou e-mail e senhas corretamente. 
+     * 
+     * Retorna um usuário do banco de dados. Caso o usuário não seja
+     * encontrado com as credenciais informadas, retorna null.
+     * 
+     * @param email o e-mail do usuário
+     * @param password a senha do usuário
+     * @return o usuário com as credenciais informadas ou null
+     */
+    public User login(String email, String password) {
+        return userRepository.login(email, password);
+    }
+
+    /**
+     * Verifica se o e-mail informado já está cadastrado no banco de dados.
+     * 
+     * Caso o usuário não exista, retorna null.
+     */
+    public User findByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
 }

@@ -1,43 +1,87 @@
 :root {
-    --body-color: #22241b;
-    --header-color: #191f15;
-    --footer-color: #01060e;
+	--body-color: #22241b;
+	--header-color: #191f15;
+	--footer-color: #01060e;
 }
 
 body {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: url("../img/login-wallpaper.jpg") no-repeat;
-    background-size: cover;
-    background-color: var(--body-color);
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: url("../img/login-wallpaper.jpg") no-repeat;
+	background-size: cover;
+	background-color: var(--body-color);
+	scrollbar-width: thin;
+	scrollbar-color: black transparent;
+}
+
+body::-webkit-scrollbar {
+	width: 3px;
+	height: 3px; /* A altura só é vista quando a rolagem é horizontal */
+}
+
+body::-webkit-scrollbar-track {
+	background: transparent;
+	padding: 2px;
+}
+
+body::-webkit-scrollbar-thumb {
+	background-color: #000;
 }
 
 .form-login {
-    flex-basis: 625px;
+	flex-basis: 625px;
 }
 
 .card-header {
-    height: 325px;
-    background: url("../img/card-wallpaper.jpg") no-repeat;
-    background-size: cover;
-    background-color: var(--body-color);
+	height: 325px;
+	background: url("../img/card-wallpaper.jpg") no-repeat;
+	background-size: cover;
+	background-color: var(--body-color);
 }
 
 .login-card .card-header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.8rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 1.8rem;
 }
 
 .login-card .card-footer {
-    display: flex;
-    justify-content: center;
-    border-radius: var(--login-border);
+	display: flex;
+	justify-content: center;
+	border-radius: var(--login-border);
 }
 
 .card-footer > button {
-    padding: 8px 275px;
+	padding: 8px 275px;
+}
+
+.signup {
+	padding: 5px;
+	padding-bottom: 15px;
+	max-width: 850px;
+	background-color: white;
+	border-radius: 5px;
+}
+
+.signup-header {
+	height: 250px;
+	background: url("../img/signup-header.jpg") no-repeat;
+	background-size: cover;
+}
+
+.signup-admin {
+	padding: 5px;
+	padding-bottom: 15px;
+	max-width: 850px;
+	background-color: white;
+	border-radius: 5px;
+}
+
+.signup-admin-header {
+	height: 200px;
+	background: url("../img/adding-user-admin.jpg") no-repeat;
+	background-size: cover;
 }

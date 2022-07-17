@@ -1,75 +1,78 @@
-package store.aspects;
+// package store.aspects;
 
-import javax.servlet.http.HttpSession;
+// import javax.servlet.http.HttpSession;
 
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.After;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.ModelAndView;
+// import org.aspectj.lang.ProceedingJoinPoint;
+// import org.aspectj.lang.annotation.After;
+// import org.aspectj.lang.annotation.Around;
+// import org.aspectj.lang.annotation.Aspect;
+// import org.aspectj.lang.annotation.Pointcut;
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.stereotype.Component;
+// import org.springframework.web.servlet.ModelAndView;
 
-import store.models.enums.TypeLog;
-import store.services.UserService;
+// import store.models.User;
+// import store.models.enums.TypeLog;
 
-@Aspect
-@Component
-public class LoggingAdvice {
-    @Autowired
-    private HttpSession session;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private Logger logger;
+// @Aspect
+// @Component
+// public class LoggingAdvice {
+//     @Autowired
+//     private HttpSession session;
+//     @Autowired
+//     private Logger logger;
     
-    @Pointcut("execution(* store.controllers.LoginController.*(..))")           void pointcutLogin() {}
-    @Pointcut("execution(* store.controllers.LoginController.login(..))")       void pointcutAfterLogin() {}
-    @Pointcut("execution(* store.controllers.*.*(..))")                         void pointcutAuth() {}
-    @Pointcut("execution(* store.controllers.StoreController.logout(..))")      void pointcutLogout() {}
-    @Pointcut("execution(* store.controllers.admin.*.*(..))")                   void pointcutAdmin() {}
+//     @Pointcut("execution(* store.controllers.HomeController.*(..))")            void pointcutLogin() {}
+//     @Pointcut("execution(* store.controllers.HomeController.signup(..))")       void pointcutRegister() {}
+//     @Pointcut("execution(* store.controllers.HomeController.login(..))")        void pointcutAfterLogin() {}
+//     @Pointcut("execution(* store.controllers.*.*(..))")                         void pointcutAuth() {}
+//     @Pointcut("execution(* store.controllers.StoreController.logout(..))")      void pointcutLogout() {}
+//     @Pointcut("execution(* store.controllers.admin.*.*(..))")                   void pointcutAdmin() {}
 
-    @Around("pointcutAuth() && !pointcutLogin()")
-    public ModelAndView isAuthenticated(ProceedingJoinPoint joinPoint) throws Throwable {
-        Boolean isAuthenticated = (Boolean) session.getAttribute("auth");
+//     @Around("pointcutAuth() && !pointcutLogin() && !pointcutRegister()")
+//     public ModelAndView isAuthenticated(ProceedingJoinPoint joinPoint) throws Throwable {
+//         var user = (User) session.getAttribute("user");
 
-        if (isAuthenticated != null && isAuthenticated) {
-            return (ModelAndView) joinPoint.proceed();
-        }
-        return new ModelAndView("redirect:/login");
-    }
+//         if (user != null) {
+//             return (ModelAndView) joinPoint.proceed();
+//         }
+//         return new ModelAndView("redirect:/signin");
+//     }
 
-    @After("pointcutAfterLogin()")
-    public void afterLogin() {
-        var id = (Long) session.getAttribute("userId");
+//     @After("pointcutAfterLogin()")
+//     public void afterLogin() {
+//         var user = (User) session.getAttribute("user");
 
-        if (id != null) {
-            logger.log(
-                String.format("Usuário '%s' entrou no sistema.", 
-                userService.findById(id).getName()), 
-                TypeLog.INFO
-            );
-        }
-    }
+//         if (user != null) {
+//             logger.log(
+//                 String.format("Usuário '%s' entrou no sistema.", user.getName()), 
+//                 TypeLog.INFO
+//             );
+//         }
+//     }
 
-    @Around("pointcutLogout()")
-    public ModelAndView logout() {
-        var id = (Long) session.getAttribute("userId");
-        logger.log(String.format("Usuário '%s' saiu do sistema.", userService.findById(id).getName()), TypeLog.INFO);
-        session.invalidate();
-        return new ModelAndView("redirect:/login");
-    }
+//     @Around("pointcutLogout()")
+//     public ModelAndView logout() {
+//         var user = (User) session.getAttribute("user");
 
-    @Around("pointcutAdmin()")
-    public String adminArea(ProceedingJoinPoint joinPoint) throws Throwable {
-        Integer role = (Integer) session.getAttribute("role");
-        Long userId = (Long) session.getAttribute("userId");
+//         if (user != null) {
+//             logger.log(
+//                 String.format("Usuário '%s' saiu do sistema.", user.getName()), 
+//                 TypeLog.INFO
+//             );
+//         }
+//         session.invalidate();
+//         return new ModelAndView("redirect:/signin");
+//     }
 
-        if (role != null && userId != null && role == 3) {
-            return (String) joinPoint.proceed();
-        }
-        logger.logAndSave(userId, TypeLog.ERROR, logger.MESSAGE_NOT_ADMIN, joinPoint);
-        return "Área permitida para somente administradores.";
-    }
-}
+//     @Around("pointcutAdmin()")
+//     public ModelAndView adminArea(ProceedingJoinPoint joinPoint) throws Throwable {
+//         var user = (User) session.getAttribute("user");
+
+//         if (user != null && user.getRole().VALUE == 3)
+//             return (ModelAndView) joinPoint.proceed();
+        
+//         logger.logAndSave(user.getId(), TypeLog.ERROR, logger.MESSAGE_NOT_ADMIN, joinPoint);
+//         return new ModelAndView("redirect:/signin");
+//     }
+// }

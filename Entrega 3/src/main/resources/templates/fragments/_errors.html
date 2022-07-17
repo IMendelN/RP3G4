@@ -1,6 +1,13 @@
-<div class="errors" th:fragment="errors">
+<th:block class="errors" th:fragment="errors">
     <div class="alert alert-danger" th:if="${error != null}">
         <span th:text="${error}"></span>
         <i class="fa-solid fa-triangle-exclamation float-end mt-1"></i>
     </div>
-</div>
+</th:block>
+
+<th:block th:fragment="feedback">
+    <div class="invalid-feedback mt-1">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <span>Campo obrigatório.</span>
+    </div>
+</th:block>
