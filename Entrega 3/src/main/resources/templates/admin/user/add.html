@@ -33,7 +33,7 @@
 									<div
 										th:replace="fragments/_errors :: errors"
 									></div>
-                                    <div
+									<div
 										th:replace="fragments/_feedback :: success"
 									></div>
 								</div>
@@ -92,6 +92,7 @@
 											placeholder="Digite seu e-mail"
 											class="form-control"
 											th:field="*{email}"
+											value=""
 											required
 										/>
 										<div
@@ -139,6 +140,7 @@
 										<select
 											class="form-select"
 											name="platforms"
+                                            size="3"
 											multiple
 										>
 											<option
@@ -157,6 +159,7 @@
 										<select
 											class="form-select"
 											name="genres"
+                                            size="3"
 											multiple
 										>
 											<option
@@ -172,10 +175,7 @@
 										<label class="form-label"
 											>Nível de Acesso</label
 										>
-										<select
-											class="form-select"
-											name="role"
-										>
+										<select class="form-select" name="role">
 											<option
 												th:each="role : ${roles}"
 												th:value="${role}"
@@ -193,12 +193,9 @@
 									>
 										Cadastrar
 									</button>
-                                    <a
-										class="btn btn-secondary"
-										type="submit"
-									>
+									<a class="btn btn-secondary" href="/admin/users">
 										Voltar
-                                    </a>
+									</a>
 								</div>
 							</div>
 						</form>

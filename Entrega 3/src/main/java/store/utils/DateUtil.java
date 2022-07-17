@@ -12,6 +12,10 @@ public class DateUtil {
         return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(date);
     }
 
+    public static String formatDate(LocalDate date) {
+        return DateTimeFormatter.ofPattern("yyyy-MM-dd").format(date);
+    }
+
     public static LocalDate formatStringToDate(String date) {
         return LocalDate.parse(date);
     }
