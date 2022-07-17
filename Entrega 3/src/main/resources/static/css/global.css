@@ -9,6 +9,8 @@
 body {
     background: url("../img/wallpaper.jpg") no-repeat;
     background-color: var(--body-color);
+    scrollbar-width: thin !important;
+    scrollbar-color: dark rgb(124, 124, 124) !important;  
 }
 
 * {
@@ -24,7 +26,10 @@ body {
     display: grid;
     grid-template-rows: 80px 1fr;
     grid-template-columns: 1fr;
-    grid-template-areas: "header" "main";
+    grid-template-areas: 
+        "header" 
+        "main"
+        "footer";
 }
 
 main {

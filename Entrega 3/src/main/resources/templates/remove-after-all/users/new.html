@@ -19,7 +19,10 @@
 			</div>
 			<div class="container">
 				<div class="row">
-                    <div class="alert alert-danger" th:errors="${errorMessage}"></div>
+					<div
+						class="alert alert-danger"
+						th:errors="${errorMessage}"
+					></div>
 					<form th:object="${userDTO}" action="/users" method="post">
 						<div class="mb-4">
 							<label class="form-label">Nome</label>
@@ -35,7 +38,7 @@
 								<span th:errors="*{name}"></span>
 							</div>
 						</div>
-                        <div class="mb-4">
+						<div class="mb-4">
 							<label class="form-label">Senha</label>
 							<input
 								type="text"
@@ -49,7 +52,7 @@
 								<span th:errors="*{password}"></span>
 							</div>
 						</div>
-                        <div class="mb-4">
+						<div class="mb-4">
 							<label class="form-label">email</label>
 							<input
 								type="text"
@@ -63,8 +66,8 @@
 								<span th:errors="*{email}"></span>
 							</div>
 						</div>
-                        <div class="mb-4">
-							<label class="form-label">birth (aaaa/mm/dd)</label>
+						<div class="mb-4">
+							<label class="form-label">birth</label>
 							<input
 								type="text"
 								placeholder="Insira..."
@@ -77,7 +80,7 @@
 								<span th:errors="*{birthDate}"></span>
 							</div>
 						</div>
-                        <div class="mb-4">
+						<div class="mb-4">
 							<label class="form-label">address</label>
 							<input
 								type="text"
@@ -109,7 +112,12 @@
 									href="javascript:history.back()"
 									>Voltar</a
 								>
-								<button class="btn btn-success my-2" type="submit">Enviar</button>
+								<button
+									class="btn btn-success my-2"
+									type="submit"
+								>
+									Enviar
+								</button>
 							</div>
 						</div>
 					</form>
@@ -122,6 +130,9 @@
 			crossorigin="anonymous"
 		></script>
 		<script th:src="@{~/js/scripts.js}"></script>
-		<script src="https://kit.fontawesome.com/a3de6dbf75.js" crossorigin="anonymous"></script>
+		<script
+			src="https://kit.fontawesome.com/a3de6dbf75.js"
+			crossorigin="anonymous"
+		></script>
 	</body>
 </html>

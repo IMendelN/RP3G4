@@ -2,6 +2,7 @@ package store.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
 import store.models.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -10,4 +11,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     nativeQuery = true
   )
   public abstract User login(String email, String password);
+
+  @Query(
+    value = "SELECT * FROM user WHERE email = :email",
+    nativeQuery = true
+  )
+  public abstract User existsByEmail(String email);
 }
