@@ -13,13 +13,14 @@
 	</head>
 	<body>
 		<div class="signup-admin">
-			<div class="signup-admin-header"></div>
+			<div class="edit-users-admin"></div>
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="col-12 mt-3">
 							<h3>Editar</h3>
 							<hr />
+							<div th:replace="fragments/_errors :: errors"></div>
 						</div>
 						<form
 							class="needs-validation"
@@ -29,15 +30,7 @@
 							novalidate
 						>
 							<div class="row">
-								<div class="col-12">
-									<div
-										th:replace="fragments/_errors :: errors"
-									></div>
-									<div
-										th:replace="fragments/_feedback :: success"
-									></div>
-								</div>
-                                <input type="hidden" th:field="*{id}">
+								<input type="hidden" th:field="*{id}" />
 								<div class="col-8">
 									<div class="form-group">
 										<label class="form-label">Nome</label>
@@ -46,7 +39,7 @@
 											placeholder="Digite seu nome"
 											class="form-control"
 											th:field="*{name}"
-                                            th:value="${user.name}"
+											th:value="${user.name}"
 											required
 										/>
 										<div
@@ -62,8 +55,8 @@
 										<input
 											class="form-control"
 											type="date"
-                                            th:value="${date}"
-                                            name="date"
+											th:value="${date}"
+											name="date"
 											required
 										/>
 										<div
@@ -82,7 +75,7 @@
 											class="form-control"
 											name="address"
 											th:value="${user.address}"
-                                            required
+											required
 										/>
 										<div
 											th:replace="fragments/_errors :: feedback"
@@ -113,7 +106,7 @@
 											placeholder="Digite uma senha"
 											class="form-control"
 											th:field="${user.password}"
-                                            th:value="${user.password}"
+											th:value="${user.password}"
 										/>
 										<div
 											th:replace="fragments/_errors :: feedback"
@@ -130,7 +123,7 @@
 											placeholder="Confirme sua senha"
 											class="form-control"
 											name="confirmPassword"
-                                            th:value="${user.password}"
+											th:value="${user.password}"
 										/>
 										<div
 											th:replace="fragments/_errors :: feedback"
@@ -145,13 +138,13 @@
 										<select
 											class="form-select"
 											th:field="${user.platforms}"
-                                            size="3"
+											size="3"
 											multiple
 										>
 											<option
 												th:each="platform : ${platforms}"
 												th:value="${platform.id}"
-                                                th:selected="${user.platforms.contains(platform)}"
+												th:selected="${user.platforms.contains(platform)}"
 												th:text="${platform.name}"
 											></option>
 										</select>
@@ -165,13 +158,13 @@
 										<select
 											class="form-select"
 											th:field="${user.genres}"
-                                            size="3"
+											size="3"
 											multiple
 										>
 											<option
 												th:each="genre : ${genres}"
 												th:value="${genre.id}"
-                                                th:selected="${user.genres.contains(genre)}"
+												th:selected="${user.genres.contains(genre)}"
 												th:text="${genre.name}"
 											></option>
 										</select>
@@ -182,7 +175,10 @@
 										<label class="form-label"
 											>Nível de Acesso</label
 										>
-										<select class="form-select" th:field="${user.role}">
+										<select
+											class="form-select"
+											th:field="${user.role}"
+										>
 											<option
 												th:each="role : ${roles}"
 												th:value="${role}"
@@ -200,7 +196,10 @@
 									>
 										Salvar
 									</button>
-									<a class="btn btn-secondary" href="/admin/users">
+									<a
+										class="btn btn-secondary"
+										href="/admin/users"
+									>
 										Voltar
 									</a>
 								</div>

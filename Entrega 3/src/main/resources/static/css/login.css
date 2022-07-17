@@ -58,6 +58,12 @@ body::-webkit-scrollbar-thumb {
 	padding: 8px 275px;
 }
 
+.alertify .ajs-dialog {
+    top: 50%;
+    transform: translateY(-50%);
+    margin: auto;
+}
+
 .signup {
 	padding: 5px;
 	padding-bottom: 15px;
@@ -81,8 +87,20 @@ body::-webkit-scrollbar-thumb {
 	border-radius: 5px;
 }
 
-.signup-admin-header {
+.add-users-admin {
 	height: 200px;
-	background: url("../img/adding-user-admin.jpg") no-repeat;
+	background: url("../img/add-user-admin.jpg") no-repeat;
+	background-size: cover;
+}
+
+.list-users-admin {
+    height: 200px;
+	background: url("../img/list-user-admin.jpg") no-repeat;
+	background-size: cover;
+}
+
+.edit-users-admin {
+    height: 200px;
+	background: url("../img/edit-user-admin.jpg") no-repeat;
 	background-size: cover;
 }

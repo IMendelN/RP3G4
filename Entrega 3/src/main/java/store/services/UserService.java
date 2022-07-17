@@ -65,4 +65,11 @@ public class UserService {
     public User findByEmail(String email) {
         return userRepository.existsByEmail(email);
     }
+
+    /**
+     * Remove um usuário do banco de dados.
+     */
+    public void remove(User user) {
+        userRepository.delete(user);
+    }
 }
