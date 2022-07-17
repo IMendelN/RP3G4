@@ -37,7 +37,7 @@
  * Estilizando as tabelas usando o jQuery.
  */
  $(document).ready(function() {
-    $('#table-test').DataTable({
+    $('#table').DataTable({
         "language": {
             "bInfo": false,
             "responsive": true,

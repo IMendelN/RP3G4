@@ -101,4 +101,11 @@ public class User {
         this.genres = genres;
         this.games = games;
     }
+
+    @Override
+    public String toString() {
+        return "User [address=" + address + ", birthDate=" + birthDate + ", email=" + email + ", games=" + games
+                + ", genres=" + genres + ", id=" + id + ", name=" + name + ", password=" + password + ", platforms="
+                + platforms + ", role=" + role + "]";
+    }
 }
