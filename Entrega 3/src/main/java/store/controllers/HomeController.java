@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import store.DTO.RegisterUserDTO;
 import store.models.User;
@@ -30,7 +31,7 @@ public class HomeController {
     private PlatformService platformService;
 
     @GetMapping("/signin")
-    public ModelAndView index(User user, HttpSession session) {
+    public ModelAndView index(User user) {
         return new ModelAndView("signin");
     }
 
@@ -57,7 +58,8 @@ public class HomeController {
     public ModelAndView signup( 
         @Valid RegisterUserDTO registerUserDTO, 
         BindingResult result,
-        HttpServletRequest request
+        HttpServletRequest request,
+        RedirectAttributes redirect
     ) {
         String date             = request.getParameter("date");
         String[] genres         = request.getParameterValues("genres");
@@ -85,6 +87,7 @@ public class HomeController {
             for (String platform : platforms)
                 registerUserDTO.getPlatforms().add(platformService.findById(Long.parseLong(platform)));
         
+        redirect.addFlashAttribute("success", "Usuário cadastrado com sucesso!");
         userService.save(registerUserDTO.toUser());
         return new ModelAndView("redirect:/signin");
     }
