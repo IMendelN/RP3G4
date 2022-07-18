@@ -17,3 +17,45 @@
             }, false)
         })
 })()
+
+// /**
+//  * This will style all tables with id "#table_report_list"
+//  * on it. This will be the pattern in the next version.
+//  */
+//  $(document).ready(function () {
+//     $('#table-test').DataTable({
+//         "bInfo": false,
+//         "responsive": "true",
+//         "paging": "true",
+//         "pageLength": "5",
+//         "lengthMenu": "[5, 10, 25, 50, 100]",
+//         "order": "[[0, 'desc']]"
+//     });
+// });
+
+/**
+ * Estilizando as tabelas usando o jQuery.
+ */
+ $(document).ready(function() {
+    $('#table').DataTable({
+        "language": {
+            "lengthMenu": "_MENU_",
+            "zeroRecords": "Nenhum registro encontrado",
+            "info": "Página _PAGE_ de _PAGES_",
+            "infoEmpty": "Nenhum registro disponível",
+            "infoFiltered": "(filtrado de _MAX_ registros)",
+            "search": "Buscar:",
+            "paginate": {
+                "first": "Primeira",
+                "last": "Última",
+                "next": "Próxima",
+                "previous": "Anterior"
+            }
+        },
+        "pagingType": "simple",
+        "responsive": true,
+        "pageLength": 5,
+        "lengthMenu": [5, 10, 25, 50, 100],
+        "order": [[0, "desc"]]
+    });
+})
