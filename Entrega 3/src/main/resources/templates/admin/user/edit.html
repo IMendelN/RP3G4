@@ -105,8 +105,7 @@
 											type="password"
 											placeholder="Digite uma senha"
 											class="form-control"
-											th:field="${user.password}"
-											th:value="${user.password}"
+											name="password"
 										/>
 										<div
 											th:replace="fragments/_errors :: feedback"
@@ -123,7 +122,6 @@
 											placeholder="Confirme sua senha"
 											class="form-control"
 											name="confirmPassword"
-											th:value="${user.password}"
 										/>
 										<div
 											th:replace="fragments/_errors :: feedback"

@@ -28,5 +28,8 @@ public class Platform {
     @ManyToMany(mappedBy = "platforms", fetch = FetchType.LAZY)
     private Set<User> users = new HashSet<>();
 
+    @ManyToMany(mappedBy = "gamePlatforms", fetch = FetchType.LAZY)
+    private Set<Game> games = new HashSet<>();
+
     public Platform() {}
 }

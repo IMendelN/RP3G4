@@ -19,6 +19,6 @@ public class StoreController {
 
     @GetMapping("/logout")
     public ModelAndView logout(User user, HttpSession session) {
-        return new ModelAndView("redirect:/login");
+        return new ModelAndView("redirect:/signin");
     }
 }

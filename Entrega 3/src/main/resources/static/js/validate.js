@@ -39,12 +39,9 @@
  $(document).ready(function() {
     $('#table').DataTable({
         "language": {
-            "bInfo": false,
-            "responsive": true,
-            "paging": false,
-            "lengthMenu": "Mostrar _MENU_ registros por página",
+            "lengthMenu": "_MENU_",
             "zeroRecords": "Nenhum registro encontrado",
-            "info": "Mostrando página _PAGE_ de _PAGES_",
+            "info": "Página _PAGE_ de _PAGES_",
             "infoEmpty": "Nenhum registro disponível",
             "infoFiltered": "(filtrado de _MAX_ registros)",
             "search": "Buscar:",
@@ -54,6 +51,11 @@
                 "next": "Próxima",
                 "previous": "Anterior"
             }
-        }
+        },
+        "pagingType": "simple",
+        "responsive": true,
+        "pageLength": 5,
+        "lengthMenu": [5, 10, 25, 50, 100],
+        "order": [[0, "desc"]]
     });
 })

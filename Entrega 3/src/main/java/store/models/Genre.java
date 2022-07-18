@@ -29,5 +29,8 @@ public class Genre {
   @ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY)
   private Set<User> users = new HashSet<>();
 
+  @ManyToMany(mappedBy = "gameGenres", fetch = FetchType.LAZY)
+  private Set<Game> games = new HashSet<>();
+
   public Genre() {}
 }

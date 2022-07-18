@@ -40,6 +40,9 @@
 							<div
 								th:replace="fragments/_feedback :: success"
 							></div>
+							<div
+								th:replace="fragments/_errors :: errors"
+							></div>
 						</div>
 
 						<table class="table table-hover" id="table">
@@ -109,7 +112,7 @@
 			function removeUser(id) {
 				alertify.confirm(
 					"Exclusão",
-					"Deseja realmente deletar este usuário? Esta ação não pode ser desfeita.",
+					"Deseja realmente deletar este usuário?",
 					function () {
 						window.location.href = `./users/${id}/delete`
 						alertify.success("Usuário deletado com sucesso!")

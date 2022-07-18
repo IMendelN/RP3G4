@@ -52,7 +52,7 @@ public class UserController {
         HttpServletRequest request,
         RedirectAttributes redirect
     ) {
-        String date             = request.getParameter("date");
+        String date = request.getParameter("date");
         
         if (result.hasErrors())
             return new ModelAndView("admin/user/add");
@@ -87,8 +87,12 @@ public class UserController {
         HttpServletRequest request,
         RedirectAttributes redirect
     ) {
-        String birthDate             = request.getParameter("date");
+        String birthDate = request.getParameter("date");
         user.setBirthDate(DateUtil.formatStringToDate(birthDate));
+        String password = request.getParameter("password");
+        
+        if (password.isBlank()) 
+            user.setPassword(userService.findById(id).getPassword());
 
         if (result.hasErrors()) {
             redirect.addFlashAttribute("error", "Um erro ocorreu enquanto você editava o usuário.");
@@ -114,12 +118,12 @@ public class UserController {
     ) {
         User user = userService.findById(id);
 
-        if (user != null) {
-            userService.remove(user);
-            redirect.addFlashAttribute("success", "Usuário excluído com sucesso!");
-        } else {
+        if (user == null) {
             redirect.addFlashAttribute("error", "Usuário não encontrado.");
+            return new ModelAndView("redirect:/admin/users");
         }
+        userService.remove(user);
+        redirect.addFlashAttribute("success", "Usuário excluído com sucesso!");
         return new ModelAndView("redirect:/admin/users");
     }
 }
