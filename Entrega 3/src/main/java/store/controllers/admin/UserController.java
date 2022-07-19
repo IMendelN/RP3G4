@@ -55,11 +55,12 @@ public class UserController {
         String date = request.getParameter("date");
         
         if (result.hasErrors())
-            return new ModelAndView("admin/user/add");
+            return new ModelAndView("redirect:/admin/users/add");
         
-        if (userService.findByEmail(userDTO.getEmail()) != null)
-            return new ModelAndView("admin/user/add")
-                .addObject("error", "E-mail já cadastrado no sistema.");
+        if (userService.findByEmail(userDTO.getEmail()) != null) {
+            redirect.addFlashAttribute("error", "E-mail já cadastrado.");
+            return new ModelAndView("redirect:/admin/users/add");
+        }
 
         if (date != null)
             userDTO.setBirthDate(DateUtil.formatStringToDate(date));
