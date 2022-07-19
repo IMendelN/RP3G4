@@ -41,7 +41,10 @@ public class HomeController {
         
         if (userFound != null) {
             session.setAttribute("user", userFound);
-            return new ModelAndView("redirect:/");
+            
+            return userFound.getRole().VALUE == 3 
+                ? new ModelAndView("redirect:/admin")
+                : new ModelAndView("redirect:/");
         }
         model.addAttribute("error", "E-mail ou senha inválidos.");
         return new ModelAndView("signin");
