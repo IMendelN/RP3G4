@@ -1,0 +1,7 @@
+http://localhost:8080/signin
+http://localhost:8080/signup
+http://localhost:8080/admin/users/
+http://localhost:8080/admin/users/add
+http://localhost:8080/admin/users/1/edit
+http://localhost:8080/admin/games/
+http://localhost:8080/admin/games/add

@@ -24,16 +24,16 @@ public class Logger {
 
     public static final Color whichColor(TypeLog type) {
         switch (type) {
-            case INFO -> {
+            case INFO :{
                 return Color.CYAN;
             }
-            case WARN -> {
-                return Color.YELLOW;
+            case WARN : {
+               return Color.YELLOW;
             }
-            case ERROR -> {
+            case ERROR : {
                 return Color.RED;
             }
-            default -> {
+            default : {
                 return Color.NONE;
             }
         }
