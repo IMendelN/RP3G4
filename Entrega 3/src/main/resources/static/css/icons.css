@@ -5,6 +5,7 @@
     --console-color: #56c6cd;
     --mobile-color: #fd0067;
     --logout-color: red;
+    --admin-color: #ce9700;
 }
 
 .icon::before {
@@ -132,5 +133,17 @@
 
 .logout:hover::after {
     background-color: var(--logout-color);
+}
+
+.admin:hover {
+    color: var(--admin-color);
+}
+
+.admin::before {
+    content: "\f09c";
+}
+
+.admin:hover::after {
+    background-color: var(--admin-color);
 }
 

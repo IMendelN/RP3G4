@@ -59,3 +59,28 @@
         "order": [[0, "desc"]]
     });
 })
+
+/**
+ * Estilizando as tabelas usando o jQuery.
+ */
+ $(document).ready(function() {
+    $('#table-index').DataTable({
+        "language": {
+            "lengthMenu": "_MENU_",
+            "zeroRecords": "Nenhum registro encontrado",
+            "info": "Página _PAGE_ de _PAGES_",
+            "infoEmpty": "Nenhum registro disponível",
+            "infoFiltered": "(filtrado de _MAX_ registros)",
+            "search": "Buscar:",
+            "paginate": {
+                "first": "Primeira",
+                "last": "Última",
+                "next": "Próxima",
+                "previous": "Anterior"
+            }
+        },
+        "pagingType": "simple",
+        "responsive": true,
+        "order": [[0, "desc"]]
+    });
+})
