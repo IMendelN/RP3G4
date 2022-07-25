@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 import org.springframework.context.annotation.Scope;
 
@@ -50,6 +51,9 @@ public class User {
 	private UserRole role;
     
     private LocalDate birthDate;
+
+    @OneToMany
+    private Set<Purchase> purchases = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(

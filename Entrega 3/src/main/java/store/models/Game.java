@@ -43,8 +43,11 @@ public class Game {
     @Column(nullable = false)
     private Double price;
 
-    @ManyToMany(mappedBy = "games", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "purchases", fetch = FetchType.LAZY)
     private Set<User> users;
+
+    @ManyToMany(mappedBy = "games", fetch = FetchType.LAZY)
+    private Set<Purchase> purchases;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(

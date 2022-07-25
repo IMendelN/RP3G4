@@ -29,7 +29,6 @@ public class LoggingAdvice {
     @Pointcut("execution(* store.controllers.*.*(..))")                         void pointcutAuth() {}
     @Pointcut("execution(* store.controllers.StoreController.logout(..))")      void pointcutLogout() {}
     @Pointcut("execution(* store.controllers.admin.*.*(..))")                   void pointcutAdmin() {}
-    @Pointcut("execution(* store.controllers.admin.UserController.*(..))")      void pointcutUser() {}
 
     @Around("pointcutAuth() && !pointcutLogin() && !pointcutRegister()")
     public ModelAndView isAuthenticated(ProceedingJoinPoint joinPoint) throws Throwable {
