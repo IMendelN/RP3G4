@@ -1,4 +1,5 @@
 :- dynamic list_set/2.
+:- dynamic client/3.
 
 % ------------------------------------------------------------------------------------------------
 % Profissões -> (Profissão).
@@ -49,7 +50,7 @@ type('Casa').
 type('Apartamento').
 
 % ------------------------------------------------------------------------------------------------
-% Imoveis para locação -> (Tipo, Quartos, Valor).
+/*/% Imoveis para locação -> (Tipo, Quartos, Valor).*/
 % ------------------------------------------------------------------------------------------------
 for_sale(type('Casa'), 3, 300_000).
 for_sale(type('Apartamento'), 1, 120_000).
@@ -125,7 +126,7 @@ list_client_by_career(Career) :-
     ).
 
 % ------------------------------------------------------------------------------------------------
-% 2.5: Listagem do valor médio de todas as imobiliárias. [OK].
+% 2.5: Listagem dos valor médio de todas as imobiliárias. [OK].
 % ------------------------------------------------------------------------------------------------
 average_value_by_agency(Agency) :-
     findall(Value, sale(agency_in(Agency), _, _, for_sale(_, _, Value)), Values),
@@ -142,7 +143,7 @@ list_average_agencies :-
     nl, forall(agency_in(Agency), average_value_by_agency(Agency)).
 
 % ------------------------------------------------------------------------------------------------
-% 2.6: Alterar informação de um determinado cliente. [NÃO TÁ FUNCIONANDO AINDA].
+% 2.6: Alterar informação de um determinado cliente. [OK].
 % ------------------------------------------------------------------------------------------------
 change_client(Code, NewAge, NewCareer) :-
     client(Code, _, _),

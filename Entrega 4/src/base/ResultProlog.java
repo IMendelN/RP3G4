@@ -27,7 +27,20 @@ public class ResultProlog {
             App.printf(Color.RED, "\nCliente não encontrado na base de dados.\n");
         }
     }
-
+/**
+     * 2.2 (para 2.6): Listar dados de um determinado cliente.
+     * @param code o código do cliente
+     */
+    public static boolean listClient(int code) {
+        boolean hasSolution = Prolog.consult(String.format("list_client(%d)", code));
+        
+        if (!hasSolution) {
+            App.printf(Color.RED, "\nCliente não encontrado na base de dados.\n");
+            return false;
+        }
+        return true;
+    }
+    
     /**
      * 2.3: Listar todos os tipos de imóveis vendidos por uma determinada imobiliária.
      */
@@ -65,7 +78,29 @@ public class ResultProlog {
      * 2.6: Alterar informação de um determinado cliente. [TO DO].
      */
     public static void alterClient(Scanner input) {
-        // TODO.
+        App.printf(Color.YELLOW, "Digite o código do cliente a ser alterado: ");
+        int code = input.nextInt();
+
+        /* Se não encontrar o cliente. */
+                  
+        if (!listClient(code)) {
+            return;
+        }
+
+        App.printf(Color.YELLOW, "\nDigite a nova idade do cliente: ");
+        int newAge = input.nextInt();
+        input.nextLine();
+
+        App.printf(Color.YELLOW, "Digite a nova profissão do cliente: ");
+        String newCareer = input.next();
+
+        boolean hasSolution = Prolog.consult(String.format("change_client(%d, %d,'%s')", code, newAge, newCareer));
+
+        if (!hasSolution) {
+            App.printf(Color.RED, "\nCliente não pôde ser alterado.\n");
+        } else {
+            App.printf(Color.GREEN, "\nCliente alterado com sucesso.\n");
+        }
     }
 
     /**

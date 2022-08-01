@@ -1,7 +1,6 @@
 package app;
 
 import java.util.Scanner;
-
 import base.Menu;
 import base.ResultProlog;
 import utils.App;
@@ -11,6 +10,7 @@ import utils.enums.Color;
 public class Program {
     public static void main(String[] args) {
         App.clearScreen();
+
         Prolog.connect();
 
         int option;
@@ -24,22 +24,23 @@ public class Program {
                 Menu.show();
                 option = input.nextInt();
                 input.nextLine();
-
                 switch (option) {
-                    case 1 -> ResultProlog.listClients();
-                    case 2 -> ResultProlog.listClient(input);
-                    case 3 -> ResultProlog.listTypesByAgency(input);
-                    case 4 -> ResultProlog.listClientsByCareer(input);
-                    case 5 -> ResultProlog.listAverageAgencies();
-                    case 6 -> ResultProlog.alterClient(input);
-                    case 7 -> ResultProlog.listAgencyByValueSold();
-                    case 8 -> ResultProlog.listSellersByValueSold();
-                    case 0 -> {
+                    case 1 : ResultProlog.listClients(); break;
+                    case 2 : ResultProlog.listClient(input);break;
+                    case 3 : ResultProlog.listTypesByAgency(input);break;
+                    case 4 : ResultProlog.listClientsByCareer(input);break;
+                    case 5 : ResultProlog.listAverageAgencies();break;
+                    case 6 : ResultProlog.alterClient(input);break;
+                    case 7 : ResultProlog.listAgencyByValueSold();break;
+                    case 8 : ResultProlog.listSellersByValueSold();break;
+                    case 0 : {
                         App.println(Color.CYAN, "\nPrograma encerrado!");
                         System.exit(0);
+                        break;
                     }
-                    default -> {
+                    default : {
                         App.clearScreen();
+
                         App.println(Color.RED, "Por favor, digite uma opção válida.\n");
                         defaultRepeat = true;
                     }
