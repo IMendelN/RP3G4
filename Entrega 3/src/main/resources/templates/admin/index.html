@@ -36,7 +36,7 @@
 					<nav>
 						<ul class="brand">
 							<li>
-								<a th:href="@{/}" class="logo">MIG Store</a>
+								<a th:href="@{~/admin}" class="logo">MIG Store</a>
 							</li>
 						</ul>
 						<div class="mobile-menu">
@@ -45,9 +45,9 @@
 							<div class="line3"></div>
 						</div>
 						<ul class="nav-list">
-							<li><a class="sales" href="/">Promoções</a></li>
-							<li><a class="pc" href="/">PC</a></li>
-							<li><a class="console" href="/">Console</a></li>
+							<li><a class="sales" th:href="@{~/admin}">Promoções</a></li>
+							<li><a class="pc" th:href="@{~/admin}">PC</a></li>
+							<li><a class="console" th:href="@{~/admin}">Console</a></li>
 						</ul>
 						<ul class="nav-list">
 							<li>
