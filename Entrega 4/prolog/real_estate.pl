@@ -1,4 +1,5 @@
 :- dynamic list_set/2.
+:- dynamic client/3.
 
 % ------------------------------------------------------------------------------------------------
 % Profissões -> (Profissão).
@@ -142,7 +143,7 @@ list_average_agencies :-
     nl, forall(agency_in(Agency), average_value_by_agency(Agency)).
 
 % ------------------------------------------------------------------------------------------------
-% 2.6: Alterar informação de um determinado cliente. [NÃO TÁ FUNCIONANDO AINDA].
+% 2.6: Alterar informação de um determinado cliente. [OK].
 % ------------------------------------------------------------------------------------------------
 change_client(Code, NewAge, NewCareer) :-
     client(Code, _, _),
