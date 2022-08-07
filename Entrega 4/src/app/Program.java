@@ -17,43 +17,52 @@ public class Program {
         boolean repeat;
         boolean defaultRepeat;
 
-        try (Scanner input = new Scanner(System.in)) {
-            do {
-                defaultRepeat = repeat = false;
+        Scanner input = new Scanner(System.in);
 
-                Menu.show();
-                option = input.nextInt();
-                input.nextLine();
-
-                switch (option) {
-                    case 1 -> ResultProlog.listClients();
-                    case 2 -> ResultProlog.listClient(input);
-                    case 3 -> ResultProlog.listTypesByAgency(input);
-                    case 4 -> ResultProlog.listClientsByCareer(input);
-                    case 5 -> ResultProlog.listAverageAgencies();
-                    case 6 -> ResultProlog.alterClient(input);
-                    case 7 -> ResultProlog.listAgencyByValueSold();
-                    case 8 -> ResultProlog.listSellersByValueSold();
-                    case 0 -> {
-                        App.println(Color.CYAN, "\nPrograma encerrado!");
-                        System.exit(0);
+        do {
+            try {
+                do {
+                    defaultRepeat = repeat = false;
+    
+                    Menu.show();
+                    option = input.nextInt();
+                    input.nextLine();
+    
+                    switch (option) {
+                        case 1 -> ResultProlog.listClients();
+                        case 2 -> ResultProlog.listClient(input);
+                        case 3 -> ResultProlog.listTypesByAgency(input);
+                        case 4 -> ResultProlog.listClientsByCareer(input);
+                        case 5 -> ResultProlog.listAverageAgencies();
+                        case 6 -> ResultProlog.alterClient(input);
+                        case 7 -> ResultProlog.listAgencyByValueSold();
+                        case 8 -> ResultProlog.listSellersByValueSold();
+                        case 0 -> {
+                            App.println(Color.CYAN, "\nPrograma encerrado!");
+                            System.exit(0);
+                        }
+                        default -> {
+                            App.clearScreen();
+                            App.println(Color.RED, "Por favor, digite uma opção válida.\n");
+                            defaultRepeat = true;
+                        }
                     }
-                    default -> {
-                        App.clearScreen();
-                        App.println(Color.RED, "Por favor, digite uma opção válida.\n");
-                        defaultRepeat = true;
+                    if (!defaultRepeat) {
+                        repeat = returnToMenu(input);
                     }
-                }
-                if (!defaultRepeat) {
-                    repeat = returnToMenu(input);
-                }
-            } while (repeat || defaultRepeat);
-        }
+                } while (repeat || defaultRepeat);
+            } catch (Exception e) {
+                App.clearScreen();
+                App.println(Color.RED, "Por favor, verifique o tipo de dado inserido.\n");
+                repeat = true;
+                input.next();
+            }
+        } while (repeat);
         App.println(Color.CYAN, "\nPrograma encerrado!");
     }
 
     public static boolean returnToMenu(Scanner scanner) {
-        App.printf(Color.WHITE, "\nDeseja retornar ao menu? (S/N):");
+        App.printf(Color.WHITE, "\nDeseja retornar ao menu? (S/N) - PADRÃO: [N]:");
         App.printf(" ");
         boolean repeat = scanner.next().toLowerCase().equals("s");
         App.clearScreen();

@@ -1,5 +1,6 @@
 package base;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import utils.App;
@@ -19,13 +20,28 @@ public class ResultProlog {
      * @param input Scanner
      */
     public static void listClient(Scanner input) {
-        App.printf(Color.YELLOW, "Digite o código do cliente: ");
-        int code = input.nextInt();
-        boolean hasSolution = Prolog.consult(String.format("list_client(%d)", code));
-        
-        if (!hasSolution) {
-            App.printf(Color.RED, "\nCliente não encontrado na base de dados.\n");
-        }
+        boolean error;
+
+        do {
+            error = false;
+            
+            try {
+                App.printf(Color.YELLOW, "Digite o código do cliente: ");
+                int code = input.nextInt();
+                boolean hasSolution = Prolog.consult(String.format("list_client(%d)", code));
+                
+                if (!hasSolution) {
+                    App.printf(Color.RED, "\nCliente não encontrado na base de dados.\n");
+                }
+            } catch (InputMismatchException e) {
+                App.clearScreen();
+                App.printf(Color.RED, "Por favor, verifique o tipo de dado inserido.\n\n");
+                Menu.show();
+                App.println("2");
+                error = true;
+                input.next();
+            }
+        } while (error);
     }
 
     /**
@@ -46,26 +62,84 @@ public class ResultProlog {
      * 2.3: Listar todos os tipos de imóveis vendidos por uma determinada imobiliária.
      */
     public static void listTypesByAgency(Scanner input) {
-        App.printf(Color.YELLOW, "Digite o nome da imobiliária: ");
-        String name = input.nextLine();
-        boolean hasSolution = Prolog.consult(String.format("list_types_by_agency('%s')", name));
+        App.clearScreen();
+        boolean error;
 
-        if (!hasSolution) {
-            App.printf(Color.RED, "\nImobiliária não encontrada na base de dados.\n");
-        }
+        do {
+            error = false;
+
+            try {
+                Menu.listAgencies();
+                int option = input.nextInt();
+
+                switch (option) {
+                    case 1 -> {
+                        Prolog.consult("list_types_by_agency('Alegrete')");
+                    }
+                    case 2 -> {
+                        Prolog.consult("list_types_by_agency('Baita Chao')"); 
+                    }
+                    case 3 -> {
+                        Prolog.consult("list_types_by_agency('Ibirapuita')");
+                    }
+                    default -> {
+                        App.clearScreen();
+                        App.printf(Color.RED, "Por favor, escolha uma opção válida.\n\n");
+                        error = true;
+                    }
+                }
+            } catch (InputMismatchException e) {
+                App.clearScreen();
+                App.printf(Color.RED, "Por favor, verifique o tipo de dado inserido.\n\n");
+                error = true;
+                input.next();
+            }
+        } while (error);
     }
 
     /**
      * 2.4: Listar todos os clientes de uma determinada profissão.
      */
     public static void listClientsByCareer(Scanner input) {
-        App.printf(Color.YELLOW, "Digite a profissão do cliente: ");
-        String career = input.next();
-        boolean hasSolution = Prolog.consult(String.format("list_client_by_career('%s')", career));
+        App.clearScreen();
+        boolean error;
 
-        if (!hasSolution) {
-            App.printf(Color.RED, "\nProfissão não encontrada na base de dados.\n");
-        }
+        do {
+            error = false;
+
+            try {
+                Menu.listCareers();
+                int option = input.nextInt();
+
+                switch (option) {
+                    case 1 -> {
+                        Prolog.consult("list_clients_by_career('Veterinario')");
+                    }
+                    case 2 -> {
+                        Prolog.consult("list_clients_by_career('Militar')");
+                    }
+                    case 3 -> {
+                        Prolog.consult("list_clients_by_career('Medico')");
+                    }
+                    case 4 -> {
+                        Prolog.consult("list_clients_by_career('Advogado')");
+                    }
+                    case 5 -> {
+                        Prolog.consult("list_clients_by_career('Professor')");
+                    }
+                    default -> {
+                        App.clearScreen();
+                        App.printf(Color.RED, "Por favor, escolha uma opção válida.\n\n");
+                        error = true;
+                    }
+                }
+            } catch (InputMismatchException e) {
+                App.clearScreen();
+                App.printf(Color.RED, "Por favor, verifique o tipo de dado inserido.\n\n");
+                error = true;
+                input.next();
+            }
+        } while (error);
     }
 
     /**
@@ -75,32 +149,231 @@ public class ResultProlog {
         Prolog.consult("list_average_agencies");
     }
 
+    private static void showTryCatchError(int code) {
+        App.printf(Color.RED, "Por favor, verifique o tipo de dado inserido.\n");
+        Prolog._consult(String.format("list_client(%d)", code));
+    }
+
     /**
      * 2.6: Alterar informação de um determinado cliente. [OK].
      */
     public static void alterClient(Scanner input) {
-        App.printf(Color.YELLOW, "Digite o código do cliente a ser alterado: ");
-        int code = input.nextInt();
+        boolean error;
+        boolean invalidOption;
+        boolean hasSolution = false;
 
-        /* Se não encontrar o cliente. */
-        if (!listClient(code)) {
-            return;
-        }
+        do {
+            error = false;
+            
+            try {
+                App.printf(Color.YELLOW, "Digite o código do cliente a ser alterado: ");
+                int code = input.nextInt();
+                int option = 0;
 
-        App.printf(Color.YELLOW, "\nDigite a nova idade do cliente: ");
-        int newAge = input.nextInt();
-        input.nextLine();
+                /* Se não encontrar o cliente. */
+                if (!listClient(code)) {
+                    return;
+                }
 
-        App.printf(Color.YELLOW, "Digite a nova profissão do cliente: ");
-        String newCareer = input.next();
+                do {
+                    invalidOption = error = false;
 
-        boolean hasSolution = Prolog.consult(String.format("change_client(%d, %d,'%s')", code, newAge, newCareer));
+                    try {
+                        Menu.changeClientMenu();
+                        option = input.nextInt();
 
-        if (!hasSolution) {
-            App.printf(Color.RED, "\nCliente não pôde ser alterado.\n");
-        } else {
-            App.printf(Color.GREEN, "\nCliente alterado com sucesso.\n");
-        }
+                        if (option <= 0 || option > 3) {
+                            App.clearScreen();
+                            App.printf(Color.RED, "Por favor, escolha uma opção válida.\n");
+                            Prolog._consult(String.format("list_client(%d)", code));
+                            error = true;
+                        }
+                    } catch (InputMismatchException e) {
+                        App.clearScreen();
+                        showTryCatchError(code);
+                        invalidOption = true;
+                        input.next();
+                    }
+                } while (invalidOption || error);
+
+                switch (option) {
+                    case 1 -> {
+                        do {
+                            error = false;
+
+                            try {
+                                App.printf(Color.YELLOW, "Digite a nova idade: ");
+                                int age = input.nextInt();
+
+                                if (age < 0) {
+                                    App.clearScreen();
+                                    App.printf(Color.RED, "Digite uma idade válida.\n");
+                                    Prolog._consult(String.format("list_client(%d)", code));
+                                    Menu.changeClientMenu();
+                                    App.println("1");
+                                    error = true;
+                                } else {
+                                    hasSolution = Prolog.consult(String.format("change_age_client(%d, %d)", code, age));
+                                }
+                            } catch (InputMismatchException e) {
+                                App.clearScreen();
+                                App.printf(Color.RED, "Por favor, verifique o tipo de dado inserido.\n");
+                                Prolog._consult(String.format("list_client(%d)", code));
+                                Menu.changeClientMenu();
+                                App.println("1");
+                                error = true;
+                                input.next();
+                            }
+                        } while (error);
+                    }
+                    case 2 -> {
+                        App.clearScreen();
+                        Prolog._consult(String.format("list_client(%d)", code));
+                        App.println("");
+
+                        do {
+                            error = false;
+
+                            try {
+                                Menu.listCareers();
+                                int careers = input.nextInt();
+
+                                switch (careers) {
+                                    case 1 -> {
+                                        hasSolution = Prolog.consult(String.format("change_career_client(%d, 'Veterinario')", code));
+                                    }
+                                    case 2 -> {
+                                        hasSolution = Prolog.consult(String.format("change_career_client(%d, 'Militar')", code));
+                                    }
+                                    case 3 -> {
+                                        hasSolution = Prolog.consult(String.format("change_career_client(%d, 'Medico')", code));
+                                    }
+                                    case 4 -> {
+                                        hasSolution = Prolog.consult(String.format("change_career_client(%d, 'Advogado')", code));
+                                    }
+                                    case 5 -> {
+                                        hasSolution = Prolog.consult(String.format("change_career_client(%d, 'Professor')", code));
+                                    }
+                                    default -> {
+                                        App.clearScreen();
+                                        App.printf(Color.RED, "Por favor, escolha uma opção válida.\n");
+                                        Prolog._consult(String.format("list_client(%d)", code));
+                                        App.println("");
+                                        error = true;
+                                    }
+                                }
+                            } catch (InputMismatchException e) {
+                                App.clearScreen();
+                                App.printf(Color.RED, "Por favor, verifique o tipo de dado inserido.\n");
+                                Prolog._consult(String.format("list_client(%d)", code));
+                                App.println("");
+                                error = true;
+                                input.next();
+                            }
+                        } while (error);
+                    }
+                    case 3 -> {
+                        int age = 0;
+                        String career = "";
+
+                        do {
+                            error = false;
+
+                            try {
+                                App.printf(Color.YELLOW, "Digite a nova idade: ");
+                                age = input.nextInt();
+
+                                if (age < 0) {
+                                    App.clearScreen();
+                                    App.printf(Color.RED, "Digite uma idade válida.\n");
+                                    Prolog._consult(String.format("list_client(%d)", code));
+                                    Menu.changeClientMenu();
+                                    App.println("3");
+                                    error = true;
+                                }
+                            } catch (InputMismatchException e) {
+                                App.clearScreen();
+                                App.printf(Color.RED, "Por favor, verifique o tipo de dado inserido.\n");
+                                Prolog._consult(String.format("list_client(%d)", code));
+                                Menu.changeClientMenu();
+                                App.println("3");
+                                error = true;
+                                input.next();
+                            }
+                        } while (error);
+
+                        App.println("");
+                        do {
+                            error = false;
+
+                            try {
+                                Menu.listCareers();
+                                int careers = input.nextInt();
+
+                                switch (careers) {
+                                    case 1 -> {
+                                        career = "'Veterinario'";
+                                    }
+                                    case 2 -> {
+                                        career = "'Militar'";                                        
+                                    }
+                                    case 3 -> {
+                                        career = "'Medico'";                                        
+                                    }
+                                    case 4 -> {
+                                        career = "'Advogado'";
+                                    }
+                                    case 5 -> {
+                                        career = "'Professor'";                                       
+                                    }
+                                    default -> {
+                                        App.clearScreen();
+                                        App.printf(Color.RED, "Por favor, escolha uma opção válida.\n");
+                                        Prolog._consult(String.format("list_client(%d)", code));
+                                        Menu.changeClientMenu();
+                                        App.println("3");
+                                        App.printf(Color.YELLOW, "Digite a nova idade: ");
+                                        App.printf("%d\n\n", age);
+                                        error = true;
+                                    }
+                                }
+                            } catch (InputMismatchException e) {
+                                App.clearScreen();
+                                App.printf(Color.RED, "Por favor, verifique o tipo de dado inserido.\n");
+                                Prolog._consult(String.format("list_client(%d)", code));
+                                Menu.changeClientMenu();
+                                App.println("3");
+                                App.printf(Color.YELLOW, "Digite a nova idade: ");
+                                App.printf("%d\n\n", age);
+                                error = true;
+                                input.next();
+                            }
+                        } while (error);
+
+                        App.clearScreen();
+                        hasSolution = Prolog.consult(String.format("change_client(%d, %d, %s)", code, age, career));
+                    }
+                    default -> {
+                        App.clearScreen();
+                        App.printf(Color.RED, "Por favor, escolha uma opção válida.\n\n");
+                        error = true;
+                    }
+                }
+
+                if (!hasSolution) {
+                    App.printf(Color.RED, "\nCliente não pôde ser alterado.\n");
+                } else {
+                    App.printf(Color.GREEN, "\nCliente alterado com sucesso.\n");
+                }
+            } catch (InputMismatchException e) {
+                App.clearScreen();
+                App.printf(Color.RED, "Por favor, verifique o tipo de dado inserido.\n\n");
+                Menu.show();
+                App.println("6");
+                error = true;
+                input.next();
+            }
+        } while (error);
     }
 
     /**

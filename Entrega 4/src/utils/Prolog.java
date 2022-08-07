@@ -51,10 +51,21 @@ public class Prolog {
     }
 
    /**
-    * Executes a Prolog query.
+    * Executes a Prolog query and clears the console.
     * @param term the query to be executed.
     */
     public static boolean consult(String term) {
+        query = new Query(term);
+        App.clearScreen();
+        App.println(Color.PURPLE, "\n[RESULTADO]");
+        return query.hasSolution();
+    }
+
+    /**
+     * Executes a Prolog query without clearing the console.
+     * @param term the query to be executed.
+     */
+    public static boolean _consult(String term) {
         query = new Query(term);
         App.println(Color.PURPLE, "\n[RESULTADO]");
         return query.hasSolution();
