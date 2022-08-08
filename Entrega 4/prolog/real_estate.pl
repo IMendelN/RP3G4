@@ -108,17 +108,16 @@ list_client(Code) :-
 % 2.3: Listar todos os tipos de imóveis vendidos por uma determinada imobiliária. [OK].
 % ------------------------------------------------------------------------------------------------
 list_types_by_agency(Agency) :-
-    findall(Type, sale(agency_in(Agency), _, _, for_sale(type(Type), _, _)), NonUniqueTypes),
-    list_to_set(NonUniqueTypes, Types),
-    (  Types == [] ->
+    findall((Type, Room, Price), sale(agency_in(Agency), _, _, for_sale(type(Type), Room, Price)), Data),
+    (  Data == [] ->
         false ;
-        writef('\nImoveis vendidos pela imobiliaria de %w: %w\n', [Agency, Types])
+        forall(member((Type, Room, Price), Data), (writef('\nTipo: %w\nQuartos: %d\nValor: %d\n', [Type, Room, Price])))
     ).
 
 % ------------------------------------------------------------------------------------------------
 % 2.4: Listar todos os clientes de uma determinada profissão. [OK].
 % ------------------------------------------------------------------------------------------------
-list_client_by_career(Career) :-
+list_clients_by_career(Career) :-
     findall(Code, client(Code, _, career(Career)), Codes),
     ( Codes == [] ->
         false ;
@@ -134,9 +133,8 @@ average_value_by_agency(Agency) :-
         false ;
         sum_list(Values, Sum),
         length(Values, Length),
-        Average is (Sum div Length),
-        writef('Valor medio de imoveis vendidos pela imobiliaria \'%w\': ', [Agency]),
-        format('R$ ~2f\n', [Average])
+        Average is (Sum / Length),
+        format('Valor medio de imoveis vendidos pela imobiliaria \'~w\': R$ ~2f\n', [Agency, Average])
     ).
 
 list_average_agencies :-
@@ -145,8 +143,17 @@ list_average_agencies :-
 % ------------------------------------------------------------------------------------------------
 % 2.6: Alterar informação de um determinado cliente. [OK].
 % ------------------------------------------------------------------------------------------------
+change_age_client(Code, NewAge) :-
+    once(client(Code, _, career(Career))),
+    retract(client(Code, _, _)),
+    assert(client(Code, NewAge, career(Career))).
+
+change_career_client(Code, NewCareer) :-
+    once(client(Code, Age, _)),
+    retract(client(Code, _, _)),
+    assert(client(Code, Age, career(NewCareer))).
+
 change_client(Code, NewAge, NewCareer) :-
-    client(Code, _, _),
     retract(client(Code, _, _)),
     assert(client(Code, NewAge, career(NewCareer))).
 
