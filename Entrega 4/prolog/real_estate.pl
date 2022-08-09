@@ -109,9 +109,19 @@ list_client(Code) :-
 % ------------------------------------------------------------------------------------------------
 list_types_by_agency(Agency) :-
     findall((Type, Room, Price), sale(agency_in(Agency), _, _, for_sale(type(Type), Room, Price)), Data),
+    format('\033[32m\n+---------------------- \t~w\t ----------------------+\033[0m', Agency),
+    write('\033[31m\n+----------------------------------------------------------------------+\n'),
+    write('|\t   Tipo\t\t   |       Quartos \t|        Valor \t       |'),
+    write('\n+----------------------------------------------------------------------+\033[0m\n'),
     (  Data == [] ->
         false ;
-        forall(member((Type, Room, Price), Data), (writef('\nTipo: %w\nQuartos: %d\nValor: %d\n', [Type, Room, Price])))
+        forall(member((Type, Room, Price), Data), (
+            ( string_length(Type, Length), Length == 4 ->
+                format('|\t   ~w\t\t   |\t      ~d \t|     R$ ~d\t       |\n', [Type, Room, Price]) ;
+                format('|\t   ~w\t   |\t      ~d \t|     R$ ~d\t       |\n', [Type, Room, Price])
+            ),
+            format('+----------------------------------------------------------------------+\n')
+        ))
     ).
 
 % ------------------------------------------------------------------------------------------------
@@ -161,26 +171,36 @@ change_client(Code, NewAge, NewCareer) :-
 % 2.7: Listar imobiliárias com maior valor de vendas em ordem decrescente. [OK].
 % ------------------------------------------------------------------------------------------------
 list_agency_by_value_sold :-
-    findall(Agency-Value, sale(agency_in(Agency), _, _, for_sale(_, _, Value)), Sum),
-    keysort(Sum, KeySorted),
+    findall(Agency-Value, sale(agency_in(Agency), _, _, for_sale(_, _, Value)), PartialResult),
+    keysort(PartialResult, KeySorted),
     group_pairs_by_key(KeySorted, Grouped),
     pairs_keys_values(Grouped, Keys, Values),
-    maplist(sumlist, Values, SumResult),
-    pairs_keys_values(Result, SumResult, Keys),
-    sort(0, @>, Result, Sorted),
-    write('\n'),
-    forall(member(Value-Agency, Sorted), format('~w: R$ ~2f\n', [Agency, Value])).
+    maplist(sumlist, Values, MappedValues),
+    pairs_keys_values(Result, MappedValues, Keys),
+    nl, sort(0, @>, Result, Sorted),
+    write('\033[31m+-------------------------------------------------------------+\n'),
+    write('| \t   Imobiliaria \t\t| \t     Total\t      |\n'),
+    write('+-------------------------------------------------------------+\033[0m\n'),
+    forall(member(Value-Seller, Sorted), (
+        format('| \t~w \t\t| \tR$ ~2f \t      |\n', [Seller, Value]),
+        write('+-------------------------------------------------------------+\n')
+    )).
 
 % ------------------------------------------------------------------------------------------------
 % 2.8: Listar vendedores em ordem crescente de valor de vendas. [OK].
 % ------------------------------------------------------------------------------------------------
 list_sellers_by_value_sold :-
-    findall(Seller-Value, sale(_, seller(Seller), _, for_sale(_, _, Value)), Sum),
-    keysort(Sum, KeyAgregated),
-    group_pairs_by_key(KeyAgregated, Grouped),
+    findall(Seller-Value, sale(_, seller(Seller), _, for_sale(_, _, Value)), PartialResult),
+    keysort(PartialResult, KeySorted),
+    group_pairs_by_key(KeySorted, Grouped),
     pairs_keys_values(Grouped, Keys, Values),
-    maplist(sumlist, Values, SumResult),
-    pairs_keys_values(Result, SumResult, Keys),
-    sort(0, @<, Result, Sorted),
-    write('\n'),
-    forall(member(Value-Seller, Sorted), format('~w: R$ ~2f\n', [Seller, Value])).
+    maplist(sumlist, Values, MappedValues),
+    pairs_keys_values(Result, MappedValues, Keys),
+    nl, sort(0, @<, Result, Sorted),
+    write('\033[31m+--------------------------------------------------+\n'),
+    write('| \t   Nome \t| \t    Total\t   |\n'),
+    write('+--------------------------------------------------+\033[0m\n'),
+    forall(member(Value-Seller, Sorted), (
+        format('| \t~w \t\t| \tR$ ~2f \t   |\n', [Seller, Value]),
+        write('+--------------------------------------------------+\n')
+    )).

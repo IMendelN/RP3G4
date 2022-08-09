@@ -21,13 +21,28 @@ public class ResultProlog {
      */
     public static void listClient(Scanner input) {
         boolean error;
+        boolean repeat;
+        int code;
 
         do {
             error = false;
             
             try {
-                App.printf(Color.YELLOW, "Digite o código do cliente: ");
-                int code = input.nextInt();
+                do {
+                    repeat = false;
+                    
+                    App.printf(Color.YELLOW, "Digite o código do cliente: ");
+                    code = input.nextInt();
+
+                    if (code <= 0) {
+                        App.clearScreen();
+                        App.println(Color.RED, "Digite um código válido, onde este seja maior que zero.\n");
+                        Menu.show();
+                        App.println("2");
+                        repeat = true;
+                    }
+                } while (repeat);
+
                 boolean hasSolution = Prolog.consult(String.format("list_client(%d)", code));
                 
                 if (!hasSolution) {
