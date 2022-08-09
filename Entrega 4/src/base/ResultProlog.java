@@ -21,13 +21,28 @@ public class ResultProlog {
      */
     public static void listClient(Scanner input) {
         boolean error;
+        boolean repeat;
+        int code;
 
         do {
             error = false;
             
             try {
-                App.printf(Color.YELLOW, "Digite o código do cliente: ");
-                int code = input.nextInt();
+                do {
+                    repeat = false;
+                    
+                    App.printf(Color.YELLOW, "Digite o código do cliente: ");
+                    code = input.nextInt();
+
+                    if (code <= 0) {
+                        App.clearScreen();
+                        App.println(Color.RED, "Digite um código válido, onde este seja maior que zero.\n");
+                        Menu.show();
+                        App.println("2");
+                        repeat = true;
+                    }
+                } while (repeat);
+
                 boolean hasSolution = Prolog.consult(String.format("list_client(%d)", code));
                 
                 if (!hasSolution) {
@@ -73,16 +88,19 @@ public class ResultProlog {
                 int option = input.nextInt();
 
                 switch (option) {
-                    case 1 -> {
+                    case 1 : {
                         Prolog.consult("list_types_by_agency('Alegrete')");
+                        break;
                     }
-                    case 2 -> {
+                    case 2: {
                         Prolog.consult("list_types_by_agency('Baita Chao')"); 
+                        break;
                     }
-                    case 3 -> {
+                    case 3: {
                         Prolog.consult("list_types_by_agency('Ibirapuita')");
+                        break;
                     }
-                    default -> {
+                    default: {
                         App.clearScreen();
                         App.printf(Color.RED, "Por favor, escolha uma opção válida.\n\n");
                         error = true;
@@ -112,22 +130,27 @@ public class ResultProlog {
                 int option = input.nextInt();
 
                 switch (option) {
-                    case 1 -> {
+                    case 1 : {
                         Prolog.consult("list_clients_by_career('Veterinario')");
+                        break;
                     }
-                    case 2 -> {
+                    case 2 : {
                         Prolog.consult("list_clients_by_career('Militar')");
+                        break;
                     }
-                    case 3 -> {
+                    case 3 :{
                         Prolog.consult("list_clients_by_career('Medico')");
+                        break;
                     }
-                    case 4 -> {
+                    case 4 :{
                         Prolog.consult("list_clients_by_career('Advogado')");
+                        break;
                     }
-                    case 5 -> {
+                    case 5 : {
                         Prolog.consult("list_clients_by_career('Professor')");
+                        break;
                     }
-                    default -> {
+                    default : {
                         App.clearScreen();
                         App.printf(Color.RED, "Por favor, escolha uma opção válida.\n\n");
                         error = true;
@@ -197,7 +220,7 @@ public class ResultProlog {
                 } while (invalidOption || error);
 
                 switch (option) {
-                    case 1 -> {
+                    case 1 : {
                         do {
                             error = false;
 
@@ -225,8 +248,9 @@ public class ResultProlog {
                                 input.next();
                             }
                         } while (error);
+                        break;
                     }
-                    case 2 -> {
+                    case 2 : {
                         App.clearScreen();
                         Prolog._consult(String.format("list_client(%d)", code));
                         App.println("");
@@ -239,22 +263,27 @@ public class ResultProlog {
                                 int careers = input.nextInt();
 
                                 switch (careers) {
-                                    case 1 -> {
+                                    case 1 : {
                                         hasSolution = Prolog.consult(String.format("change_career_client(%d, 'Veterinario')", code));
+                                        break;
                                     }
-                                    case 2 -> {
+                                    case 2 : {
                                         hasSolution = Prolog.consult(String.format("change_career_client(%d, 'Militar')", code));
+                                        break;
                                     }
-                                    case 3 -> {
+                                    case 3 : {
                                         hasSolution = Prolog.consult(String.format("change_career_client(%d, 'Medico')", code));
+                                        break;
                                     }
-                                    case 4 -> {
+                                    case 4 : {
                                         hasSolution = Prolog.consult(String.format("change_career_client(%d, 'Advogado')", code));
+                                        break;
                                     }
-                                    case 5 -> {
+                                    case 5 : {
                                         hasSolution = Prolog.consult(String.format("change_career_client(%d, 'Professor')", code));
+                                        break;
                                     }
-                                    default -> {
+                                    default : {
                                         App.clearScreen();
                                         App.printf(Color.RED, "Por favor, escolha uma opção válida.\n");
                                         Prolog._consult(String.format("list_client(%d)", code));
@@ -271,8 +300,9 @@ public class ResultProlog {
                                 input.next();
                             }
                         } while (error);
+                        break;
                     }
-                    case 3 -> {
+                    case 3 : {
                         int age = 0;
                         String career = "";
 
@@ -311,22 +341,27 @@ public class ResultProlog {
                                 int careers = input.nextInt();
 
                                 switch (careers) {
-                                    case 1 -> {
+                                    case 1 : {
                                         career = "'Veterinario'";
+                                        break;
                                     }
-                                    case 2 -> {
-                                        career = "'Militar'";                                        
+                                    case 2 : {
+                                        career = "'Militar'";
+                                        break;                                        
                                     }
-                                    case 3 -> {
-                                        career = "'Medico'";                                        
+                                    case 3 : {
+                                        career = "'Medico'";
+                                        break;                                        
                                     }
-                                    case 4 -> {
+                                    case 4 : {
                                         career = "'Advogado'";
+                                        break;
                                     }
-                                    case 5 -> {
-                                        career = "'Professor'";                                       
+                                    case 5: {
+                                        career = "'Professor'"; 
+                                        break;                                      
                                     }
-                                    default -> {
+                                    default : {
                                         App.clearScreen();
                                         App.printf(Color.RED, "Por favor, escolha uma opção válida.\n");
                                         Prolog._consult(String.format("list_client(%d)", code));
@@ -352,8 +387,9 @@ public class ResultProlog {
 
                         App.clearScreen();
                         hasSolution = Prolog.consult(String.format("change_client(%d, %d, %s)", code, age, career));
+                        break;
                     }
-                    default -> {
+                    default : {
                         App.clearScreen();
                         App.printf(Color.RED, "Por favor, escolha uma opção válida.\n\n");
                         error = true;
